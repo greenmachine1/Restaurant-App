@@ -13,6 +13,7 @@
 		320D61B61FC9342B005D52EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320D61B51FC9342B005D52EE /* Assets.xcassets */; };
 		320D61B91FC9342B005D52EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320D61B71FC9342B005D52EE /* LaunchScreen.storyboard */; };
 		320D61C11FC94138005D52EE /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320D61C01FC94138005D52EE /* Colors.swift */; };
+		32B945BB1FC9D72200AF884D /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945BA1FC9D72200AF884D /* NavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		320D61B81FC9342B005D52EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		320D61BA1FC9342B005D52EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		320D61C01FC94138005D52EE /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		32B945BA1FC9D72200AF884D /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				320D61B71FC9342B005D52EE /* LaunchScreen.storyboard */,
 				320D61BA1FC9342B005D52EE /* Info.plist */,
 				320D61C21FC96022005D52EE /* Misc */,
+				32B945BA1FC9D72200AF884D /* NavigationController.swift */,
 			);
 			path = "Restaurant App Redo 3";
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				320D61B11FC9342B005D52EE /* ViewController.swift in Sources */,
+				32B945BB1FC9D72200AF884D /* NavigationController.swift in Sources */,
 				320D61C11FC94138005D52EE /* Colors.swift in Sources */,
 				320D61AF1FC9342B005D52EE /* AppDelegate.swift in Sources */,
 			);

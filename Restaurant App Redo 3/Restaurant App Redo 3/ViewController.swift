@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, ReturnLocationDelegate {
 
     var previousButton:UIButton?
     var nextButton:UIButton?
@@ -17,6 +17,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var mainTextField: UITextField!
     @IBOutlet weak var searchOrRecenterButton: UIButton!
+    
+    var newNavigationController:NavigationController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,6 +43,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.mainTextField.layer.cornerRadius = self.mainTextField.frame.size.height / 2
         self.mainTextField.clipsToBounds = true
         self.mainTextField.addTarget(self, action: #selector(modifiedTextField(_:)), for: UIControlEvents.allEditingEvents)
+        
+        
+        // starting up locationServices //
+        self.startLocationServices()
     }
     
     
@@ -131,6 +138,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }) { (complete) in
             
         }
+    }
+    
+    
+    // startup location services
+    func startLocationServices(){
+        newNavigationController = NavigationController()
+        newNavigationController?.delegate = self
+        newNavigationController!.startLocationServices()
+    }
+    
+    func returnLocation(location: CLLocation) {
+        
     }
 }
 
