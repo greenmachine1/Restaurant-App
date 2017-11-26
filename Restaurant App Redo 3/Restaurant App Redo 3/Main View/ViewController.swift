@@ -9,10 +9,14 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, UITextFieldDelegate, ReturnLocationDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, ReturnLocationDelegate {
 
     var previousButton:UIButton?
     var nextButton:UIButton?
+    
+    // location stuff //
+    var _location:CLLocation?
+    var _region:MKCoordinateRegion?
     
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var mainTextField: UITextField!
@@ -146,10 +150,17 @@ class ViewController: UIViewController, UITextFieldDelegate, ReturnLocationDeleg
         newNavigationController = NavigationController()
         newNavigationController?.delegate = self
         newNavigationController!.startLocationServices()
+        
+        self.mainMapView.showsUserLocation = true
+        self.mainMapView.delegate = self
     }
     
     func returnLocation(location: CLLocation) {
-        
+        let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        _location = location
+        _region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
+        mainMapView.setRegion(_region!, animated: true)
+        self.mainMapView.showsUserLocation = true
     }
 }
 

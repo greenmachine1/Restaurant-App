@@ -59,13 +59,13 @@
 			isa = PBXGroup;
 			children = (
 				320D61AE1FC9342B005D52EE /* AppDelegate.swift */,
-				320D61B01FC9342B005D52EE /* ViewController.swift */,
+				32B945BC1FCA459F00AF884D /* Main View */,
 				320D61B21FC9342B005D52EE /* Main.storyboard */,
 				320D61B51FC9342B005D52EE /* Assets.xcassets */,
 				320D61B71FC9342B005D52EE /* LaunchScreen.storyboard */,
 				320D61BA1FC9342B005D52EE /* Info.plist */,
 				320D61C21FC96022005D52EE /* Misc */,
-				32B945BA1FC9D72200AF884D /* NavigationController.swift */,
+				32B945BD1FCA45CC00AF884D /* Navigation Stuff */,
 			);
 			path = "Restaurant App Redo 3";
 			sourceTree = "<group>";
@@ -76,6 +76,22 @@
 				320D61C01FC94138005D52EE /* Colors.swift */,
 			);
 			path = Misc;
+			sourceTree = "<group>";
+		};
+		32B945BC1FCA459F00AF884D /* Main View */ = {
+			isa = PBXGroup;
+			children = (
+				320D61B01FC9342B005D52EE /* ViewController.swift */,
+			);
+			path = "Main View";
+			sourceTree = "<group>";
+		};
+		32B945BD1FCA45CC00AF884D /* Navigation Stuff */ = {
+			isa = PBXGroup;
+			children = (
+				32B945BA1FC9D72200AF884D /* NavigationController.swift */,
+			);
+			path = "Navigation Stuff";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
