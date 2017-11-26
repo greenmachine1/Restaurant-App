@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, ReturnLocationDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, ReturnLocationDelegate, ReturnLiteralStringSearch {
 
     var previousButton:UIButton?
     var nextButton:UIButton?
@@ -68,29 +68,46 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         self.searchOrRecenterButton.backgroundColor = Colors.sharedInstance.lightBlue
         self.searchOrRecenterButton.setTitle("><", for: UIControlState.normal)
         self.searchOrRecenterButton.setTitleColor(UIColor.white, for: UIControlState.normal)
-        
-        
-        
+   
     }
     
     func setSearchAppearanceForSearchButton(){
         self.searchOrRecenterButton.backgroundColor = Colors.sharedInstance.lightOrange
         self.searchOrRecenterButton.setTitle("Go", for: UIControlState.normal)
         self.searchOrRecenterButton.setTitleColor(UIColor.white, for: UIControlState.normal)
-        
-        
+  
     }
     
     @objc func currentLocationOrSearchButtonClick(sender:UIButton){
         if(sender.titleLabel?.text == "Go"){
-            print("Go clicked")
+            // perform a search for the address the user has entered //
+            
+            let newSearch:GetNewDefaultLocation = GetNewDefaultLocation(locationString: self.mainTextField.text!)
+            newSearch.delegate = self
+            newSearch.performSearch()
         }else{
-            print(">< clicked")
+            
+            // recenter the user //
+            self.startLocationServices()
         }
     }
     
-
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // ---- bottom button stuff ---- //
     
     // this is what the app starts out with upon loading //
     func showOnlyNextButton(){
@@ -116,13 +133,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         
     }
     
-    @objc func nextButtonClicked(){
-        self.showBothPreviousAndNextButtons()
-    }
-    
-    @objc func previousButtonClicked(){
-        self.showOnlyPreviousButtons()
-    }
     
     
     func showBothPreviousAndNextButtons(){
@@ -144,7 +154,23 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         }
     }
     
+    @objc func nextButtonClicked(){
+        self.showBothPreviousAndNextButtons()
+    }
     
+    @objc func previousButtonClicked(){
+        self.showOnlyPreviousButtons()
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    // ---- location stuff ---- //
     // startup location services
     func startLocationServices(){
         newNavigationController = NavigationController()
@@ -155,12 +181,54 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         self.mainMapView.delegate = self
     }
     
+    // this is from looking up the users current location //
     func returnLocation(location: CLLocation) {
-        let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        _location = location
-        _region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
-        mainMapView.setRegion(_region!, animated: true)
-        self.mainMapView.showsUserLocation = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            self._region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
+            self.mainMapView.setRegion(self._region!, animated: true)
+        }
+    }
+    
+    
+    // this is from setting a new default location //
+    func returnLocationData(location: [DefaultLocationObject]) {
+        //self.removeExistingAnnotations()
+        self.showAllPossibleLocations(locations: location)
+    }
+    
+    func working(yesNo: Bool) {
+        print(yesNo)
+    }
+    
+    // // shows all posible default locations //
+    func showAllPossibleLocations(locations:[DefaultLocationObject]){
+        
+        var tempAnnotations:[MKPointAnnotation] = []
+        for location in locations{
+            let annotation:MKPointAnnotation = MKPointAnnotation()
+            let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (location.location?.coordinate.latitude)!, longitude: (location.location?.coordinate.longitude)!)
+            annotation.coordinate = _coordinate
+            annotation.title = location.name
+            tempAnnotations.append(annotation)
+        }
+        self.mainMapView.showAnnotations(tempAnnotations, animated: true)
+    }
+    
+    // selecting one annotation will make that the new default location //
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        let location:CLLocation = CLLocation(latitude: (view.annotation?.coordinate.latitude)!, longitude: (view.annotation?.coordinate.longitude)!)
+        self._location = location
+    }
+    
+    
+    // removing existing annotations //
+    func removeExistingAnnotations(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            for views in self.mainMapView.annotations{
+                self.mainMapView.removeAnnotation(views)
+            }
+        }
     }
 }
 

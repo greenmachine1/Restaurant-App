@@ -13,7 +13,10 @@
 		320D61B61FC9342B005D52EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320D61B51FC9342B005D52EE /* Assets.xcassets */; };
 		320D61B91FC9342B005D52EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320D61B71FC9342B005D52EE /* LaunchScreen.storyboard */; };
 		320D61C11FC94138005D52EE /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320D61C01FC94138005D52EE /* Colors.swift */; };
+		3215143C1FCA888400DA4F6F /* DefaultLocationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3215143B1FCA888400DA4F6F /* DefaultLocationObject.swift */; };
 		32B945BB1FC9D72200AF884D /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945BA1FC9D72200AF884D /* NavigationController.swift */; };
+		32B945BF1FCA465100AF884D /* GatheringNearbyPlaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945BE1FCA465100AF884D /* GatheringNearbyPlaces.swift */; };
+		32B945C11FCA473D00AF884D /* GetNewDefaultLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945C01FCA473D00AF884D /* GetNewDefaultLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +28,10 @@
 		320D61B81FC9342B005D52EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		320D61BA1FC9342B005D52EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		320D61C01FC94138005D52EE /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		3215143B1FCA888400DA4F6F /* DefaultLocationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLocationObject.swift; sourceTree = "<group>"; };
 		32B945BA1FC9D72200AF884D /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		32B945BE1FCA465100AF884D /* GatheringNearbyPlaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringNearbyPlaces.swift; sourceTree = "<group>"; };
+		32B945C01FCA473D00AF884D /* GetNewDefaultLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNewDefaultLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,9 @@
 			isa = PBXGroup;
 			children = (
 				32B945BA1FC9D72200AF884D /* NavigationController.swift */,
+				32B945BE1FCA465100AF884D /* GatheringNearbyPlaces.swift */,
+				32B945C01FCA473D00AF884D /* GetNewDefaultLocation.swift */,
+				3215143B1FCA888400DA4F6F /* DefaultLocationObject.swift */,
 			);
 			path = "Navigation Stuff";
 			sourceTree = "<group>";
@@ -167,8 +176,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				320D61B11FC9342B005D52EE /* ViewController.swift in Sources */,
+				3215143C1FCA888400DA4F6F /* DefaultLocationObject.swift in Sources */,
 				32B945BB1FC9D72200AF884D /* NavigationController.swift in Sources */,
+				32B945C11FCA473D00AF884D /* GetNewDefaultLocation.swift in Sources */,
 				320D61C11FC94138005D52EE /* Colors.swift in Sources */,
+				32B945BF1FCA465100AF884D /* GatheringNearbyPlaces.swift in Sources */,
 				320D61AF1FC9342B005D52EE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
