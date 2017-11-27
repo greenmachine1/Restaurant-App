@@ -29,6 +29,11 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         
         self.mainTextField.delegate = self
         
+        
+        // adding a tap gesture to dismiss the keyboard if the user taps on the screen //
+        let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        self.view.addGestureRecognizer(tapGesture)
+        
         // When the app doesnt have anything loaded up //
         // only the next button will appear usable //
         self.showOnlyNextButton()
@@ -51,6 +56,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         
         // starting up locationServices //
         self.startLocationServices()
+    }
+    
+    @objc func dismissKeyboard(){
+        view.endEditing(true)
     }
     
     
@@ -81,10 +90,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
     @objc func currentLocationOrSearchButtonClick(sender:UIButton){
         if(sender.titleLabel?.text == "Go"){
             // perform a search for the address the user has entered //
-            
-            let newSearch:GetNewDefaultLocation = GetNewDefaultLocation(locationString: self.mainTextField.text!)
-            newSearch.delegate = self
-            newSearch.performSearch()
+            self.performNewSearchForDefaultLocation()
         }else{
             
             // recenter the user //
@@ -92,8 +98,19 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
         }
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        self.performNewSearchForDefaultLocation()
+        
+        return true
+    }
     
-    
+    func performNewSearchForDefaultLocation(){
+       
+        let newSearch:GetNewDefaultLocation = GetNewDefaultLocation(locationString: self.mainTextField.text!)
+        newSearch.delegate = self
+        newSearch.performSearch()
+    }
     
     
     
@@ -183,7 +200,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
     
     // this is from looking up the users current location //
     func returnLocation(location: CLLocation) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        self.removeExistingAnnotations()
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
             let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
             self._region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
             self.mainMapView.setRegion(self._region!, animated: true)
@@ -193,7 +211,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
     
     // this is from setting a new default location //
     func returnLocationData(location: [DefaultLocationObject]) {
-        //self.removeExistingAnnotations()
         self.showAllPossibleLocations(locations: location)
     }
     
@@ -203,16 +220,18 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
     
     // // shows all posible default locations //
     func showAllPossibleLocations(locations:[DefaultLocationObject]){
-        
+        self.removeExistingAnnotations()
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
         var tempAnnotations:[MKPointAnnotation] = []
-        for location in locations{
-            let annotation:MKPointAnnotation = MKPointAnnotation()
-            let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (location.location?.coordinate.latitude)!, longitude: (location.location?.coordinate.longitude)!)
-            annotation.coordinate = _coordinate
-            annotation.title = location.name
-            tempAnnotations.append(annotation)
+            for location in locations{
+                let annotation:MKPointAnnotation = MKPointAnnotation()
+                let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (location.location?.coordinate.latitude)!, longitude: (location.location?.coordinate.longitude)!)
+                annotation.coordinate = _coordinate
+                annotation.title = location.name
+                tempAnnotations.append(annotation)
+            }
+            self.mainMapView.showAnnotations(tempAnnotations, animated: true)
         }
-        self.mainMapView.showAnnotations(tempAnnotations, animated: true)
     }
     
     // selecting one annotation will make that the new default location //
@@ -224,7 +243,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, 
     
     // removing existing annotations //
     func removeExistingAnnotations(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
             for views in self.mainMapView.annotations{
                 self.mainMapView.removeAnnotation(views)
             }
