@@ -27,14 +27,18 @@ class GetNewDefaultLocation: NSObject {
     var dataTask: URLSessionDataTask?
     var arrayOfLocations:[DefaultLocationObject] = []
     
+    
+    // init by string //
     init(locationString:String) {
         super.init()
-        
         _location = locationString
         
     }
+
     
-    func performSearch(){
+    // performs the search based on a location //
+    // this is used for searching for a new default location //
+    func performSearchWithString(){
         let urlString:String = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=\(_location)&key=\(key)"
         var url:URL?
         if let tempUrl = urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed){
@@ -61,6 +65,7 @@ class GetNewDefaultLocation: NSObject {
             dataTask?.resume()
         }
     }
+
     
     func parseData(data:Data){
         do{

@@ -14,6 +14,9 @@
 		320D61B91FC9342B005D52EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 320D61B71FC9342B005D52EE /* LaunchScreen.storyboard */; };
 		320D61C11FC94138005D52EE /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320D61C01FC94138005D52EE /* Colors.swift */; };
 		3215143C1FCA888400DA4F6F /* DefaultLocationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3215143B1FCA888400DA4F6F /* DefaultLocationObject.swift */; };
+		32AF0C171FCBA3B400096C07 /* GetSurroundingRestaurantPlaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AF0C161FCBA3B400096C07 /* GetSurroundingRestaurantPlaces.swift */; };
+		32AF0C1A1FCBA41B00096C07 /* RestaurantObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AF0C191FCBA41B00096C07 /* RestaurantObject.swift */; };
+		32AF0C1D1FCBB09B00096C07 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AF0C1C1FCBB09B00096C07 /* MapKit.framework */; };
 		32B945BB1FC9D72200AF884D /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945BA1FC9D72200AF884D /* NavigationController.swift */; };
 		32B945BF1FCA465100AF884D /* GatheringNearbyPlaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945BE1FCA465100AF884D /* GatheringNearbyPlaces.swift */; };
 		32B945C11FCA473D00AF884D /* GetNewDefaultLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B945C01FCA473D00AF884D /* GetNewDefaultLocation.swift */; };
@@ -29,6 +32,9 @@
 		320D61BA1FC9342B005D52EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		320D61C01FC94138005D52EE /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3215143B1FCA888400DA4F6F /* DefaultLocationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLocationObject.swift; sourceTree = "<group>"; };
+		32AF0C161FCBA3B400096C07 /* GetSurroundingRestaurantPlaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSurroundingRestaurantPlaces.swift; sourceTree = "<group>"; };
+		32AF0C191FCBA41B00096C07 /* RestaurantObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantObject.swift; sourceTree = "<group>"; };
+		32AF0C1C1FCBB09B00096C07 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		32B945BA1FC9D72200AF884D /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		32B945BE1FCA465100AF884D /* GatheringNearbyPlaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringNearbyPlaces.swift; sourceTree = "<group>"; };
 		32B945C01FCA473D00AF884D /* GetNewDefaultLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNewDefaultLocation.swift; sourceTree = "<group>"; };
@@ -39,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32AF0C1D1FCBB09B00096C07 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +57,7 @@
 			children = (
 				320D61AD1FC9342B005D52EE /* Restaurant App Redo 3 */,
 				320D61AC1FC9342B005D52EE /* Products */,
+				32AF0C1B1FCBB09B00096C07 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -84,6 +92,23 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
+		32AF0C181FCBA40500096C07 /* Gathering Places */ = {
+			isa = PBXGroup;
+			children = (
+				32AF0C161FCBA3B400096C07 /* GetSurroundingRestaurantPlaces.swift */,
+				32AF0C191FCBA41B00096C07 /* RestaurantObject.swift */,
+			);
+			path = "Gathering Places";
+			sourceTree = "<group>";
+		};
+		32AF0C1B1FCBB09B00096C07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				32AF0C1C1FCBB09B00096C07 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		32B945BC1FCA459F00AF884D /* Main View */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +124,7 @@
 				32B945BE1FCA465100AF884D /* GatheringNearbyPlaces.swift */,
 				32B945C01FCA473D00AF884D /* GetNewDefaultLocation.swift */,
 				3215143B1FCA888400DA4F6F /* DefaultLocationObject.swift */,
+				32AF0C181FCBA40500096C07 /* Gathering Places */,
 			);
 			path = "Navigation Stuff";
 			sourceTree = "<group>";
@@ -136,6 +162,11 @@
 					320D61AA1FC9342B005D52EE = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -175,6 +206,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32AF0C1A1FCBA41B00096C07 /* RestaurantObject.swift in Sources */,
+				32AF0C171FCBA3B400096C07 /* GetSurroundingRestaurantPlaces.swift in Sources */,
 				320D61B11FC9342B005D52EE /* ViewController.swift in Sources */,
 				3215143C1FCA888400DA4F6F /* DefaultLocationObject.swift in Sources */,
 				32B945BB1FC9D72200AF884D /* NavigationController.swift in Sources */,
