@@ -120,16 +120,9 @@ class NoGoSaving: NSObject {
     func saveToPreferred(itemToMoveToPreferred:SavePlacesObject){
         
         var arrayOfPreferredPlaces:[SavePlacesObject] = []
-        var arrayOfNoGoPlaces:[SavePlacesObject] = []
         if let existingDataPreferred = UserDefaults.standard.object(forKey: "placesArray") as? NSData{
             if let placesArrayPreferred = NSKeyedUnarchiver.unarchiveObject(with: existingDataPreferred as Data) as? [SavePlacesObject]{
                 arrayOfPreferredPlaces = placesArrayPreferred
-            }
-        }
-        
-        if let existingDataNoGo = UserDefaults.standard.object(forKey: "noGoPlacesArray") as? NSData{
-            if let placesArrayNoGo = NSKeyedUnarchiver.unarchiveObject(with: existingDataNoGo as Data) as? [SavePlacesObject]{
-                arrayOfNoGoPlaces = placesArrayNoGo
             }
         }
 
