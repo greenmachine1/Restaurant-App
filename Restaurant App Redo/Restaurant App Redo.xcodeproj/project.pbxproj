@@ -22,6 +22,7 @@
 		324602051FAF9249001BA247 /* SavePlacesObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324602041FAF9249001BA247 /* SavePlacesObject.swift */; };
 		325F73F61FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F73F51FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift */; };
 		32AF0C281FCBD3A700096C07 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AF0C271FCBD3A700096C07 /* CustomAnnotation.swift */; };
+		32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */; };
 		32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */; };
 		32D189F81F96911D0038BF5A /* RestaurantInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D189F71F96911D0038BF5A /* RestaurantInfo.swift */; };
 		32D3C6041FAD7D1000107E60 /* CustomAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D3C6031FAD7D1000107E60 /* CustomAnnotationView.xib */; };
@@ -54,6 +55,7 @@
 		324602041FAF9249001BA247 /* SavePlacesObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePlacesObject.swift; sourceTree = "<group>"; };
 		325F73F51FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredNoGoKeywordsTableViewCell.swift; sourceTree = "<group>"; };
 		32AF0C271FCBD3A700096C07 /* CustomAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownRestaurantView.swift; sourceTree = "<group>"; };
 		32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringRestaurantsNearBy.swift; sourceTree = "<group>"; };
 		32D189F71F96911D0038BF5A /* RestaurantInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantInfo.swift; sourceTree = "<group>"; };
 		32D3C6031FAD7D1000107E60 /* CustomAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAnnotationView.xib; sourceTree = "<group>"; };
@@ -156,6 +158,14 @@
 			name = "Pop List view";
 			sourceTree = "<group>";
 		};
+		32CCD7491FD25DC100DE787E /* DropDownView */ = {
+			isa = PBXGroup;
+			children = (
+				32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */,
+			);
+			name = DropDownView;
+			sourceTree = "<group>";
+		};
 		32D189F61F9690710038BF5A /* LocationStuff */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +183,7 @@
 				32F3C1F91FAE4E41005A378B /* CustomCalloutView.swift */,
 				32D3C6061FAD8E2D00107E60 /* CustomAnnotationCalloutView.swift */,
 				32D3C6031FAD7D1000107E60 /* CustomAnnotationView.xib */,
+				32CCD7491FD25DC100DE787E /* DropDownView */,
 			);
 			name = Annotations;
 			sourceTree = "<group>";
@@ -289,6 +300,7 @@
 				32AF0C281FCBD3A700096C07 /* CustomAnnotation.swift in Sources */,
 				321566681F964D8F00C6F3DC /* ViewController.swift in Sources */,
 				321566781F964EC600C6F3DC /* LocationServices.swift in Sources */,
+				32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */,
 				32EBAA8F1F9A408800BC1E3B /* OptionsViewController.swift in Sources */,
 				32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */,
 				322E6EA11FA2DE7100634905 /* ListView.swift in Sources */,

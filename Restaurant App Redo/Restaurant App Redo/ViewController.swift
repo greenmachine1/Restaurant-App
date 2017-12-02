@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestaurauntInfoAndLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces{
+class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestaurauntInfoAndLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate{
 
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var goButton: UIButton!
@@ -35,8 +35,16 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     var annotation:CustomAnnotation?
     
+    var dropDownView:DropDownRestaurantView?
+    var dropDownInView:Bool = false
+    
+    // getting the nav bar height //
+    var yLocationOfDropDown:CGFloat?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
         
         self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
         self.reCenterButton.clipsToBounds = true
@@ -62,8 +70,26 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         listOfPlaces = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
         listOfPlaces!.tag = 1
         self.navigationItem.rightBarButtonItems = [optionsButton, listOfPlaces!]
+        
+        
+
+        // adding in a drop down nav bar box //
+        dropDownView = DropDownRestaurantView(frame: CGRect(x: 0, y: -yLocationOfDropDown!, width: self.view.frame.width, height: 100))
+        dropDownView?.delegate = self
+        dropDownView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        dropDownView!.isOpaque = false
+        self.view.addSubview(dropDownView!)
+        
     }
     
+    func returnSwipeDirection(leftOrRight: Bool) {
+        if(leftOrRight == true){
+            print("swiped right")
+            self.goButtonClickedOrSwipedRight()
+        }else{
+            print("swiped Left")
+        }
+    }
     
     
     
@@ -97,6 +123,18 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         }
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // returning the location //
     func returnLocation(location: CLLocation) {
         let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         _location = location
@@ -112,6 +150,53 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         }
     }
 
+    
+    
+    
+    // returning the place info //
+    func returnRestaurantInfo(info: SavePlacesObject) {
+
+        currentRestaurant = info
+        dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
+        
+        
+        
+        
+        if(dropDownInView == false){
+            UIView.animate(withDuration: 0.50, animations: {
+                self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                self.dropDownInView = true
+            })
+            
+        }
+        mainMapView.removeAnnotations(mainMapView.annotations)
+        
+        let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
+        _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
+        mainMapView.setRegion(_region!, animated: true)
+        
+        
+        
+        // replacing the annotation with a drop down view //
+        /*
+        annotation = CustomAnnotation(_title: info.name!, _rating: Int(info.rating!), _distance: info.distanceFromUser!, _price: info.price!, _isOpen: info.open!, _coordinate: _coordinate)
+        */
+        
+        let annotation = MKPointAnnotation()
+        annotation.title = info.name!
+        annotation.coordinate = _coordinate
+        
+        mainMapView.addAnnotation(annotation)
+ 
+        
+    }
+
+    
+    
+    
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -156,6 +241,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     @IBAction func goButtonOnClick(_ sender: UIButton) {
+        self.goButtonClickedOrSwipedRight()
+    }
+    
+    
+    func goButtonClickedOrSwipedRight(){
         if(noResults == false){
             newSearch?.gettingRandomRestaurant()
             self.mainMapView.showsUserLocation = false
@@ -167,19 +257,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         }
     }
     
-    func returnRestaurantInfo(info: SavePlacesObject) {
-        
-        currentRestaurant = info
-
-        mainMapView.removeAnnotations(mainMapView.annotations)
-        
-        let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
-        _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
-        mainMapView.setRegion(_region!, animated: true)
-
-        annotation = CustomAnnotation(_title: info.name!, _rating: Int(info.rating!), _distance: info.distanceFromUser!, _price: info.price!, _isOpen: info.open!, _coordinate: _coordinate)
-        mainMapView.addAnnotation(annotation!)
-    }
+    
     
     
     
@@ -205,12 +283,17 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
 
-    
+    // need to decide on what to do when the user selects the annotation //
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if(view.annotation is MKUserLocation){
             return
         }
         
+        
+        
+        
+        
+        /*
         let customAnnotation = view.annotation as! CustomAnnotation
         let views = Bundle.main.loadNibNamed("CustomAnnotationView", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCalloutView
@@ -260,6 +343,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height * 0.5)
         view.addSubview(calloutView)
         mainMapView.setCenter((view.annotation?.coordinate)!, animated: true)
+        */
     }
     
     
