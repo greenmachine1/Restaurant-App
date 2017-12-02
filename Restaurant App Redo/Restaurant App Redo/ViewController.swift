@@ -1,0 +1,539 @@
+//
+//  ViewController.swift
+//  Restaurant App Redo
+//
+//  Created by Cory Green on 10/17/17.
+//  Copyright © 2017 Cory Green. All rights reserved.
+//
+
+import UIKit
+import MapKit
+
+class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestaurauntInfoAndLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces{
+
+    @IBOutlet weak var mainMapView: MKMapView!
+    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet weak var reCenterButton: UIButton!
+    @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
+    
+    var getLocation:LocationServices?
+    var _location:CLLocation?
+    var _region:MKCoordinateRegion?
+    
+    var reachedEndOfSet:Bool?
+    var optionsUpdatedBool:Bool = false
+    var noResults:Bool = false
+    var popUpListViewOpen:Bool = false
+    
+    var newSearch:GatheringRestaurantsNearBy?
+    var allRestaurantInfo:[SavePlacesObject] = []
+    var currentRestaurant:SavePlacesObject?
+    
+    var popUpView:ListView?
+    
+    var listOfPlaces:UIBarButtonItem?
+    
+    var annotation:CustomAnnotation?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
+        self.reCenterButton.clipsToBounds = true
+        
+        self.workingIndicator.stopAnimating()
+        self.workingIndicator.hidesWhenStopped = true
+        
+        reachedEndOfSet = false
+        
+        
+        
+        getLocation = LocationServices()
+        getLocation!.delegate = self
+        getLocation!.startLocationServices()
+        
+        mainMapView.showsUserLocation = true
+        mainMapView.delegate = self
+        
+        OptionsSingleton.sharedInstance.delegate = self
+        
+        let optionsButton:UIBarButtonItem = UIBarButtonItem(title: "Options", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        optionsButton.tag = 0
+        listOfPlaces = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        listOfPlaces!.tag = 1
+        self.navigationItem.rightBarButtonItems = [optionsButton, listOfPlaces!]
+    }
+    
+    
+    
+    
+    
+    
+    func returnOptionsDidChange() {
+        optionsUpdatedBool = true
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if(optionsUpdatedBool == true){
+            getLocation?.startLocationServices()
+            optionsUpdatedBool = false
+        }
+        
+        
+        for annotation in self.mainMapView.annotations{
+            if(annotation.isKind(of: CustomAnnotation.self)){
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Reload"), object: nil, userInfo: ["CurrentPlace":self.currentRestaurant!])
+            }
+        }
+    }
+    
+    @objc func navBarButtonsOnClick(sender:UIBarButtonItem){
+        if(sender.tag == 0){
+            let optionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "Options") as? OptionsViewController
+            self.navigationController?.pushViewController(optionsViewController!, animated: true)
+        }else{
+            self.createListViewPopUp()
+        }
+    }
+    
+    func returnLocation(location: CLLocation) {
+        let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        _location = location
+        _region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
+        mainMapView.setRegion(_region!, animated: true)
+        self.mainMapView.showsUserLocation = true
+        
+        newSearch = GatheringRestaurantsNearBy()
+        newSearch!.delegate = self
+        
+        if(_location != nil){
+            newSearch!.newSearch(_location: _location!)
+        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func reCenterOnClick(_ sender: UIButton) {
+        newSearch?.eraseAllInfo()
+        self.mainMapView.showsUserLocation = true
+        mainMapView.removeAnnotations(mainMapView.annotations)
+        getLocation!.startLocationServices()
+    }
+    
+    // indicator as to whether or not the network is searching //
+    func working(yesNo: Bool) {
+        if(yesNo == true){
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                self.workingIndicator.startAnimating()
+                self.goButton.isUserInteractionEnabled = false
+                self.goButton.setTitle("Loading...", for: UIControlState.normal)
+                self.reCenterButton.isUserInteractionEnabled = false
+                self.mainMapView.isUserInteractionEnabled = false
+                
+                self.listOfPlaces?.isEnabled = false
+            }
+        }else{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                self.workingIndicator.stopAnimating()
+                self.goButton.isUserInteractionEnabled = true
+                self.goButton.setTitle("Go", for: UIControlState.normal)
+                self.reCenterButton.isUserInteractionEnabled = true
+                self.mainMapView.isUserInteractionEnabled = true
+                
+                self.listOfPlaces?.isEnabled = true
+                
+                if(self.reachedEndOfSet == true){
+                    self.newSearch?.gettingRandomRestaurant()
+                    self.reachedEndOfSet = false
+                }
+            }
+        }
+    }
+    
+    
+    @IBAction func goButtonOnClick(_ sender: UIButton) {
+        if(noResults == false){
+            newSearch?.gettingRandomRestaurant()
+            self.mainMapView.showsUserLocation = false
+        }else{
+            let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
+            let okButton:UIAlertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+            alert.addAction(okButton)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func returnRestaurantInfo(info: SavePlacesObject) {
+        
+        currentRestaurant = info
+
+        mainMapView.removeAnnotations(mainMapView.annotations)
+        
+        let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
+        _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
+        mainMapView.setRegion(_region!, animated: true)
+
+        annotation = CustomAnnotation(_title: info.name!, _rating: Int(info.rating!), _distance: info.distanceFromUser!, _price: info.price!, _isOpen: info.open!, _coordinate: _coordinate)
+        mainMapView.addAnnotation(annotation!)
+    }
+    
+    
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation
+        {
+            return nil
+        }
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "Pin")
+        if annotationView == nil{
+            annotationView = CustomAnnotationCalloutView(annotation: annotation, reuseIdentifier: "Pin")
+            annotationView?.canShowCallout = false
+        }else{
+            annotationView?.annotation = annotation
+        }
+        return annotationView
+    
+    }
+
+
+    
+    
+    
+    
+
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if(view.annotation is MKUserLocation){
+            return
+        }
+        
+        let customAnnotation = view.annotation as! CustomAnnotation
+        let views = Bundle.main.loadNibNamed("CustomAnnotationView", owner: nil, options: nil)
+        let calloutView = views?[0] as! CustomCalloutView
+        
+        // need to access the OptionsSingleton to see if this object exists //
+        // and then toggle the button titles accordingly //
+        if(OptionsSingleton.sharedInstance.existsInSavedList(item: self.currentRestaurant!) == true){
+            calloutView.saveButton.setTitle("Unsave", for: UIControlState.normal)
+        }else{
+            calloutView.saveButton.setTitle("Save", for: UIControlState.normal)
+        }
+        
+        if(OptionsSingleton.sharedInstance.existsInNoGo(item: self.currentRestaurant!) == true){
+            calloutView.noGoButton.setTitle("UnBlock", for: UIControlState.normal)
+        }else{
+            calloutView.noGoButton.setTitle("Block", for: UIControlState.normal)
+        }
+        
+        calloutView.delegate = self
+        calloutView.mainLabel.text = customAnnotation.title!
+        calloutView.distanceLabel.text = "\(customAnnotation.distance!) Miles away"
+
+        switch (customAnnotation.price!){
+            case 1: calloutView.priceLabel.text = "Price:$"
+            case 2: calloutView.priceLabel.text = "Price:$$"
+            case 3: calloutView.priceLabel.text = "Price:$$$"
+            case 4: calloutView.priceLabel.text = "Price:$$$$"
+            default: calloutView.priceLabel.text = "Price:$$$$$"
+        }
+
+        switch (customAnnotation.rating!){
+            case 1: calloutView.ratingLabel.text = "Rating:*"
+            case 2: calloutView.ratingLabel.text = "Rating:**"
+            case 3: calloutView.ratingLabel.text = "Rating:***"
+            case 4: calloutView.ratingLabel.text = "Rating:****"
+            default: calloutView.ratingLabel.text = "Rating:*****"
+        }
+        
+        
+        
+        if(customAnnotation.isOpen == true){
+            calloutView.isOpenLabel.text = "Open"
+        }else{
+            calloutView.isOpenLabel.text = "Closed"
+        }
+
+        calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height * 0.5)
+        view.addSubview(calloutView)
+        mainMapView.setCenter((view.annotation?.coordinate)!, animated: true)
+    }
+    
+    
+    
+    
+    
+    func returnSaveButtonPressed() {
+        self.saveInfoCalled()
+    }
+    
+    func returnMoreInfoButtonPressed() {
+        self.moreInfoCalled()
+    }
+    
+    func returnNoGoButtonPressed() {
+        self.noGoCalled()
+    }
+    
+    
+    
+    func returnUnSaveButtonPressed() {
+        // this will remove the item from the preferred list //
+        self.unSaveInfoCalled()
+    }
+    
+    func returnUnBlockButtonPressed() {
+        // this will remove the item from the no go list //
+        self.unBlockInfoCalled()
+    }
+    
+    
+    func unSaveInfoCalled(){
+        let alert = UIAlertController(title: "Do you wish to remove this from your Save List?", message: "Doing so will remove the restaurant from your 'Saved Places' list found in Options.", preferredStyle: UIAlertControllerStyle.alert)
+        let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { (action) in
+            if(self.currentRestaurant != nil){
+                let newSave:PreferredNoGoSaving = PreferredNoGoSaving(info: self.currentRestaurant!)
+                newSave.delegate = self
+                
+                // saves the info to a new or existing array //
+                newSave.removeSinglePlace(place: self.currentRestaurant!)
+                
+                // toggles the save button to unsave //
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UnSave"), object: nil, userInfo: nil)
+
+            }
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    func saveInfoCalled(){
+        let alert = UIAlertController(title: "Do you wish to Save this to your 'Saved Places' List?", message: "Doing so will Save the restaurant to your 'Saved Places' list found in Options.  Turning this on in Options will override your search results and will only pull from this list.", preferredStyle: UIAlertControllerStyle.alert)
+        let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { (action) in
+            if(self.currentRestaurant != nil){
+                let newSave:PreferredNoGoSaving = PreferredNoGoSaving(info: self.currentRestaurant!)
+                newSave.delegate = self
+            
+                // checking to see if the item exists in the blocked list and if so, return the index //
+                if(newSave.existsInNoGo(itemToCheck: self.currentRestaurant!).0 == true){
+                    
+                    
+                    let alert = UIAlertController(title: "Are you sure?", message: "Saving will remove the item from your 'Blocked Places' List.", preferredStyle: UIAlertControllerStyle.alert)
+                    let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
+                        
+                        let removeFromBlockedList:NoGoSaving = NoGoSaving()
+                        removeFromBlockedList.removeSinglePlace(place: self.currentRestaurant!)
+                        // toggles the save button to unsave //
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UnBlock"), object: nil, userInfo: nil)
+                        
+                        // saves the info to a new or existing array //
+                        newSave.saveArrayOfPlaces()
+                        
+                        // toggles the save button to unsave //
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Save"), object: nil, userInfo: nil)
+                    })
+                    let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                    alert.addAction(okButton)
+                    alert.addAction(cancelButton)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }else{
+                    // saves the info to a new or existing array //
+                    newSave.saveArrayOfPlaces()
+                    
+                    // toggles the save button to unsave //
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Save"), object: nil, userInfo: nil)
+                }
+            }
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+
+    
+    func noGoCalled(){
+        let alert = UIAlertController(title: "Do you wish to save this to your 'Blocked Places' List?", message: "Doing so will Save the restaurant to your 'Blocked Places' list found in Options.  Turning this on in Options will make it so the Restaurant will not appear in your search results.", preferredStyle: UIAlertControllerStyle.alert)
+        let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { (action) in
+            let noGoSave:NoGoSaving = NoGoSaving(info: self.currentRestaurant!)
+            noGoSave.delegate = self
+            
+            
+            // checking to see if the item exists in the blocked list and if so, return the index //
+            if(noGoSave.existsInPreferred(itemToCheck: self.currentRestaurant!).0 == true){
+                
+                
+                let alert = UIAlertController(title: "Are you sure?", message: "Saving will remove the item from your 'Saved Places' List.", preferredStyle: UIAlertControllerStyle.alert)
+                let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
+                    
+                    let removeFromSavedList:PreferredNoGoSaving = PreferredNoGoSaving()
+                    removeFromSavedList.removeSinglePlace(place: self.currentRestaurant!)
+                    // toggles the save button to unsave //
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UnSave"), object: nil, userInfo: nil)
+                    
+                    // saves the info to a new or existing array //
+                    noGoSave.saveArrayOfPlaces()
+                    
+                    // toggles the save button to unsave //
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Block"), object: nil, userInfo: nil)
+                })
+                let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                alert.addAction(okButton)
+                alert.addAction(cancelButton)
+                self.present(alert, animated: true, completion: nil)
+                
+            }else{
+                // saves the info to a new or existing array //
+                noGoSave.saveArrayOfPlaces()
+                
+                // toggles the Block button to unsave //
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Block"), object: nil, userInfo: nil)
+            }
+    
+        }
+        let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func unBlockInfoCalled(){
+        let alert = UIAlertController(title: "Do you wish to remove this from your 'Blocked Places' List?", message: "Doing so will remove the restaurant from your 'Blocked Places' list found in Options.", preferredStyle: UIAlertControllerStyle.alert)
+        let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { (action) in
+            let noGoSave:NoGoSaving = NoGoSaving(info: self.currentRestaurant!)
+            noGoSave.delegate = self
+            
+            // saves the info to a new or existing array //
+            noGoSave.removeSinglePlace(place: self.currentRestaurant!)
+            
+            // toggles the Block button to unsave //
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UnBlock"), object: nil, userInfo: nil)
+            
+        }
+        let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    func removeStatusNoGo(status: String) {
+        
+    }
+    
+    func removeStatus(status: String) {
+        
+    }
+    
+    
+    @objc func moreInfoCalled(){
+        let alert = UIAlertController(title: "What would you like to do?", message: "Make a selection.", preferredStyle: UIAlertControllerStyle.alert)
+        let viewInYelpButton = UIAlertAction(title: "View in Yelp", style: UIAlertActionStyle.default) { (action) in
+            
+            // will send the user to view in Yelp
+        }
+        let viewInMaps = UIAlertAction(title: "Get Directions", style: UIAlertActionStyle.default) { (action) in
+            
+            // sends the user to the maps app //
+            let location = CLLocationCoordinate2D(latitude: (self.currentRestaurant!.location?.coordinate.latitude)!, longitude: (self.currentRestaurant!.location?.coordinate.longitude)!)
+            let placeMark = MKPlacemark(coordinate: location)
+            let mapItem = MKMapItem(placemark: placeMark)
+            
+            mapItem.name = self.currentRestaurant!.name!
+            
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving]
+            mapItem.openInMaps(launchOptions: launchOptions)
+        }
+        let viewInDoorDash = UIAlertAction(title: "View in Doordash", style: UIAlertActionStyle.default) { (action) in
+            
+            // sends the user to view in Doordash //
+            
+        }
+        let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
+        
+        alert.addAction(viewInYelpButton)
+        alert.addAction(viewInMaps)
+        alert.addAction(viewInDoorDash)
+        alert.addAction(cancelButton)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        for views in view.subviews{
+            if(views.isKind(of: CustomCalloutView.self)){
+                views.removeFromSuperview()
+            }
+        }
+    }
+    
+    
+    
+    
+    
+
+    
+    func returnAllRestuarantInfo(info: [SavePlacesObject]) {
+        if(info.count != 0){
+            noResults = false
+            allRestaurantInfo = info
+        }else{
+            allRestaurantInfo.removeAll()
+            noResults = true
+        }
+    }
+
+    func reachedTheEndOfSet() {
+        newSearch!.newSearch(_location: _location!)
+        reachedEndOfSet = true
+    }
+    
+    
+    
+    func createListViewPopUp(){
+        if(popUpListViewOpen == false){
+            popUpListViewOpen = true
+            popUpView = ListView(frame: CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
+            popUpView!.delegate = self
+            popUpView!.getListOfPlaces(list: allRestaurantInfo)
+            popUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+            popUpView!.isOpaque = false
+            self.view.addSubview(popUpView!)
+        
+            UIView.animate(withDuration: 0.3) {
+                self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height / 2, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+            }
+        }else{
+            returnDoneButtonCalled()
+        }
+    }
+    
+    
+    func returnDoneButtonCalled() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+        }) { (complete) in
+            self.popUpView?.removeFromSuperview()
+            self.popUpListViewOpen = false
+        }
+    }  
+}
+
