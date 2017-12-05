@@ -78,13 +78,17 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         dropDownView?.delegate = self
         dropDownView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         dropDownView!.isOpaque = false
+
         self.view.addSubview(dropDownView!)
         
     }
     
+    
+    
+    // when the user swipes left or right on the top bar //
+    // do stuff //
     func returnSwipeDirection(leftOrRight: Bool) {
         if(leftOrRight == true){
-            print("swiped right")
             self.goButtonClickedOrSwipedRight()
         }else{
             print("swiped Left")
@@ -159,9 +163,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         currentRestaurant = info
         dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
         
-        
-        
-        
         if(dropDownInView == false){
             UIView.animate(withDuration: 0.50, animations: {
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
@@ -169,26 +170,22 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             })
             
         }
+        
         mainMapView.removeAnnotations(mainMapView.annotations)
         
         let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
         _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
+
         
         
         
-        // replacing the annotation with a drop down view //
-        /*
-        annotation = CustomAnnotation(_title: info.name!, _rating: Int(info.rating!), _distance: info.distanceFromUser!, _price: info.price!, _isOpen: info.open!, _coordinate: _coordinate)
-        */
         
         let annotation = MKPointAnnotation()
         annotation.title = info.name!
         annotation.coordinate = _coordinate
         
         mainMapView.addAnnotation(annotation)
- 
-        
     }
 
     
@@ -242,12 +239,16 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     @IBAction func goButtonOnClick(_ sender: UIButton) {
         self.goButtonClickedOrSwipedRight()
+        
     }
     
     
     func goButtonClickedOrSwipedRight(){
         if(noResults == false){
             newSearch?.gettingRandomRestaurant()
+            if(self.currentRestaurant != nil){
+                popUpView?.selectedItem(item: self.currentRestaurant!)
+            }
             self.mainMapView.showsUserLocation = false
         }else{
             let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
@@ -592,15 +593,35 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // ---- List view stuff ---- //
     func createListViewPopUp(){
         if(popUpListViewOpen == false){
             popUpListViewOpen = true
             popUpView = ListView(frame: CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
             popUpView!.delegate = self
+            if(self.currentRestaurant != nil){
+                popUpView?.selectedItem(item: self.currentRestaurant!)
+            }
             popUpView!.getListOfPlaces(list: allRestaurantInfo)
             popUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
             popUpView!.isOpaque = false
+            
             self.view.addSubview(popUpView!)
+            
+            
         
             UIView.animate(withDuration: 0.3) {
                 self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height / 2, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
@@ -618,6 +639,14 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             self.popUpView?.removeFromSuperview()
             self.popUpListViewOpen = false
         }
-    }  
+    }
+    
+    // returns the item selected from the list view //
+    func returnSelectedItem(selectedItem: Int) {
+        
+    }
+    
+    
+    // ---- done with list view stuff ---- //
 }
 

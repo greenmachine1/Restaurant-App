@@ -10,6 +10,7 @@ import UIKit
 
 @objc protocol ListViewDelegate{
     func returnDoneButtonCalled()
+    func returnSelectedItem(selectedItem:Int)
 }
 
 class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
@@ -20,6 +21,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     var reOrganizedListOfPlaces:[SavePlacesObject] = []
     
     var mainTableView:UITableView?
+    var selectedIndex:Int?
     
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -31,9 +33,26 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func getListOfPlaces(list:[SavePlacesObject]){
         listOfPlaces = list
-        self.reOrganizeList(list: listOfPlaces)
-        
     }
+
+    // showing the item that is currently the one in the main view //
+    func selectedItem(item:SavePlacesObject){
+        for (index, items) in listOfPlaces.enumerated(){
+            if(item == items){
+                selectedIndex = index
+                if(selectedIndex != nil){
+                    let indexPath = IndexPath(row: selectedIndex!, section: 0)
+                    
+                    print("im here .... now/.....")
+                    mainTableView?.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.middle)
+                    self.tableView(self.mainTableView!, didSelectRowAt: indexPath)
+                    mainTableView?.reloadData()
+                }
+            }
+        }
+    }
+    
+    
 
     
     func createCustomView(){
@@ -52,17 +71,20 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func addListView(){
         mainTableView = UITableView(frame: CGRect(x: 10, y: 50, width: self.frame.size.width - 20, height: (self.frame.size.height) - 100))
+        
         mainTableView?.delegate = self
         mainTableView?.dataSource = self
         mainTableView?.backgroundColor = UIColor.white
         mainTableView?.layer.cornerRadius = 5.0
         mainTableView?.clipsToBounds = true
         mainTableView?.register(ListViewTableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        
         self.addSubview(mainTableView!)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reOrganizedListOfPlaces.count
+        return listOfPlaces.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -71,35 +93,30 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ListViewTableViewCell
-        cell!.mainLabel?.text = reOrganizedListOfPlaces[indexPath.row].name!
+        cell!.mainLabel?.text = listOfPlaces[indexPath.row].name!
         
+        let distance = listOfPlaces[indexPath.row].distanceFromUser!
         
-        if(reOrganizedListOfPlaces[indexPath.row].distanceFromUser! == 1){
-            cell?.distanceLabel?.text = "\(reOrganizedListOfPlaces[indexPath.row].distanceFromUser!) Mile Away"
-        }else if(reOrganizedListOfPlaces[indexPath.row].distanceFromUser! < 1){
+        if(distance == 1){
+            cell?.distanceLabel?.text = "\(distance) Mile Away"
+        }else if(distance < 1){
             cell?.distanceLabel?.text = "< 1 Mile Away"
         }else{
-            cell?.distanceLabel?.text = "\(reOrganizedListOfPlaces[indexPath.row].distanceFromUser!) Miles Away"
+            cell?.distanceLabel?.text = "\(distance) Miles Away"
         }
         return cell!
+    }
+    
+    // passing back the item that was selected
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.returnSelectedItem(selectedItem: indexPath.row)
+        
+        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.blue
     }
     
     
     @objc func doneButtonOnClick(){
         self.delegate?.returnDoneButtonCalled()
     }
-    
-    // sorting the list of places //
-    func reOrganizeList(list:[SavePlacesObject]){
-        reOrganizedListOfPlaces = list.sorted(by: {$0.distanceFromUser! < $1.distanceFromUser!})
-        mainTableView?.reloadData()
-    }
-    
-    
-    
-    
-    
-    
-    
 
 }
