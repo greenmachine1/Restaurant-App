@@ -100,7 +100,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     func returnOptionsDidChange() {
-        print("options changed")
         optionsUpdatedBool = true
     }
     
@@ -109,6 +108,12 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(optionsUpdatedBool == true){
             getLocation?.startLocationServices()
             optionsUpdatedBool = false
+            if(dropDownInView == true){
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                    self.dropDownInView = false
+                })
+            }
         }
         
         
@@ -160,7 +165,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     // returning the place info //
     func returnRestaurantInfo(info: SavePlacesObject) {
-
+        print("updated info is available...")
         currentRestaurant = info
         dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
         
@@ -169,7 +174,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                 self.dropDownInView = true
             })
-            
         }
         
         mainMapView.removeAnnotations(mainMapView.annotations)
@@ -238,7 +242,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     @IBAction func goButtonOnClick(_ sender: UIButton) {
         self.goButtonClickedOrSwipedRight()
-        
     }
     
     
@@ -285,11 +288,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(view.annotation is MKUserLocation){
             return
         }
-        
-        
-        
-        
-        
+
         let customAnnotation = view.annotation as! CustomAnnotation
         let views = Bundle.main.loadNibNamed("CustomAnnotationView", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCalloutView
