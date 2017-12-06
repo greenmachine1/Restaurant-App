@@ -25,10 +25,6 @@ import MapKit
 
 class CustomCalloutView: UIView{
     @IBOutlet weak var mainLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var isOpenLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
     
     @IBOutlet weak var moreInfoButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
@@ -69,12 +65,12 @@ class CustomCalloutView: UIView{
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.unBlockCalled), name: NSNotification.Name(rawValue: "UnBlock"), object: nil)
         
-        /*
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadLabels), name: NSNotification.Name(rawValue: "Reload"), object: nil)
-        */
+        
     }
     
-    /*
+    
     // reloading the labels 
     @objc func reloadLabels(passedInItem:AnyObject){
         if let userInfo = passedInItem.value(forKey: "userInfo"){
@@ -94,7 +90,7 @@ class CustomCalloutView: UIView{
             }
         }
     }
-    */
+    
  
  
     // Notifications called //

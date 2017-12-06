@@ -35,22 +35,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         listOfPlaces = list
     }
 
-    // showing the item that is currently the one in the main view //
-    func selectedItem(item:SavePlacesObject){
-        for (index, items) in listOfPlaces.enumerated(){
-            if(item == items){
-                selectedIndex = index
-                if(selectedIndex != nil){
-                    let indexPath = IndexPath(row: selectedIndex!, section: 0)
-                    
-                    print("im here .... now/.....")
-                    mainTableView?.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.middle)
-                    self.tableView(self.mainTableView!, didSelectRowAt: indexPath)
-                    mainTableView?.reloadData()
-                }
-            }
-        }
-    }
+    
     
     
 

@@ -136,7 +136,7 @@ class NoGoSaving: NSObject {
         // removing item from placesArray //
         self.removeSinglePlace(place: itemToMoveToPreferred)
             
-         OptionsSingleton.sharedInstance.updateDidChangeOptions()
+         //OptionsSingleton.sharedInstance.updateDidChangeOptions()
     }
     
     
@@ -147,7 +147,7 @@ class NoGoSaving: NSObject {
                 // use over there
                 tempArrayOfRestaurants = placesArray
                 
-                 OptionsSingleton.sharedInstance.updateDidChangeOptions()
+                //OptionsSingleton.sharedInstance.updateDidChangeOptions()
                 
                 return tempArrayOfRestaurants
             }

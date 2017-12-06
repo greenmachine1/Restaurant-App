@@ -28,7 +28,6 @@ class OptionsSingleton: NSObject {
         UserDefaults.standard.removeObject(forKey: "RatingUserDefault")
         UserDefaults.standard.removeObject(forKey: "PriceUserDefault")
         UserDefaults.standard.removeObject(forKey: "TimeOfDayUserDefault")
-
         self.delegate?.returnOptionsDidChange()
     }
     
@@ -179,6 +178,8 @@ class OptionsSingleton: NSObject {
     }
     
     
+    
+    // ---- need to come back to this guy ---- //
     func updateDidChangeOptions(){
         self.delegate?.returnOptionsDidChange()
     }
@@ -195,22 +196,5 @@ class OptionsSingleton: NSObject {
         tempArrayOfNoGoPlaces = list
         //self.delegate?.returnOptionsDidChange()
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
 }

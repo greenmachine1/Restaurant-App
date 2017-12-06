@@ -52,8 +52,7 @@ class OptionsViewController: UIViewController, UITableViewDelegate, UITableViewD
         distanceSlider.setValue(Float(_valueForDistance), animated: true)
         
         milesLabel.text = "\(_valueForDistance) Miles"
-        
-        
+    
         let _valueForPrices = OptionsSingleton.sharedInstance.getPrice()
         priceSegmentControll.selectedSegmentIndex = _valueForPrices
         

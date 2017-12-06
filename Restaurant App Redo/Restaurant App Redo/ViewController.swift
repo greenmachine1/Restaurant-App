@@ -100,6 +100,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     func returnOptionsDidChange() {
+        print("options changed")
         optionsUpdatedBool = true
     }
     
@@ -180,12 +181,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         
         
-        
-        let annotation = MKPointAnnotation()
-        annotation.title = info.name!
-        annotation.coordinate = _coordinate
-        
-        mainMapView.addAnnotation(annotation)
+        // making a callout view for the annotation //
+        annotation = CustomAnnotation(_title: info.name!, _coordinate: _coordinate)
+
+        mainMapView.addAnnotation(annotation!)
     }
 
     
@@ -246,9 +245,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     func goButtonClickedOrSwipedRight(){
         if(noResults == false){
             newSearch?.gettingRandomRestaurant()
-            if(self.currentRestaurant != nil){
-                popUpView?.selectedItem(item: self.currentRestaurant!)
-            }
             self.mainMapView.showsUserLocation = false
         }else{
             let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
@@ -294,7 +290,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         
         
-        /*
         let customAnnotation = view.annotation as! CustomAnnotation
         let views = Bundle.main.loadNibNamed("CustomAnnotationView", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCalloutView
@@ -315,36 +310,13 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         calloutView.delegate = self
         calloutView.mainLabel.text = customAnnotation.title!
-        calloutView.distanceLabel.text = "\(customAnnotation.distance!) Miles away"
 
-        switch (customAnnotation.price!){
-            case 1: calloutView.priceLabel.text = "Price:$"
-            case 2: calloutView.priceLabel.text = "Price:$$"
-            case 3: calloutView.priceLabel.text = "Price:$$$"
-            case 4: calloutView.priceLabel.text = "Price:$$$$"
-            default: calloutView.priceLabel.text = "Price:$$$$$"
-        }
-
-        switch (customAnnotation.rating!){
-            case 1: calloutView.ratingLabel.text = "Rating:*"
-            case 2: calloutView.ratingLabel.text = "Rating:**"
-            case 3: calloutView.ratingLabel.text = "Rating:***"
-            case 4: calloutView.ratingLabel.text = "Rating:****"
-            default: calloutView.ratingLabel.text = "Rating:*****"
-        }
         
-        
-        
-        if(customAnnotation.isOpen == true){
-            calloutView.isOpenLabel.text = "Open"
-        }else{
-            calloutView.isOpenLabel.text = "Closed"
-        }
 
         calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height * 0.5)
         view.addSubview(calloutView)
         mainMapView.setCenter((view.annotation?.coordinate)!, animated: true)
-        */
+        
     }
     
     
@@ -612,9 +584,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             popUpListViewOpen = true
             popUpView = ListView(frame: CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
             popUpView!.delegate = self
-            if(self.currentRestaurant != nil){
-                popUpView?.selectedItem(item: self.currentRestaurant!)
-            }
             popUpView!.getListOfPlaces(list: allRestaurantInfo)
             popUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
             popUpView!.isOpaque = false
