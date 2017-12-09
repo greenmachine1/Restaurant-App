@@ -22,9 +22,8 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     var mainTableView:UITableView?
     var selectedIndex:Int?
+    var selectedPlace:SavePlacesObject?
     
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         self.createCustomView()
@@ -35,7 +34,59 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         listOfPlaces = list
     }
 
-    
+    func makeItemAppearSelected(item:SavePlacesObject){
+        
+        print("Hey there passed in item -->\(item.name!)")
+        
+        for (index, items) in self.listOfPlaces.enumerated(){
+            if(item.name! == items.name!){
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                    self.mainTableView?.selectRow(at: IndexPath(row: index, section: 0), animated: true,   scrollPosition: UITableViewScrollPosition.middle)
+                })
+                self.mainTableView?.reloadData()
+            }
+        }
+        
+        
+        /*
+        let index = listOfPlaces.index(of: item)
+        if(index != nil){
+        
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                self.mainTableView?.selectRow(at: IndexPath(row: index!, section: 0), animated: true,   scrollPosition: UITableViewScrollPosition.middle)
+            })
+            self.mainTableView?.reloadData()
+        }
+        */
+            
+        
+        
+        /*
+        for places in self.listOfPlaces{
+            print("count -> \(self.listOfPlaces.count)")
+            if(item == places){
+                let index = self.listOfPlaces.index(of: places)
+                print(index)
+            }
+        }
+        */
+        
+        /*
+        for places in self.listOfPlaces{
+            
+
+            let index = self.listOfPlaces.index(of: places)
+            if(places == item){
+                print("things are good from in here...")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                    self.mainTableView?.selectRow(at: IndexPath(row: index!, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.middle)
+                })
+                self.mainTableView?.reloadData()
+            }
+        }
+ 
+        */
+    }
     
     
 
@@ -98,6 +149,11 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         
         tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.blue
     }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at:indexPath)?.backgroundColor = UIColor.white
+    }
+    
     
     
     @objc func doneButtonOnClick(){

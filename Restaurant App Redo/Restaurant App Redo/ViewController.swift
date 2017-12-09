@@ -44,6 +44,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setting the height from the top of the navbar to the beginning of the usable //
+        // screen area //
         yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
         
         self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
@@ -52,6 +54,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         self.workingIndicator.stopAnimating()
         self.workingIndicator.hidesWhenStopped = true
         
+        
+        // setting the reached end of set to false //
         reachedEndOfSet = false
         
         
@@ -163,9 +167,19 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // returning the place info //
     func returnRestaurantInfo(info: SavePlacesObject) {
-        print("updated info is available...")
         currentRestaurant = info
         dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
         
@@ -174,6 +188,12 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                 self.dropDownInView = true
             })
+        }
+        
+        
+        // updating the popUpView //
+        if(self.currentRestaurant != nil){
+            self.popUpView?.makeItemAppearSelected(item: self.currentRestaurant!)
         }
         
         mainMapView.removeAnnotations(mainMapView.annotations)
@@ -191,16 +211,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         mainMapView.addAnnotation(annotation!)
     }
 
-    
-    
-    
-    
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     
     @IBAction func reCenterOnClick(_ sender: UIButton) {
         newSearch?.eraseAllInfo()
@@ -249,6 +260,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(noResults == false){
             newSearch?.gettingRandomRestaurant()
             self.mainMapView.showsUserLocation = false
+            
+            
+            
         }else{
             let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
             let okButton:UIAlertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
@@ -261,6 +275,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     
+    
+    
+    
+    // ---- Map View Annotation Stuff ---- //
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation
         {
@@ -277,11 +295,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     }
 
-
-    
-    
-    
-    
 
     // need to decide on what to do when the user selects the annotation //
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -318,6 +331,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
     }
     
+    
+    // ---- end of annotation stuff ---- //
     
     
     
@@ -584,15 +599,19 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             popUpView = ListView(frame: CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
             popUpView!.delegate = self
             popUpView!.getListOfPlaces(list: allRestaurantInfo)
+            if(self.currentRestaurant != nil){
+                self.popUpView?.makeItemAppearSelected(item: self.currentRestaurant!)
+            }
+            
             popUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
             popUpView!.isOpaque = false
             
             self.view.addSubview(popUpView!)
             
-            
         
             UIView.animate(withDuration: 0.3) {
                 self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height / 2, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+                
             }
         }else{
             returnDoneButtonCalled()
