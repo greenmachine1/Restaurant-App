@@ -116,6 +116,15 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                 UIView.animate(withDuration: 0.5, animations: {
                     self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                     self.dropDownInView = false
+                    // updating the drop down window //
+                    
+                    /*
+                    if(self.currentRestaurant != nil){
+                        // updating the drop down window //
+                        self.dropDownView?.updateLabels(main: self.currentRestaurant!.name!, rating: "* \(self.currentRestaurant!.rating!)", price: "$ \(self.currentRestaurant!.price!)", distance: "\(self.currentRestaurant!.distanceFromUser!)", open: self.currentRestaurant!.open!)
+                    }
+                    */
+                    
                 })
             }
         }

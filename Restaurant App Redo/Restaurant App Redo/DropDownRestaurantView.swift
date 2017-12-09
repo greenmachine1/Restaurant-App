@@ -52,31 +52,26 @@ class DropDownRestaurantView: UIView {
         
         mainLabel = UILabel(frame: CGRect(x: 10, y: 0, width: self.frame.size.width - 20, height: 30))
         mainLabel?.textAlignment = .center
-        mainLabel?.text = "Hey there"
         mainLabel?.textColor = UIColor.white
         
         self.addSubview(mainLabel!)
         
         ratingLabel = UILabel(frame: CGRect(x: 10, y: (self.mainLabel?.frame.origin.y)! + ((self.mainLabel?.frame.size.height)! + 5), width: (self.mainLabel?.frame.width)! / 3, height: 30))
-        ratingLabel?.text = "Rating"
         ratingLabel?.textAlignment = .center
         ratingLabel?.textColor = Colors.sharedInstance.lightBlue
         self.addSubview(ratingLabel!)
         
         distanceLabel = UILabel(frame: CGRect(x: (self.ratingLabel?.frame.origin.x)! + (self.ratingLabel?.frame.size.width)!, y: (self.ratingLabel?.frame.origin.y)!, width: (self.ratingLabel?.frame.size.width)!, height: 30))
-        distanceLabel?.text = "5mi"
         distanceLabel?.textAlignment = .center
         distanceLabel?.textColor = Colors.sharedInstance.lightBlue
         self.addSubview(distanceLabel!)
         
         priceLabel = UILabel(frame: CGRect(x: (self.distanceLabel?.frame.origin.x)! + (self.distanceLabel?.frame.size.width)!, y: (self.distanceLabel?.frame.origin.y)!, width: (self.distanceLabel?.frame.size.width)!, height: 30))
-        priceLabel?.text = "$$"
         priceLabel?.textAlignment = .center
         priceLabel?.textColor = Colors.sharedInstance.lightBlue
         self.addSubview(priceLabel!)
         
         openLabel = UILabel(frame: CGRect(x: (self.distanceLabel?.frame.origin.x)!, y: (self.distanceLabel?.frame.origin.y)! + (self.distanceLabel?.frame.size.height)!, width: (self.distanceLabel?.frame.size.width)!, height: 30))
-        openLabel?.text = "Open Now"
         openLabel?.textAlignment = .center
         openLabel?.textColor = Colors.sharedInstance.lightBlue
         self.addSubview(openLabel!)
@@ -85,27 +80,32 @@ class DropDownRestaurantView: UIView {
     
     func updateLabels(main:String, rating:String, price:String, distance:String, open:Bool){
         if(mainLabel != nil){
+            mainLabel?.text = ""
             mainLabel?.text = main
         }
         
         if(ratingLabel != nil){
+            ratingLabel?.text = ""
             ratingLabel?.text = rating
         }
         
         if(priceLabel != nil){
-        
+            priceLabel?.text = ""
             priceLabel?.text = price
         }
         
         if(distanceLabel != nil){
+            distanceLabel?.text = ""
             distanceLabel?.text = distance
         }
         
         if(openLabel != nil){
             if(open == true){
+                openLabel?.text = ""
                 openLabel?.text = "Open Now"
                 openLabel?.textColor = Colors.sharedInstance.lightBlue
             }else{
+                openLabel?.text = ""
                 openLabel?.text = "Not Open"
                 openLabel?.textColor = Colors.sharedInstance.lightOrange
             }
