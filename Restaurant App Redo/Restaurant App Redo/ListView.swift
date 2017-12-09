@@ -10,7 +10,7 @@ import UIKit
 
 @objc protocol ListViewDelegate{
     func returnDoneButtonCalled()
-    func returnSelectedItem(selectedItem:Int)
+    func returnSelectedItem(selectedItem:SavePlacesObject)
 }
 
 class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
@@ -46,46 +46,6 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
                 self.mainTableView?.reloadData()
             }
         }
-        
-        
-        /*
-        let index = listOfPlaces.index(of: item)
-        if(index != nil){
-        
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
-                self.mainTableView?.selectRow(at: IndexPath(row: index!, section: 0), animated: true,   scrollPosition: UITableViewScrollPosition.middle)
-            })
-            self.mainTableView?.reloadData()
-        }
-        */
-            
-        
-        
-        /*
-        for places in self.listOfPlaces{
-            print("count -> \(self.listOfPlaces.count)")
-            if(item == places){
-                let index = self.listOfPlaces.index(of: places)
-                print(index)
-            }
-        }
-        */
-        
-        /*
-        for places in self.listOfPlaces{
-            
-
-            let index = self.listOfPlaces.index(of: places)
-            if(places == item){
-                print("things are good from in here...")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
-                    self.mainTableView?.selectRow(at: IndexPath(row: index!, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.middle)
-                })
-                self.mainTableView?.reloadData()
-            }
-        }
- 
-        */
     }
     
     
@@ -145,7 +105,8 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     // passing back the item that was selected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.returnSelectedItem(selectedItem: indexPath.row)
+        
+        self.delegate?.returnSelectedItem(selectedItem: self.listOfPlaces[indexPath.row])
         
         tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.blue
     }

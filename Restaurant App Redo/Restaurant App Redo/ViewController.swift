@@ -180,7 +180,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     // returning the place info //
     func returnRestaurantInfo(info: SavePlacesObject) {
+        
         currentRestaurant = info
+        
+        // updating the drop down window //
         dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
         
         if(dropDownInView == false){
@@ -190,27 +193,32 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             })
         }
         
-        
         // updating the popUpView //
         if(self.currentRestaurant != nil){
             self.popUpView?.makeItemAppearSelected(item: self.currentRestaurant!)
         }
         
+        self.creatingAnnotationWithInfo(info: info)
+    }
+
+    
+    
+    
+    // created a seperate function for this so that I can call it from //
+    // the return from selecting an item in the list view //
+    func creatingAnnotationWithInfo(info:SavePlacesObject){
         mainMapView.removeAnnotations(mainMapView.annotations)
         
         let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
         _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
-
-        
-        
         
         // making a callout view for the annotation //
         annotation = CustomAnnotation(_title: info.name!, _coordinate: _coordinate)
-
+        
         mainMapView.addAnnotation(annotation!)
     }
-
+    
 
     
     @IBAction func reCenterOnClick(_ sender: UIButton) {
@@ -629,8 +637,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     }
     
     // returns the item selected from the list view //
-    func returnSelectedItem(selectedItem: Int) {
-        
+    func returnSelectedItem(selectedItem: SavePlacesObject) {
+        self.currentRestaurant = selectedItem
+        self.creatingAnnotationWithInfo(info: self.currentRestaurant!)
     }
     
     
