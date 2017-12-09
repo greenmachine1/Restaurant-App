@@ -36,8 +36,17 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
 
     func makeItemAppearSelected(item:SavePlacesObject){
         
-        print("Hey there passed in item -->\(item.name!)")
+        for(_index, _) in self.listOfPlaces.enumerated(){
+            // deselecting everything first //
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                self.mainTableView?.deselectRow(at: IndexPath(row: _index, section: 0), animated: true)
+            })
+        }
         
+        
+        
+        
+        // going through the list and selecting the item //
         for (index, items) in self.listOfPlaces.enumerated(){
             if(item.name! == items.name!){
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
@@ -54,8 +63,9 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     func createCustomView(){
         let doneButton:UIButton = UIButton(frame: CGRect(x: self.frame.size.width - 110, y: 10, width: 100, height: 30))
         doneButton.setTitle("Done", for: UIControlState.normal)
+        doneButton.setTitleColor(UIColor.white, for: UIControlState.normal)
         doneButton.addTarget(self, action: #selector(self.doneButtonOnClick), for: UIControlEvents.touchUpInside)
-        doneButton.backgroundColor = UIColor.white
+        doneButton.backgroundColor = Colors.sharedInstance.lightBlue
         doneButton.setTitleColor(UIColor.black, for: UIControlState.normal)
         
         doneButton.layer.cornerRadius = 5.0
@@ -70,7 +80,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         
         mainTableView?.delegate = self
         mainTableView?.dataSource = self
-        mainTableView?.backgroundColor = UIColor.white
+        mainTableView?.backgroundColor = UIColor.clear
         mainTableView?.layer.cornerRadius = 5.0
         mainTableView?.clipsToBounds = true
         mainTableView?.register(ListViewTableViewCell.self, forCellReuseIdentifier: "cell")
@@ -105,14 +115,13 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     // passing back the item that was selected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         self.delegate?.returnSelectedItem(selectedItem: self.listOfPlaces[indexPath.row])
-        
-        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.blue
     }
     
+    
+    
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at:indexPath)?.backgroundColor = UIColor.white
+        
     }
     
     

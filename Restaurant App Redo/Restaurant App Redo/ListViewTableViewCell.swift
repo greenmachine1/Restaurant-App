@@ -21,13 +21,15 @@ class ListViewTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: "cell")
         
+        self.backgroundColor = UIColor.clear
+        
         mainLabel = UILabel(frame: CGRect(x: 10, y: 0, width: self.frame.size.width - 10, height: 30))
-        mainLabel?.textColor = UIColor.black
+        mainLabel?.textColor = Colors.sharedInstance.lightBlue
         mainLabel?.adjustsFontSizeToFitWidth = true
         self.addSubview(mainLabel!)
         
         distanceLabel = UILabel(frame: CGRect(x: 10, y: (self.mainLabel?.frame.origin.y)! + (self.mainLabel?.frame.size.height)!, width: 100, height: 30))
-        distanceLabel?.textColor = UIColor.black
+        distanceLabel?.textColor = Colors.sharedInstance.lightBlue
         distanceLabel?.adjustsFontSizeToFitWidth = true
         self.addSubview(distanceLabel!)
     }

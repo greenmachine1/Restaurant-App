@@ -116,15 +116,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                 UIView.animate(withDuration: 0.5, animations: {
                     self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                     self.dropDownInView = false
-                    // updating the drop down window //
-                    
-                    /*
-                    if(self.currentRestaurant != nil){
-                        // updating the drop down window //
-                        self.dropDownView?.updateLabels(main: self.currentRestaurant!.name!, rating: "* \(self.currentRestaurant!.rating!)", price: "$ \(self.currentRestaurant!.price!)", distance: "\(self.currentRestaurant!.distanceFromUser!)", open: self.currentRestaurant!.open!)
-                    }
-                    */
-                    
                 })
             }
         }
@@ -649,6 +640,20 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     func returnSelectedItem(selectedItem: SavePlacesObject) {
         self.currentRestaurant = selectedItem
         self.creatingAnnotationWithInfo(info: self.currentRestaurant!)
+        
+        if(dropDownInView == true){
+            // updating the drop down window //
+            if(dropDownView != nil){
+            dropDownView?.updateLabels(main: selectedItem.name!, rating: "* \(selectedItem.rating!)", price: "$ \(selectedItem.price!)", distance: "\(selectedItem.distanceFromUser!)mi", open: selectedItem.open!)
+            }
+        }else{
+            UIView.animate(withDuration: 0.50, animations: {
+                self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                self.dropDownInView = true
+                self.dropDownView?.updateLabels(main: selectedItem.name!, rating: "* \(selectedItem.rating!)", price: "$ \(selectedItem.price!)", distance: "\(selectedItem.distanceFromUser!)mi", open: selectedItem.open!)
+            
+            })
+        }
     }
     
     
