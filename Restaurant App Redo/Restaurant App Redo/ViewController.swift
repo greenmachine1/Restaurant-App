@@ -574,6 +574,13 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(info.count != 0){
             noResults = false
             allRestaurantInfo = info
+            
+            
+            if(popUpListViewOpen == true){
+                if(popUpView != nil){
+                    popUpView!.getListOfPlaces(list: allRestaurantInfo)
+                }
+            }
         }else{
             allRestaurantInfo.removeAll()
             noResults = true
@@ -583,6 +590,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     func reachedTheEndOfSet() {
         newSearch!.newSearch(_location: _location!)
         reachedEndOfSet = true
+        
+        
     }
     
     

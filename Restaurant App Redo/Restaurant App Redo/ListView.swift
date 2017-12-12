@@ -32,6 +32,10 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func getListOfPlaces(list:[SavePlacesObject]){
         listOfPlaces = list
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+            self.mainTableView?.reloadData()
+        })
+        
     }
 
     func makeItemAppearSelected(item:SavePlacesObject){
