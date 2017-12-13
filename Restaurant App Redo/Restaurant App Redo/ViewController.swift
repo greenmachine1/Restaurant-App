@@ -84,8 +84,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         // adding in a drop down nav bar box //
         dropDownView = DropDownRestaurantView(frame: CGRect(x: 0, y: -yLocationOfDropDown!, width: self.view.frame.width, height: 100))
         dropDownView?.delegate = self
-        dropDownView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-        dropDownView!.isOpaque = false
+        dropDownView!.backgroundColor = Colors.sharedInstance.lightBlue
+        //dropDownView!.isOpaque = true
+        dropDownView?.layer.isOpaque = true
 
         self.view.addSubview(dropDownView!)
         

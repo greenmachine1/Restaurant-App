@@ -53,7 +53,7 @@ class DropDownRestaurantView: UIView {
         
         mainLabel = UILabel(frame: CGRect(x: 10, y: 0, width: self.frame.size.width - 20, height: 30))
         //mainLabel?.clearsContextBeforeDrawing = true
-        mainLabel?.backgroundColor = UIColor.clear
+        mainLabel?.backgroundColor = UIColor.blue.withAlphaComponent(0.0)
         mainLabel?.layer.cornerRadius = 5.0
         mainLabel?.clipsToBounds = true
         mainLabel?.layer.isOpaque = true
@@ -64,7 +64,7 @@ class DropDownRestaurantView: UIView {
         
         ratingLabel = UILabel(frame: CGRect(x: 10, y: (self.mainLabel?.frame.origin.y)! + ((self.mainLabel?.frame.size.height)! + 5), width: (self.mainLabel?.frame.width)! / 3, height: 30))
         //ratingLabel?.clearsContextBeforeDrawing = true
-        ratingLabel?.backgroundColor = UIColor.clear
+        ratingLabel?.backgroundColor = UIColor.blue.withAlphaComponent(0.0)
         ratingLabel?.layer.cornerRadius = 5.0
         ratingLabel?.clipsToBounds = true
         ratingLabel?.layer.isOpaque = true
@@ -77,17 +77,17 @@ class DropDownRestaurantView: UIView {
         distanceLabel?.backgroundColor = UIColor.clear
         distanceLabel?.layer.cornerRadius = 5.0
         distanceLabel?.clipsToBounds = true
-        distanceLabel?.layer.isOpaque = true
+        //distanceLabel?.layer.isOpaque = true
         distanceLabel?.textAlignment = .center
         distanceLabel?.textColor = UIColor.white
         self.addSubview(distanceLabel!)
         
         priceLabel = UILabel(frame: CGRect(x: (self.distanceLabel?.frame.origin.x)! + (self.distanceLabel?.frame.size.width)!, y: (self.distanceLabel?.frame.origin.y)!, width: (self.distanceLabel?.frame.size.width)!, height: 30))
         //priceLabel?.clearsContextBeforeDrawing = true
-        priceLabel?.backgroundColor = UIColor.clear
+        //priceLabel?.backgroundColor = UIColor.clear
         priceLabel?.layer.cornerRadius = 5.0
         priceLabel?.clipsToBounds = true
-        priceLabel?.layer.isOpaque = true
+        //priceLabel?.layer.isOpaque = true
         priceLabel?.textAlignment = .center
         priceLabel?.textColor = UIColor.white
         self.addSubview(priceLabel!)
@@ -97,7 +97,7 @@ class DropDownRestaurantView: UIView {
         openLabel?.backgroundColor = UIColor.clear
         openLabel?.layer.cornerRadius = 5.0
         openLabel?.clipsToBounds = true
-        openLabel?.layer.isOpaque = true
+        //openLabel?.layer.isOpaque = true
         openLabel?.textAlignment = .center
         openLabel?.textColor = UIColor.white
         self.addSubview(openLabel!)
