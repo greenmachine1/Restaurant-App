@@ -44,6 +44,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateDropDownMenuUponReload), name: .UIApplicationDidBecomeActive, object: nil)
+        
+        
+        
         // Setting the height from the top of the navbar to the beginning of the usable //
         // screen area //
         yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
@@ -88,6 +92,18 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     }
     
     
+    @objc func updateDropDownMenuUponReload(){
+        if(dropDownInView == true){
+            if(dropDownView != nil){
+                // updating the drop down window //
+                if(self.currentRestaurant != nil){
+                    
+                   dropDownView?.updateLabels(main: self.currentRestaurant!.name!, rating: "* \(self.currentRestaurant!.rating!)", price: "$ \(self.currentRestaurant!.price!)", distance: "\(self.currentRestaurant!.distanceFromUser!)mi", open: self.currentRestaurant!.open!)
+                }
+            }
+        }
+    }
+    
     
     // when the user swipes left or right on the top bar //
     // do stuff //
@@ -115,6 +131,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             if(dropDownInView == true){
                 UIView.animate(withDuration: 0.5, animations: {
                     self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                }, completion: { (complete) in
                     self.dropDownInView = false
                 })
             }
@@ -127,7 +144,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             }
         }
     }
-    
+
     @objc func navBarButtonsOnClick(sender:UIBarButtonItem){
         if(sender.tag == 0){
             let optionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "Options") as? OptionsViewController
@@ -187,7 +204,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
         
         if(dropDownInView == false){
-            UIView.animate(withDuration: 0.50, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                 self.dropDownInView = true
             })
@@ -576,6 +593,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             allRestaurantInfo = info
             
             
+            // when a new set of places comes in , I need the list to refresh //
             if(popUpListViewOpen == true){
                 if(popUpView != nil){
                     popUpView!.getListOfPlaces(list: allRestaurantInfo)
@@ -590,8 +608,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     func reachedTheEndOfSet() {
         newSearch!.newSearch(_location: _location!)
         reachedEndOfSet = true
-        
-        
     }
     
     
