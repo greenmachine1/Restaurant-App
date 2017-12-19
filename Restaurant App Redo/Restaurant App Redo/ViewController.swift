@@ -84,9 +84,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         // adding in a drop down nav bar box //
         dropDownView = DropDownRestaurantView(frame: CGRect(x: 0, y: -yLocationOfDropDown!, width: self.view.frame.width, height: 100))
         dropDownView?.delegate = self
-        dropDownView!.backgroundColor = Colors.sharedInstance.lightBlue
-        //dropDownView!.isOpaque = true
-        dropDownView?.layer.isOpaque = true
+        dropDownView!.backgroundColor = UIColor.black
+        dropDownView!.isOpaque = true
 
         self.view.addSubview(dropDownView!)
         
@@ -98,8 +97,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             if(dropDownView != nil){
                 // updating the drop down window //
                 if(self.currentRestaurant != nil){
-                    
-                   dropDownView?.updateLabels(main: self.currentRestaurant!.name!, rating: "* \(self.currentRestaurant!.rating!)", price: "$ \(self.currentRestaurant!.price!)", distance: "\(self.currentRestaurant!.distanceFromUser!)mi", open: self.currentRestaurant!.open!)
+
+                    dropDownView?.newUpdateLabels(main: self.currentRestaurant!.name!, rating: self.currentRestaurant!.rating!, price: self.currentRestaurant!.price!, distance: (self.currentRestaurant?.distanceFromUser!)!, open: (self.currentRestaurant?.open!)!)
                 }
             }
         }
@@ -200,9 +199,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     func returnRestaurantInfo(info: SavePlacesObject) {
         
         currentRestaurant = info
-        
-        // updating the drop down window //
-        dropDownView?.updateLabels(main: info.name!, rating: "* \(info.rating!)", price: "$ \(info.price!)", distance: "\(info.distanceFromUser!)mi", open: info.open!)
+
+        dropDownView?.newUpdateLabels(main: info.name!, rating: info.rating!, price: info.price!, distance: info.distanceFromUser!, open: info.open!)
         
         if(dropDownInView == false){
             UIView.animate(withDuration: 0.5, animations: {
@@ -218,7 +216,46 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         self.creatingAnnotationWithInfo(info: info)
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // left off here // need to add this incoming list to the top of the main list //
+    func returnSavedRestaurantsThatMeatCriteria(info: [SavePlacesObject]) {
+        print(info.count)
+    }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -605,6 +642,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
             noResults = true
         }
     }
+    
+    
+    
+    
 
     func reachedTheEndOfSet() {
         newSearch!.newSearch(_location: _location!)
@@ -670,13 +711,14 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(dropDownInView == true){
             // updating the drop down window //
             if(dropDownView != nil){
-            dropDownView?.updateLabels(main: selectedItem.name!, rating: "* \(selectedItem.rating!)", price: "$ \(selectedItem.price!)", distance: "\(selectedItem.distanceFromUser!)mi", open: selectedItem.open!)
+                dropDownView?.newUpdateLabels(main: selectedItem.name!, rating: selectedItem.rating!, price: selectedItem.price!, distance: selectedItem.distanceFromUser!, open: selectedItem.open!)
             }
         }else{
+            
             UIView.animate(withDuration: 0.50, animations: {
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                 self.dropDownInView = true
-                self.dropDownView?.updateLabels(main: selectedItem.name!, rating: "* \(selectedItem.rating!)", price: "$ \(selectedItem.price!)", distance: "\(selectedItem.distanceFromUser!)mi", open: selectedItem.open!)
+                self.dropDownView?.newUpdateLabels(main: selectedItem.name!, rating: selectedItem.rating!, price: selectedItem.price!, distance: selectedItem.distanceFromUser!, open: selectedItem.open!)
             
             })
         }

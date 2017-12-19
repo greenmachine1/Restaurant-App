@@ -19,6 +19,7 @@ class SavePlacesObject: NSObject, NSCoding {
     var rating:Double?
     var distanceFromUser:Int?
     var annotationColor:Bool?
+    var keywordsString:String?
     
     override init() {
         super.init()

@@ -12,6 +12,7 @@ import CoreLocation
 @objc protocol ReturnRestaurauntInfoAndLocationDelegate{
     func returnRestaurantInfo(info:SavePlacesObject)
     func returnAllRestuarantInfo(info:[SavePlacesObject])
+    func returnSavedRestaurantsThatMeatCriteria(info:[SavePlacesObject])
     func working(yesNo:Bool)
     func reachedTheEndOfSet()
 }
@@ -23,6 +24,7 @@ class GatheringRestaurantsNearBy: NSObject {
     var key:String = "AIzaSyDhaomO-UDL3dm0RF_byquX6-2mjvyHGuM"
     var type:String = "restaurant"
     var keyword:String = "pizza"
+    var _keywordString:String = ""
     var nextPageToken:String = ""
     
     var _locationOfUser:CLLocation?
@@ -48,9 +50,9 @@ class GatheringRestaurantsNearBy: NSObject {
         // gets the max pricing //
         let _pricing = OptionsSingleton.sharedInstance.getPrice()
         
-        var keywordString = self.manageKeywords()
-        if(keywordString == ""){
-            keywordString = "cruise"
+        _keywordString = self.manageKeywords()
+        if(_keywordString == ""){
+            _keywordString = "cruise"
         }
         
         var url:URL?
@@ -58,10 +60,10 @@ class GatheringRestaurantsNearBy: NSObject {
 
             if(nextPageToken == ""){
 
-                tempUrlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(_location.coordinate.latitude),\(_location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(keywordString)&minprice=\(_pricing)&key=\(key)"
+                tempUrlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(_location.coordinate.latitude),\(_location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(_keywordString)&minprice=\(_pricing)&key=\(key)"
             
             }else{
-                tempUrlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=\(nextPageToken)&location=\(_location.coordinate.latitude),\(_location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(keywordString)&minprice=\(_pricing)&key=\(key)"
+                tempUrlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=\(nextPageToken)&location=\(_location.coordinate.latitude),\(_location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(_keywordString)&minprice=\(_pricing)&key=\(key)"
             }
         
 
@@ -205,6 +207,12 @@ class GatheringRestaurantsNearBy: NSObject {
 
                 
                 
+                
+                // adding keywords to the object //
+                //newRestaurantInfo.keywordsString = _keywordString
+                newRestaurantInfo.keywordsString = _keywordString
+                
+                
                 // adding to the array of restaurant info //
                 if(self.filterResultsBasedOnOtherCriteria(place: newRestaurantInfo) == true){
 
@@ -229,6 +237,16 @@ class GatheringRestaurantsNearBy: NSObject {
                     }
                 }
             }
+
+            
+            let savedPlacesObject:PreferredNoGoSaving = PreferredNoGoSaving()
+            var savedPlacesArray = savedPlacesObject.returnArrayOfPlaces()
+                
+            // adding the saved places array to the beginning of the array of restaurants //
+            savedPlacesArray += self.arrayOfRestaurants
+            self.arrayOfRestaurants = savedPlacesArray
+            
+            
             
             self.delegate?.returnAllRestuarantInfo(info: self.arrayOfRestaurants)
             
