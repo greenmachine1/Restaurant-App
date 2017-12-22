@@ -20,7 +20,8 @@ class NoGoSaving: NSObject {
     var delegate:ReturnSaveOfNoGoPlaces?
     
     init(info:SavePlacesObject) {
-        let newSavedObject:SavePlacesObject = SavePlacesObject(_name: info.name!, _location: info.location!, _open: info.open!, _price: info.price!, _rating: info.rating!, _distanceFromUser: info.distanceFromUser!)
+        //let newSavedObject:SavePlacesObject = SavePlacesObject(_name: info.name!, _location: info.location!, _open: info.open!, _price: info.price!, _rating: info.rating!, _distanceFromUser: info.distanceFromUser!)
+        let newSavedObject:SavePlacesObject = SavePlacesObject(_name: info.name!, _location: info.location!, _open: info.open!, _price: info.price!, _rating: info.rating!, _distanceFromUser: info.distanceFromUser!, _isSaved: false, _isBlocked: false)
         
         passedInRestaurant = newSavedObject
     }
@@ -44,6 +45,9 @@ class NoGoSaving: NSObject {
                     }
                 }
                 if(exists == false){
+                    
+                    passedInRestaurant?.isSaved = false
+                    passedInRestaurant?.isBlocked = true
                     
                     // saving a new place to the existing //
                     tempArrayOfRestaurants.append(passedInRestaurant!)
@@ -125,6 +129,10 @@ class NoGoSaving: NSObject {
                 arrayOfPreferredPlaces = placesArrayPreferred
             }
         }
+        
+        
+        itemToMoveToPreferred.isBlocked = false
+        itemToMoveToPreferred.isSaved = true
 
         // saving to the array of no go places //
         arrayOfPreferredPlaces.append(itemToMoveToPreferred)

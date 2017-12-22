@@ -12,7 +12,6 @@ import CoreLocation
 @objc protocol ReturnRestaurauntInfoAndLocationDelegate{
     func returnRestaurantInfo(info:SavePlacesObject)
     func returnAllRestuarantInfo(info:[SavePlacesObject])
-    func returnSavedRestaurantsThatMeatCriteria(info:[SavePlacesObject])
     func working(yesNo:Bool)
     func reachedTheEndOfSet()
 }
@@ -209,7 +208,7 @@ class GatheringRestaurantsNearBy: NSObject {
                 
                 
                 // adding keywords to the object //
-                //newRestaurantInfo.keywordsString = _keywordString
+
                 newRestaurantInfo.keywordsString = _keywordString
                 
                 
@@ -241,12 +240,14 @@ class GatheringRestaurantsNearBy: NSObject {
             
             let savedPlacesObject:PreferredNoGoSaving = PreferredNoGoSaving()
             var savedPlacesArray = savedPlacesObject.returnArrayOfPlaces()
+            
+            for things in savedPlacesArray{
+                print(things.isSaved)
+            }
                 
             // adding the saved places array to the beginning of the array of restaurants //
             savedPlacesArray += self.arrayOfRestaurants
             self.arrayOfRestaurants = savedPlacesArray
-            
-            
             
             self.delegate?.returnAllRestuarantInfo(info: self.arrayOfRestaurants)
             

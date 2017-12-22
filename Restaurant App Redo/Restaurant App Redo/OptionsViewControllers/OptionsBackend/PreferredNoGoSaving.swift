@@ -20,7 +20,8 @@ class PreferredNoGoSaving: NSObject{
     var delegate:ReturnSaveOfPreferredPlaces?
     
     init(info:SavePlacesObject) {
-        let newSavedObject:SavePlacesObject = SavePlacesObject(_name: info.name!, _location: info.location!, _open: info.open!, _price: info.price!, _rating: info.rating!, _distanceFromUser: info.distanceFromUser!)
+        
+        let newSavedObject:SavePlacesObject = SavePlacesObject(_name: info.name!, _location: info.location!, _open: info.open!, _price: info.price!, _rating: info.rating!, _distanceFromUser: info.distanceFromUser!, _isSaved: false, _isBlocked: false)
         
         passedInRestaurant = newSavedObject
     }
@@ -45,6 +46,9 @@ class PreferredNoGoSaving: NSObject{
                 }
                 if(exists == false){
 
+                    passedInRestaurant?.setIsSaved(save: true)
+                    passedInRestaurant?.setIsBlocked(blocked: false)
+                    
                     // saving a new place to the existing //
                     tempArrayOfRestaurants.append(passedInRestaurant!)
                 
@@ -56,6 +60,10 @@ class PreferredNoGoSaving: NSObject{
             }
         // if the placesArray key doesnt exist, then we need to create one //
         }else{
+            
+            passedInRestaurant?.setIsSaved(save: true)
+            passedInRestaurant?.setIsBlocked(blocked: false)
+            
             // saving a new place to the existing //
             tempArrayOfRestaurants.append(passedInRestaurant!)
             
@@ -134,6 +142,11 @@ class PreferredNoGoSaving: NSObject{
                 arrayOfNoGoPlaces = placesArrayNoGo
             }
         }
+        
+        //itemToMoveToNoGo.isSaved = false
+        //itemToMoveToNoGo.isBlocked = true
+        itemToMoveToNoGo.setIsSaved(save: false)
+        itemToMoveToNoGo.setIsBlocked(blocked: true)
         
         
         // saving to the array of no go places //

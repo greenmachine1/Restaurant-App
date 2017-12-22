@@ -233,20 +233,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     
-    // left off here // need to add this incoming list to the top of the main list //
-    func returnSavedRestaurantsThatMeatCriteria(info: [SavePlacesObject]) {
-        print(info.count)
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     

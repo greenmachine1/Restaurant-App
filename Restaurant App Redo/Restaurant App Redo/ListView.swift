@@ -88,8 +88,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         mainTableView?.layer.cornerRadius = 5.0
         mainTableView?.clipsToBounds = true
         mainTableView?.register(ListViewTableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        
+    
         self.addSubview(mainTableView!)
     }
     
@@ -106,6 +105,16 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         cell!.mainLabel?.text = listOfPlaces[indexPath.row].name!
         
         let distance = listOfPlaces[indexPath.row].distanceFromUser!
+        
+        if(listOfPlaces[indexPath.row].isSaved == true){
+            cell?.backgroundColor = Colors.sharedInstance.lightOrange
+            cell?.mainLabel?.textColor = UIColor.black
+            cell?.distanceLabel?.textColor = UIColor.black
+        }else{
+            cell?.backgroundColor = UIColor.clear
+            cell?.mainLabel?.textColor = Colors.sharedInstance.lightBlue
+            cell?.distanceLabel?.textColor = Colors.sharedInstance.lightBlue
+        }
         
         if(distance == 1){
             cell?.distanceLabel?.text = "\(distance) Mile Away"
