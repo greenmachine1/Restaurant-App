@@ -11,13 +11,12 @@ import CoreLocation
 
 @objc protocol ReturnRestaurauntInfoAndLocationDelegate{
     func returnRestaurantInfo(info:SavePlacesObject)
-    func returnAllRestuarantInfo(info:[SavePlacesObject])
     func working(yesNo:Bool)
     func reachedTheEndOfSet()
 }
 
 
-class GatheringRestaurantsNearBy: NSObject {
+class GatheringRestaurantsNearBy: NSObject{
     
     var delegate:ReturnRestaurauntInfoAndLocationDelegate?
     var key:String = "AIzaSyDhaomO-UDL3dm0RF_byquX6-2mjvyHGuM"
@@ -40,6 +39,8 @@ class GatheringRestaurantsNearBy: NSObject {
     
     // need to setup a page token to get more than just these results everytime //
     func newSearch(_location:CLLocation){
+        
+        
         
         _locationOfUser = _location
         
@@ -261,11 +262,16 @@ class GatheringRestaurantsNearBy: NSObject {
     
     
     
+    func insertArrayOfRestaurants(places:[SavePlacesObject]){
+        self.arrayOfRestaurants = places
+    }
     
     
     
     
     func gettingRandomRestaurant(){
+        
+        self.arrayOfRestaurants = OptionsSingleton.sharedInstance.getPlaces()
 
         if(self.arrayOfRestaurants.count != 0){
             

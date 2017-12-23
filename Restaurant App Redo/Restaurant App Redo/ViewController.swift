@@ -627,26 +627,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     
-    
 
-    
-    // remove this after a bit //
-    func returnAllRestuarantInfo(info: [SavePlacesObject]) {
-        if(info.count != 0){
-            noResults = false
-            allRestaurantInfo = info
-            
-            // when a new set of places comes in , I need the list to refresh //
-            if(popUpListViewOpen == true){
-                if(popUpView != nil){
-                    popUpView!.getListOfPlaces(list: allRestaurantInfo)
-                }
-            }
-        }else{
-            allRestaurantInfo.removeAll()
-            noResults = true
-        }
-    }
     
     
     
