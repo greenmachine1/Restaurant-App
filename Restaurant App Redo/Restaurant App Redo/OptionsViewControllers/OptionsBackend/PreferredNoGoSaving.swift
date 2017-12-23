@@ -51,6 +51,8 @@ class PreferredNoGoSaving: NSObject{
                     
                     // saving a new place to the existing //
                     tempArrayOfRestaurants.append(passedInRestaurant!)
+                    
+                    OptionsSingleton.sharedInstance.addSavedItemToMainArray(itemToAdd: passedInRestaurant!)
                 
                     // saving the array to the archive //
                     let placeSave = NSKeyedArchiver.archivedData(withRootObject: tempArrayOfRestaurants)
@@ -66,6 +68,8 @@ class PreferredNoGoSaving: NSObject{
             
             // saving a new place to the existing //
             tempArrayOfRestaurants.append(passedInRestaurant!)
+            
+            OptionsSingleton.sharedInstance.addSavedItemToMainArray(itemToAdd: passedInRestaurant!)
             
             // saving the array to the archive //
             let placeSave = NSKeyedArchiver.archivedData(withRootObject: tempArrayOfRestaurants)
@@ -122,6 +126,9 @@ class PreferredNoGoSaving: NSObject{
                     let nameOfPlacePassedIn = place.name
                     if(name == nameOfPlacePassedIn){
                         tempArrayOfRestaurants.remove(at: index)
+                        
+                        // removing the item from the main list //
+                        OptionsSingleton.sharedInstance.removeSaveItemFromMainList(itemToRemove: items)
                     }
                 }
 
@@ -147,6 +154,9 @@ class PreferredNoGoSaving: NSObject{
         //itemToMoveToNoGo.isBlocked = true
         itemToMoveToNoGo.setIsSaved(save: false)
         itemToMoveToNoGo.setIsBlocked(blocked: true)
+        
+        // removing the item from the main list //
+        OptionsSingleton.sharedInstance.removeSaveItemFromMainList(itemToRemove: itemToMoveToNoGo)
         
         
         // saving to the array of no go places //

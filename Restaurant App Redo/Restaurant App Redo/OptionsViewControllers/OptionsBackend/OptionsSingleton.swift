@@ -10,6 +10,7 @@ import UIKit
 
 @objc protocol ReturnOptionsUpdatedDelegate{
     func returnOptionsDidChange()
+    func updateToPlaces()
 }
 
 // setting up an options object //
@@ -22,6 +23,8 @@ class OptionsSingleton: NSObject {
     
     var tempArrayOfplaces:[SavePlacesObject] = []
     var tempArrayOfNoGoPlaces:[SavePlacesObject] = []
+    
+    var sharedArrayOfPlaces:[SavePlacesObject] = []
     
     func deleteAllOptions(){
         UserDefaults.standard.removeObject(forKey: "DistanceUserDefault")
@@ -196,5 +199,72 @@ class OptionsSingleton: NSObject {
         tempArrayOfNoGoPlaces = list
         //self.delegate?.returnOptionsDidChange()
     }
+    
+    
+    
+    
+    
+    
+    func loadPlaces(places:[SavePlacesObject]){
+        sharedArrayOfPlaces = places
+        self.delegate?.updateToPlaces()
+    }
+    
+    
+    
+    // when adding a saved place, call this //
+    func addSavedItemToMainArray(itemToAdd:SavePlacesObject){
+        
+        var exists = false
+        var index = 0
+        
+        // going through the array to see if the item already exists and if it does //
+        // remove it and then place it at the top of the list as a saved item //
+        for (_index, _items) in sharedArrayOfPlaces.enumerated(){
+            if(_items.name == itemToAdd.name && _items.location == itemToAdd.location){
+                exists = true
+                index = _index
+            }
+        }
+        if(exists == true){
+            self.sharedArrayOfPlaces.remove(at: index)
+            self.sharedArrayOfPlaces.insert(itemToAdd, at: 0)
+        }else{
+            self.sharedArrayOfPlaces.insert(itemToAdd, at: 0)
+        }
+        
+        self.delegate?.updateToPlaces()
+    }
+    
+    
+    func removeSaveItemFromMainList(itemToRemove:SavePlacesObject){
+        var exists = false
+        var index = 0
+        
+        for (_index, _item) in sharedArrayOfPlaces.enumerated(){
+            print("here...1")
+            if(_item.name == itemToRemove.name && _item.isSaved == true){
+                print("here...2")
+                exists = true
+                index = _index
+            }
+        }
+        
+        if(exists == true){
+            print("removed.... here")
+            self.sharedArrayOfPlaces.remove(at: index)
+        }
+        
+        self.delegate?.updateToPlaces()
+    }
+    
+    
+    func getPlaces() ->[SavePlacesObject]{
+        return sharedArrayOfPlaces
+    }
+    
+    
+    
+    
   
 }

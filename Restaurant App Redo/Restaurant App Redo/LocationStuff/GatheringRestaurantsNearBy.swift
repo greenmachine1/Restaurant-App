@@ -237,25 +237,27 @@ class GatheringRestaurantsNearBy: NSObject {
                 }
             }
 
-            
-            let savedPlacesObject:PreferredNoGoSaving = PreferredNoGoSaving()
-            var savedPlacesArray = savedPlacesObject.returnArrayOfPlaces()
-            
-            for things in savedPlacesArray{
-                print(things.isSaved)
-            }
-                
-            // adding the saved places array to the beginning of the array of restaurants //
-            savedPlacesArray += self.arrayOfRestaurants
-            self.arrayOfRestaurants = savedPlacesArray
-            
-            self.delegate?.returnAllRestuarantInfo(info: self.arrayOfRestaurants)
+            self.returnAllRestaurauntsIncludingSavedPlaces()
             
         }catch let jsonError{
             print(jsonError)
         }
     }
     
+    
+    func returnAllRestaurauntsIncludingSavedPlaces(){
+        
+        let savedPlacesObject:PreferredNoGoSaving = PreferredNoGoSaving()
+        var savedPlacesArray = savedPlacesObject.returnArrayOfPlaces()
+        
+        // adding the saved places array to the beginning of the array of restaurants //
+        // gotta go through the self.arrayOfRestaurants to see if there is //
+        // duplicates with savedPlacesArray //
+        savedPlacesArray += self.arrayOfRestaurants
+        self.arrayOfRestaurants = savedPlacesArray
+        
+        OptionsSingleton.sharedInstance.loadPlaces(places: self.arrayOfRestaurants)
+    }
     
     
     

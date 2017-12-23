@@ -92,6 +92,27 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     }
     
     
+    
+    // when a new set of places comes in this gets updated //
+    func updateToPlaces() {
+        let info = OptionsSingleton.sharedInstance.getPlaces()
+        if(info.count != 0){
+            noResults = false
+            allRestaurantInfo = info
+            
+            // when a new set of places comes in , I need the list to refresh //
+            if(popUpListViewOpen == true){
+                if(popUpView != nil){
+                    popUpView!.getListOfPlaces(list: allRestaurantInfo)
+                }
+            }
+        }else{
+            allRestaurantInfo.removeAll()
+            noResults = true
+        }
+    }
+    
+    
     @objc func updateDropDownMenuUponReload(){
         if(dropDownInView == true){
             if(dropDownView != nil){
@@ -309,8 +330,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(noResults == false){
             newSearch?.gettingRandomRestaurant()
             self.mainMapView.showsUserLocation = false
-            
-            
             
         }else{
             let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
@@ -611,11 +630,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
 
     
+    // remove this after a bit //
     func returnAllRestuarantInfo(info: [SavePlacesObject]) {
         if(info.count != 0){
             noResults = false
             allRestaurantInfo = info
-            
             
             // when a new set of places comes in , I need the list to refresh //
             if(popUpListViewOpen == true){

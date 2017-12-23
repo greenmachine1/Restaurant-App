@@ -107,7 +107,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         let distance = listOfPlaces[indexPath.row].distanceFromUser!
         
         if(listOfPlaces[indexPath.row].isSaved == true){
-            cell?.backgroundColor = Colors.sharedInstance.lightOrange
+            cell?.backgroundColor = Colors.sharedInstance.lightGreen
             cell?.mainLabel?.textColor = UIColor.black
             cell?.distanceLabel?.textColor = UIColor.black
         }else{
