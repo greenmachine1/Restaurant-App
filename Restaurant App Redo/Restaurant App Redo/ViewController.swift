@@ -32,6 +32,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     var popUpView:ListView?
     
     var listOfPlaces:UIBarButtonItem?
+    var optionsButton:UIBarButtonItem?
     
     var annotation:CustomAnnotation?
     
@@ -73,11 +74,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         OptionsSingleton.sharedInstance.delegate = self
         
-        let optionsButton:UIBarButtonItem = UIBarButtonItem(title: "Options", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
-        optionsButton.tag = 0
+        optionsButton = UIBarButtonItem(title: "Options", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        optionsButton!.tag = 0
         listOfPlaces = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
         listOfPlaces!.tag = 1
-        self.navigationItem.rightBarButtonItems = [optionsButton, listOfPlaces!]
+        self.navigationItem.rightBarButtonItems = [optionsButton!, listOfPlaces!]
         
         
 
@@ -89,6 +90,13 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
 
         self.view.addSubview(dropDownView!)
         
+    }
+    
+    
+    // this is a bug in iOS 11.2 //
+    override func viewWillDisappear(_ animated: Bool) {
+        self.optionsButton?.isEnabled = false
+        self.optionsButton?.isEnabled = true
     }
     
     
@@ -146,6 +154,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        
         if(optionsUpdatedBool == true){
             getLocation?.startLocationServices()
             optionsUpdatedBool = false
@@ -166,10 +176,16 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         }
     }
 
+    
+    
     @objc func navBarButtonsOnClick(sender:UIBarButtonItem){
+        
+        // options touched //
         if(sender.tag == 0){
             let optionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "Options") as? OptionsViewController
             self.navigationController?.pushViewController(optionsViewController!, animated: true)
+            
+        // list view touched //
         }else{
             self.createListViewPopUp()
         }
