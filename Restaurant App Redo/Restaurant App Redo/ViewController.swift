@@ -74,9 +74,14 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         OptionsSingleton.sharedInstance.delegate = self
         
-        optionsButton = UIBarButtonItem(title: "Options", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        //optionsButton = UIBarButtonItem(title: "Options", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        optionsButton = UIBarButtonItem(image: UIImage(named: "OptionsIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        optionsButton?.tintColor = Colors.sharedInstance.lightBlue
         optionsButton!.tag = 0
-        listOfPlaces = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        
+        //listOfPlaces = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        listOfPlaces = UIBarButtonItem(image: UIImage(named: "ListIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        listOfPlaces?.tintColor = Colors.sharedInstance.lightBlue
         listOfPlaces!.tag = 1
         self.navigationItem.rightBarButtonItems = [optionsButton!, listOfPlaces!]
         
