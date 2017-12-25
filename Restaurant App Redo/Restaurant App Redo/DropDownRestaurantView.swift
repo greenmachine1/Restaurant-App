@@ -120,52 +120,13 @@ class DropDownRestaurantView: UIView {
         }
         
         if(self.distanceLabel != nil){
-            self.distanceLabel?.text = "\(distance) Miles Away"
+            if(distance < 1){
+                self.distanceLabel?.text = "<1 Mile Away"
+            }else if(distance == 1){
+                self.distanceLabel?.text = "1 Mile Away"
+            }else{
+                self.distanceLabel?.text = "\(distance) Miles Away"
+            }
         }
-    }
-    
-    
-
-    func updateLabels(main:String, rating:String, price:String, distance:String, open:Bool){
-
-        if(open == true){
-            
-            self.openLabel?.text = "Open Now"
-            self.openLabel?.textColor = Colors.sharedInstance.lightBlue
-            
-        }else{
-            
-            self.openLabel?.text = "Not Open"
-            self.openLabel?.textColor = Colors.sharedInstance.lightOrange
-            
-        }
-
-            if(self.mainLabel != nil){
-                self.mainLabel?.text = main
-            }
-            
-            if(self.ratingLabel != nil){
-                self.ratingLabel?.text = rating
-            }
-            
-            if(self.priceLabel != nil){
-                self.priceLabel?.text = price
-            }
-            
-            if(self.distanceLabel != nil){
-                self.distanceLabel?.text = distance
-            }
-            
-            if(self.openLabel != nil){
-                if(open == true){
-                    self.openLabel?.text = "Open Now"
-                    self.openLabel?.textColor = UIColor.white
-                    
-                }else{
-                    self.openLabel?.text = "Not Open"
-                    self.openLabel?.textColor = Colors.sharedInstance.lightOrange
-                    
-                }
-            }
     }
 }

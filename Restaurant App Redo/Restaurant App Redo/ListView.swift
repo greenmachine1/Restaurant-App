@@ -82,6 +82,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     func addListView(){
         mainTableView = UITableView(frame: CGRect(x: 10, y: 50, width: self.frame.size.width - 20, height: (self.frame.size.height) - 100))
         
+        
         mainTableView?.delegate = self
         mainTableView?.dataSource = self
         mainTableView?.backgroundColor = UIColor.clear
@@ -102,27 +103,32 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ListViewTableViewCell
+        
+        
         cell!.mainLabel?.text = listOfPlaces[indexPath.row].name!
+        
         
         let distance = listOfPlaces[indexPath.row].distanceFromUser!
         
         if(listOfPlaces[indexPath.row].isSaved == true){
-            cell?.backgroundColor = Colors.sharedInstance.lightGreen
-            cell?.mainLabel?.textColor = UIColor.black
-            cell?.distanceLabel?.textColor = UIColor.black
+            cell?.starImage?.image = UIImage(named: "Star")
         }else{
-            cell?.backgroundColor = UIColor.clear
-            cell?.mainLabel?.textColor = Colors.sharedInstance.lightBlue
-            cell?.distanceLabel?.textColor = Colors.sharedInstance.lightBlue
+            cell?.starImage?.image = nil
         }
+        
         
         if(distance == 1){
             cell?.distanceLabel?.text = "\(distance) Mile Away"
         }else if(distance < 1){
-            cell?.distanceLabel?.text = "< 1 Mile Away"
+            cell?.distanceLabel?.text = "<1 Mile Away"
         }else{
             cell?.distanceLabel?.text = "\(distance) Miles Away"
         }
+        
+        let thisView:UIView = UIView()
+        thisView.backgroundColor = Colors.sharedInstance.lightBlue
+        cell?.selectedBackgroundView = thisView
+        
         return cell!
     }
     
@@ -130,14 +136,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.delegate?.returnSelectedItem(selectedItem: self.listOfPlaces[indexPath.row])
     }
-    
-    
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
-    }
-    
-    
+
     
     @objc func doneButtonOnClick(){
         self.delegate?.returnDoneButtonCalled()

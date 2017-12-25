@@ -9,12 +9,12 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestaurauntInfoAndLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate{
+class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestaurauntInfoAndLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate{
 
     @IBOutlet weak var mainMapView: MKMapView!
-    @IBOutlet weak var goButton: UIButton!
+    //@IBOutlet weak var goButton: UIButton!
     @IBOutlet weak var reCenterButton: UIButton!
-    @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
+    //@IBOutlet weak var workingIndicator: UIActivityIndicatorView!
     
     var getLocation:LocationServices?
     var _location:CLLocation?
@@ -39,31 +39,20 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     var dropDownView:DropDownRestaurantView?
     var dropDownInView:Bool = false
     
+    var nextAndPreviousButtons:NextAndPreviousButtonView?
+    
+    
     // getting the nav bar height //
     var yLocationOfDropDown:CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // ---- initial setup stuff ---- //
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateDropDownMenuUponReload), name: .UIApplicationDidBecomeActive, object: nil)
-        
-        
-        
-        // Setting the height from the top of the navbar to the beginning of the usable //
-        // screen area //
-        yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
-        
-        self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
-        self.reCenterButton.clipsToBounds = true
-        
-        self.workingIndicator.stopAnimating()
-        self.workingIndicator.hidesWhenStopped = true
-        
         
         // setting the reached end of set to false //
         reachedEndOfSet = false
-        
-        
         
         getLocation = LocationServices()
         getLocation!.delegate = self
@@ -74,12 +63,37 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         OptionsSingleton.sharedInstance.delegate = self
         
-        //optionsButton = UIBarButtonItem(title: "Options", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        
+        
+        // creating the next and previous buttons //
+        nextAndPreviousButtons = NextAndPreviousButtonView(frame: CGRect(x: 0, y: self.view.frame.origin.y + (self.view.frame.size.height - 70), width: self.view.frame.size.width, height: 70))
+        nextAndPreviousButtons?.delegate = self
+        self.view.addSubview(nextAndPreviousButtons!)
+        
+        
+        
+        
+        // Setting the height from the top of the navbar to the beginning of the usable //
+        // screen area //
+        yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
+        
+        self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
+        self.reCenterButton.clipsToBounds = true
+        
+        //self.workingIndicator.stopAnimating()
+        //self.workingIndicator.hidesWhenStopped = true
+        
+        
+       
+        
+
+        
+        
+        // ---- adding navigation bar items ---- //
         optionsButton = UIBarButtonItem(image: UIImage(named: "OptionsIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
         optionsButton?.tintColor = Colors.sharedInstance.lightBlue
         optionsButton!.tag = 0
-        
-        //listOfPlaces = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+
         listOfPlaces = UIBarButtonItem(image: UIImage(named: "ListIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
         listOfPlaces?.tintColor = Colors.sharedInstance.lightBlue
         listOfPlaces!.tag = 1
@@ -87,7 +101,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         
         
 
-        // adding in a drop down nav bar box //
+        // ---- adding in a drop down nav bar box ---- //
         dropDownView = DropDownRestaurantView(frame: CGRect(x: 0, y: -yLocationOfDropDown!, width: self.view.frame.width, height: 100))
         dropDownView?.delegate = self
         dropDownView!.backgroundColor = UIColor.black
@@ -96,6 +110,26 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         self.view.addSubview(dropDownView!)
         
     }
+    
+    
+    
+    // buttons return pressed function //
+    func returnButtonPressed(trueForNextFalseForPrevious: Bool) {
+        if(trueForNextFalseForPrevious == true){
+            if(nextAndPreviousButtons != nil){
+                self.goButtonClickedOrSwipedRight()
+            }
+        }else{
+            
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     // this is a bug in iOS 11.2 //
@@ -311,10 +345,22 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         getLocation!.startLocationServices()
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // indicator as to whether or not the network is searching //
     func working(yesNo: Bool) {
         if(yesNo == true){
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                
+                /*
                 self.workingIndicator.startAnimating()
                 self.goButton.isUserInteractionEnabled = false
                 self.goButton.setTitle("Loading...", for: UIControlState.normal)
@@ -322,9 +368,12 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                 self.mainMapView.isUserInteractionEnabled = false
                 
                 self.listOfPlaces?.isEnabled = false
+                */
             }
         }else{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                
+                /*
                 self.workingIndicator.stopAnimating()
                 self.goButton.isUserInteractionEnabled = true
                 self.goButton.setTitle("Go", for: UIControlState.normal)
@@ -337,6 +386,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                     self.newSearch?.gettingRandomRestaurant()
                     self.reachedEndOfSet = false
                 }
+                */
             }
         }
     }
@@ -351,7 +401,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(noResults == false){
             newSearch?.gettingRandomRestaurant()
             self.mainMapView.showsUserLocation = false
-            
+            nextAndPreviousButtons?.makeNextAndPreviousButtonsHalfWidth()
         }else{
             let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
             let okButton:UIAlertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)

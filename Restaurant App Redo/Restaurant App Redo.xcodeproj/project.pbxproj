@@ -21,6 +21,7 @@
 		323A30431FAEDF880073B405 /* PreferredNoGoSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323A30421FAEDF880073B405 /* PreferredNoGoSaving.swift */; };
 		324602051FAF9249001BA247 /* SavePlacesObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324602041FAF9249001BA247 /* SavePlacesObject.swift */; };
 		325F73F61FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F73F51FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift */; };
+		329C42C71FF1AC0200001AF2 /* NextAndPreviousButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */; };
 		32AF0C281FCBD3A700096C07 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AF0C271FCBD3A700096C07 /* CustomAnnotation.swift */; };
 		32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */; };
 		32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */; };
@@ -54,6 +55,7 @@
 		323A30421FAEDF880073B405 /* PreferredNoGoSaving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredNoGoSaving.swift; sourceTree = "<group>"; };
 		324602041FAF9249001BA247 /* SavePlacesObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePlacesObject.swift; sourceTree = "<group>"; };
 		325F73F51FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredNoGoKeywordsTableViewCell.swift; sourceTree = "<group>"; };
+		329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextAndPreviousButtonView.swift; sourceTree = "<group>"; };
 		32AF0C271FCBD3A700096C07 /* CustomAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownRestaurantView.swift; sourceTree = "<group>"; };
 		32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringRestaurantsNearBy.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				329FBC041FA42CB1001124CB /* Pop List view */,
 				321566651F964D8F00C6F3DC /* AppDelegate.swift */,
 				321566671F964D8F00C6F3DC /* ViewController.swift */,
+				329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */,
 				32D3C6051FAD8D4300107E60 /* Annotations */,
 				32F283CA1F9BF4680024CB53 /* OptionsViewControllers */,
 				32D189F61F9690710038BF5A /* LocationStuff */,
@@ -284,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				329C42C71FF1AC0200001AF2 /* NextAndPreviousButtonView.swift in Sources */,
 				32DCB7B31FB4F5630049117B /* NoGoSaving.swift in Sources */,
 				32F283D01F9BF7640024CB53 /* OptionsSingleton.swift in Sources */,
 				32E7ED461FB4AE6A00ACC897 /* Colors.swift in Sources */,

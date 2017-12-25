@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e1j-iA-Jlc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e1j-iA-Jlc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,32 +20,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ix6-Ur-sba">
-                                <rect key="frame" x="0.0" y="591" width="375" height="76"/>
-                                <color key="backgroundColor" red="0.26741905020000001" green="1" blue="0.28389818529999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="76" id="aJ1-op-3KH"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="goButtonOnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E3T-Pl-oOa"/>
-                                </connections>
-                            </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="tI5-6P-il5">
-                                <rect key="frame" x="0.0" y="64" width="375" height="527"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8qn-eU-bez">
-                                <rect key="frame" x="177" y="619" width="20" height="20"/>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="loz-ui-4SS">
-                                <rect key="frame" x="16" y="517" width="60" height="60"/>
+                                <rect key="frame" x="299" y="78" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.2392156869" green="0.67450982329999998" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="1MF-as-VZz"/>
-                                    <constraint firstAttribute="width" constant="60" id="KOx-iv-MNj"/>
+                                    <constraint firstAttribute="width" constant="60" id="L2o-fE-2NQ"/>
+                                    <constraint firstAttribute="width" secondItem="loz-ui-4SS" secondAttribute="height" multiplier="1:1" id="Ns4-ig-0OC"/>
                                 </constraints>
                                 <state key="normal" title="Center">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -57,30 +41,23 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tI5-6P-il5" secondAttribute="trailing" id="7Rj-rJ-bJt"/>
-                            <constraint firstItem="loz-ui-4SS" firstAttribute="top" secondItem="tI5-6P-il5" secondAttribute="bottom" constant="-74" id="BYG-v8-TyK"/>
-                            <constraint firstItem="tI5-6P-il5" firstAttribute="leading" secondItem="loz-ui-4SS" secondAttribute="trailing" constant="-76" id="Ijb-TJ-KSP"/>
+                            <constraint firstItem="tI5-6P-il5" firstAttribute="top" secondItem="loz-ui-4SS" secondAttribute="bottom" constant="-74" id="9Fk-6U-Kr3"/>
                             <constraint firstItem="tI5-6P-il5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MD7-sr-r9S"/>
-                            <constraint firstItem="ix6-Ur-sba" firstAttribute="top" secondItem="tI5-6P-il5" secondAttribute="bottom" id="MsO-Ft-x4v"/>
                             <constraint firstItem="tI5-6P-il5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="NLg-fz-IjJ"/>
-                            <constraint firstItem="ix6-Ur-sba" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Rmq-ZL-MVa"/>
-                            <constraint firstItem="ix6-Ur-sba" firstAttribute="centerY" secondItem="8qn-eU-bez" secondAttribute="centerY" id="TTd-BW-fhs"/>
-                            <constraint firstItem="ix6-Ur-sba" firstAttribute="centerX" secondItem="8qn-eU-bez" secondAttribute="centerX" id="VVC-6I-8MF"/>
-                            <constraint firstItem="tI5-6P-il5" firstAttribute="trailing" secondItem="ix6-Ur-sba" secondAttribute="trailing" id="dkd-3d-hVO"/>
-                            <constraint firstItem="tI5-6P-il5" firstAttribute="leading" secondItem="ix6-Ur-sba" secondAttribute="leading" id="myS-fE-0UT"/>
+                            <constraint firstItem="loz-ui-4SS" firstAttribute="leading" secondItem="tI5-6P-il5" secondAttribute="trailing" constant="-76" id="ODK-H1-eK2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="tI5-6P-il5" secondAttribute="bottom" id="gtm-bs-jZE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Kaf-y9-j9r"/>
                     <connections>
-                        <outlet property="goButton" destination="ix6-Ur-sba" id="ZE1-4O-rUq"/>
                         <outlet property="mainMapView" destination="tI5-6P-il5" id="fnA-NR-00g"/>
                         <outlet property="reCenterButton" destination="loz-ui-4SS" id="RxY-On-XQc"/>
-                        <outlet property="workingIndicator" destination="8qn-eU-bez" id="sSZ-kD-QgF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="519" y="134"/>
+            <point key="canvasLocation" x="517.60000000000002" y="133.5832083958021"/>
         </scene>
         <!--Options View Controller-->
         <scene sceneID="eCD-5M-5YL">
