@@ -41,6 +41,7 @@ class NextAndPreviousButtonView: UIView {
         previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height))
         previousButton?.backgroundColor = Colors.sharedInstance.lightBlue
         previousButton?.setTitle("Previous", for: UIControlState.normal)
+        previousButton?.setTitleColor(UIColor.black, for: UIControlState.highlighted)
         previousButton?.addTarget(self, action: #selector(self.previousButtonOnClick), for: UIControlEvents.touchUpInside)
         self.addSubview(previousButton!)
     }
@@ -65,7 +66,7 @@ class NextAndPreviousButtonView: UIView {
     }
     
     @objc func previousButtonOnClick(){
-        print("previous button clicked")
+        self.delegate?.returnButtonPressed(trueForNextFalseForPrevious: false)
     }
 
 }

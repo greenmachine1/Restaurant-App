@@ -120,7 +120,14 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
                 self.goButtonClickedOrSwipedRight()
             }
         }else{
-            
+            print("this level")
+            if(nextAndPreviousButtons != nil){
+                print("taht level")
+                if(newSearch != nil){
+                    print("and here...")
+                    newSearch?.gettingPreviousRestaurant()
+                }
+            }
         }
     }
     

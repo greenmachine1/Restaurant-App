@@ -30,6 +30,7 @@ class GatheringRestaurantsNearBy: NSObject{
     var dataTask: URLSessionDataTask?
 
     var arrayOfRestaurants:[SavePlacesObject] = []
+    var finalArrayOfRestaurants:[SavePlacesObject] = []
     
     var arrayOfRandomNumbersGenerated:[Int] = []
     
@@ -40,8 +41,7 @@ class GatheringRestaurantsNearBy: NSObject{
     // need to setup a page token to get more than just these results everytime //
     func newSearch(_location:CLLocation){
         
-        
-        
+        finalArrayOfRestaurants.removeAll()
         _locationOfUser = _location
         
         // gets the miles * meters //
@@ -270,7 +270,6 @@ class GatheringRestaurantsNearBy: NSObject{
     
     
     func gettingRandomRestaurant(){
-        
         self.arrayOfRestaurants = OptionsSingleton.sharedInstance.getPlaces()
 
         if(self.arrayOfRestaurants.count != 0){
@@ -282,6 +281,7 @@ class GatheringRestaurantsNearBy: NSObject{
                     randomInitialNumber = Int(arc4random_uniform(UInt32(self.arrayOfRestaurants.count) + 0))
                 }
                 self.arrayOfRandomNumbersGenerated.append(randomInitialNumber)
+                self.finalArrayOfRestaurants.append(self.arrayOfRestaurants[randomInitialNumber])
                 self.delegate?.returnRestaurantInfo(info: self.arrayOfRestaurants[randomInitialNumber])
 
             }else{
@@ -290,6 +290,13 @@ class GatheringRestaurantsNearBy: NSObject{
                 self.arrayOfRestaurants.removeAll()
                 self.delegate?.reachedTheEndOfSet()
             }
+        }
+    }
+    
+    
+    func gettingPreviousRestaurant(){
+        for items in self.finalArrayOfRestaurants{
+            print(items)
         }
     }
     
