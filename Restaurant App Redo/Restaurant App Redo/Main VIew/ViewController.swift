@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaurauntInfoAndLocationDelegate,*/ ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation{
+class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaurauntInfoAndLocationDelegate,*/ ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation, ReturnRecenterButtonsDelegate{
 
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
@@ -22,8 +22,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     var optionsUpdatedBool:Bool = false
     var noResults:Bool = false
     var popUpListViewOpen:Bool = false
-    
-    //var newSearch:GatheringRestaurantsNearBy?
+
     var newSearch:GatheringPlacesNear?
     var allRestaurantInfo:[SavePlacesObject] = []
     var currentRestaurant:SavePlacesObject?
@@ -32,7 +31,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     var listOfPlaces:UIBarButtonItem?
     var optionsButton:UIBarButtonItem?
-    var recenterButton:UIBarButtonItem?
     
     var annotation:CustomAnnotation?
     
@@ -41,6 +39,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     var nextAndPreviousButtons:NextAndPreviousButtonView?
     var nextAndPreviousButtonsOut:Bool?
+    
+    var recenterButtonCluster:RecenterButtonsView?
     
     
     // getting the nav bar height //
@@ -98,13 +98,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         listOfPlaces = UIBarButtonItem(image: UIImage(named: "ListIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
         listOfPlaces?.tintColor = Colors.sharedInstance.lightBlue
         listOfPlaces!.tag = 1
-        
-        
-        recenterButton = UIBarButtonItem(image: UIImage(named: "ReCenterIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
-        recenterButton?.tintColor = Colors.sharedInstance.lightBlue
-        recenterButton?.tag = 2
-        
-        self.navigationItem.rightBarButtonItems = [optionsButton!, listOfPlaces!, recenterButton!]
+
+        self.navigationItem.rightBarButtonItems = [optionsButton!, listOfPlaces!]
         
         
 
@@ -116,6 +111,27 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
 
         self.view.addSubview(dropDownView!)
         
+        // creating the recenter button cluster which holds the recenter button and adding a new default location //
+        // buttons //
+        recenterButtonCluster = RecenterButtonsView(frame: CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + yLocationOfDropDown! + 20, width: 50, height: 100))
+        recenterButtonCluster?.delegate = self
+        recenterButtonCluster?.backgroundColor = Colors.sharedInstance.lightBlue
+        recenterButtonCluster?.layer.cornerRadius = (self.recenterButtonCluster?.frame.size.width)! / 2
+        recenterButtonCluster?.clipsToBounds = true
+        recenterButtonCluster?.layer.borderColor = UIColor.white.cgColor
+        recenterButtonCluster?.layer.borderWidth = 1.0
+        
+        
+        self.view.addSubview(recenterButtonCluster!)
+        
+        
+    }
+    
+    func recenterButtonClicked() {
+        self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
+        self.mainMapView.showsUserLocation = true
+        mainMapView.removeAnnotations(mainMapView.annotations)
+        getLocation!.startLocationServices()
     }
     
     
@@ -197,6 +213,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             if(dropDownInView == true){
                 UIView.animate(withDuration: 0.5, animations: {
                     self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                    // bringing the recenter button cluster back up to the top of the screen //
+                    self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + self.self.yLocationOfDropDown! + 20, width: 50, height: 100)
                     
                 }, completion: { (complete) in
                     self.dropDownInView = false
@@ -224,12 +242,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         // list view touched //
         }else if(sender.tag == 1){
             self.createListViewPopUp()
-        }else{
-            //newSearch?.eraseAllInfo()
-            self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
-            self.mainMapView.showsUserLocation = true
-            mainMapView.removeAnnotations(mainMapView.annotations)
-            getLocation!.startLocationServices()
         }
     }
     
@@ -285,6 +297,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             UIView.animate(withDuration: 0.5, animations: {
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
                 self.dropDownInView = true
+                
+                self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! /*+ self.yLocationOfDropDown!*/ + 20, width: 50, height: 100)
+                
             })
         }
         
@@ -795,6 +810,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             
             UIView.animate(withDuration: 0.50, animations: {
                 self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! /*+ self.yLocationOfDropDown!*/ + 20, width: 50, height: 100)
                 self.dropDownInView = true
                 self.dropDownView?.newUpdateLabels(main: selectedItem.name!, rating: selectedItem.rating!, price: selectedItem.price!, distance: selectedItem.distanceFromUser!, open: selectedItem.open!)
             

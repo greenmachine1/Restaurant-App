@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3213778C2001EFAF00C7E4A7 /* RecenterButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3213778B2001EFAF00C7E4A7 /* RecenterButtonsView.swift */; };
 		321392781FFB313F00971720 /* GatheringPlacesNear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321392771FFB313F00971720 /* GatheringPlacesNear.swift */; };
 		321566661F964D8F00C6F3DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321566651F964D8F00C6F3DC /* AppDelegate.swift */; };
 		321566681F964D8F00C6F3DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321566671F964D8F00C6F3DC /* ViewController.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3213778B2001EFAF00C7E4A7 /* RecenterButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecenterButtonsView.swift; sourceTree = "<group>"; };
 		321392771FFB313F00971720 /* GatheringPlacesNear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringPlacesNear.swift; sourceTree = "<group>"; };
 		321566621F964D8F00C6F3DC /* Restaurant App Redo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Restaurant App Redo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		321566651F964D8F00C6F3DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +99,16 @@
 			path = OptionsBackend;
 			sourceTree = "<group>";
 		};
+		3213778A2001EF6400C7E4A7 /* Main VIew */ = {
+			isa = PBXGroup;
+			children = (
+				321566671F964D8F00C6F3DC /* ViewController.swift */,
+				329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */,
+				3213778B2001EFAF00C7E4A7 /* RecenterButtonsView.swift */,
+			);
+			path = "Main VIew";
+			sourceTree = "<group>";
+		};
 		321566591F964D8F00C6F3DC = {
 			isa = PBXGroup;
 			children = (
@@ -123,8 +135,7 @@
 				321566711F964D8F00C6F3DC /* Info.plist */,
 				329FBC041FA42CB1001124CB /* Pop List view */,
 				321566651F964D8F00C6F3DC /* AppDelegate.swift */,
-				321566671F964D8F00C6F3DC /* ViewController.swift */,
-				329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */,
+				3213778A2001EF6400C7E4A7 /* Main VIew */,
 				32D3C6051FAD8D4300107E60 /* Annotations */,
 				32F283CA1F9BF4680024CB53 /* OptionsViewControllers */,
 				32D189F61F9690710038BF5A /* LocationStuff */,
@@ -310,6 +321,7 @@
 				321566781F964EC600C6F3DC /* LocationServices.swift in Sources */,
 				32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */,
 				32EBAA8F1F9A408800BC1E3B /* OptionsViewController.swift in Sources */,
+				3213778C2001EFAF00C7E4A7 /* RecenterButtonsView.swift in Sources */,
 				32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */,
 				322E6EA11FA2DE7100634905 /* ListView.swift in Sources */,
 				32F3C1FA1FAE4E41005A378B /* CustomCalloutView.swift in Sources */,
