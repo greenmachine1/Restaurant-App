@@ -9,12 +9,10 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestaurauntInfoAndLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate{
+class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaurauntInfoAndLocationDelegate,*/ ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation{
 
     @IBOutlet weak var mainMapView: MKMapView!
-    //@IBOutlet weak var goButton: UIButton!
-    @IBOutlet weak var reCenterButton: UIButton!
-    //@IBOutlet weak var workingIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
     
     var getLocation:LocationServices?
     var _location:CLLocation?
@@ -25,7 +23,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     var noResults:Bool = false
     var popUpListViewOpen:Bool = false
     
-    var newSearch:GatheringRestaurantsNearBy?
+    //var newSearch:GatheringRestaurantsNearBy?
+    var newSearch:GatheringPlacesNear?
     var allRestaurantInfo:[SavePlacesObject] = []
     var currentRestaurant:SavePlacesObject?
     
@@ -33,6 +32,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     var listOfPlaces:UIBarButtonItem?
     var optionsButton:UIBarButtonItem?
+    var recenterButton:UIBarButtonItem?
     
     var annotation:CustomAnnotation?
     
@@ -40,6 +40,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     var dropDownInView:Bool = false
     
     var nextAndPreviousButtons:NextAndPreviousButtonView?
+    var nextAndPreviousButtonsOut:Bool?
     
     
     // getting the nav bar height //
@@ -77,11 +78,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         // screen area //
         yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
         
-        self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
-        self.reCenterButton.clipsToBounds = true
+        //self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
+        //self.reCenterButton.clipsToBounds = true
         
-        //self.workingIndicator.stopAnimating()
-        //self.workingIndicator.hidesWhenStopped = true
+        self.workingIndicator.stopAnimating()
+        self.workingIndicator.hidesWhenStopped = true
         
         
        
@@ -97,7 +98,13 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         listOfPlaces = UIBarButtonItem(image: UIImage(named: "ListIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
         listOfPlaces?.tintColor = Colors.sharedInstance.lightBlue
         listOfPlaces!.tag = 1
-        self.navigationItem.rightBarButtonItems = [optionsButton!, listOfPlaces!]
+        
+        
+        recenterButton = UIBarButtonItem(image: UIImage(named: "ReCenterIcon"), style: UIBarButtonItemStyle.done, target: self, action: #selector(self.navBarButtonsOnClick))
+        recenterButton?.tintColor = Colors.sharedInstance.lightBlue
+        recenterButton?.tag = 2
+        
+        self.navigationItem.rightBarButtonItems = [optionsButton!, listOfPlaces!, recenterButton!]
         
         
 
@@ -115,20 +122,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     // buttons return pressed function //
     func returnButtonPressed(trueForNextFalseForPrevious: Bool) {
-        if(trueForNextFalseForPrevious == true){
-            if(nextAndPreviousButtons != nil){
-                self.goButtonClickedOrSwipedRight()
-            }
-        }else{
-            print("this level")
-            if(nextAndPreviousButtons != nil){
-                print("taht level")
-                if(newSearch != nil){
-                    print("and here...")
-                    newSearch?.gettingPreviousRestaurant()
-                }
-            }
-        }
+        self.goButtonClickedOrSwipedRight(swipedLeftIsFalseSwipedRightIsTrue: trueForNextFalseForPrevious)
     }
     
     
@@ -183,11 +177,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     // when the user swipes left or right on the top bar //
     // do stuff //
     func returnSwipeDirection(leftOrRight: Bool) {
-        if(leftOrRight == true){
-            self.goButtonClickedOrSwipedRight()
-        }else{
-            print("swiped Left")
-        }
+        self.goButtonClickedOrSwipedRight(swipedLeftIsFalseSwipedRightIsTrue: leftOrRight)
     }
     
     
@@ -201,15 +191,16 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
     override func viewWillAppear(_ animated: Bool) {
         
-        
         if(optionsUpdatedBool == true){
             getLocation?.startLocationServices()
             optionsUpdatedBool = false
             if(dropDownInView == true){
                 UIView.animate(withDuration: 0.5, animations: {
                     self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+                    
                 }, completion: { (complete) in
                     self.dropDownInView = false
+                    self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
                 })
             }
         }
@@ -230,10 +221,15 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(sender.tag == 0){
             let optionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "Options") as? OptionsViewController
             self.navigationController?.pushViewController(optionsViewController!, animated: true)
-            
         // list view touched //
-        }else{
+        }else if(sender.tag == 1){
             self.createListViewPopUp()
+        }else{
+            //newSearch?.eraseAllInfo()
+            self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
+            self.mainMapView.showsUserLocation = true
+            mainMapView.removeAnnotations(mainMapView.annotations)
+            getLocation!.startLocationServices()
         }
     }
     
@@ -255,12 +251,12 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         _region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
         self.mainMapView.showsUserLocation = true
-        
-        newSearch = GatheringRestaurantsNearBy()
-        newSearch!.delegate = self
+
+        newSearch = GatheringPlacesNear()
+        newSearch?.delegate = self
         
         if(_location != nil){
-            newSearch!.newSearch(_location: _location!)
+            newSearch!.search(location: _location!)
         }
     }
 
@@ -346,7 +342,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
 
     
     @IBAction func reCenterOnClick(_ sender: UIButton) {
-        newSearch?.eraseAllInfo()
+        //newSearch?.eraseAllInfo()
+        self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
         self.mainMapView.showsUserLocation = true
         mainMapView.removeAnnotations(mainMapView.annotations)
         getLocation!.startLocationServices()
@@ -367,53 +364,65 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
         if(yesNo == true){
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 
-                /*
+                
                 self.workingIndicator.startAnimating()
-                self.goButton.isUserInteractionEnabled = false
-                self.goButton.setTitle("Loading...", for: UIControlState.normal)
-                self.reCenterButton.isUserInteractionEnabled = false
+                //self.goButton.isUserInteractionEnabled = false
+                //self.goButton.setTitle("Loading...", for: UIControlState.normal)
+                //self.reCenterButton.isUserInteractionEnabled = false
                 self.mainMapView.isUserInteractionEnabled = false
                 
                 self.listOfPlaces?.isEnabled = false
-                */
+                
             }
         }else{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 
-                /*
                 self.workingIndicator.stopAnimating()
-                self.goButton.isUserInteractionEnabled = true
-                self.goButton.setTitle("Go", for: UIControlState.normal)
-                self.reCenterButton.isUserInteractionEnabled = true
+                //self.goButton.isUserInteractionEnabled = true
+                //self.goButton.setTitle("Go", for: UIControlState.normal)
+                //self.reCenterButton.isUserInteractionEnabled = true
                 self.mainMapView.isUserInteractionEnabled = true
                 
                 self.listOfPlaces?.isEnabled = true
                 
                 if(self.reachedEndOfSet == true){
-                    self.newSearch?.gettingRandomRestaurant()
+                    self.newSearch?.gettingNextRestaurant()
                     self.reachedEndOfSet = false
                 }
-                */
+                
             }
         }
     }
+
     
     
-    @IBAction func goButtonOnClick(_ sender: UIButton) {
-        self.goButtonClickedOrSwipedRight()
-    }
-    
-    
-    func goButtonClickedOrSwipedRight(){
-        if(noResults == false){
-            newSearch?.gettingRandomRestaurant()
-            self.mainMapView.showsUserLocation = false
-            nextAndPreviousButtons?.makeNextAndPreviousButtonsHalfWidth()
+    func goButtonClickedOrSwipedRight(swipedLeftIsFalseSwipedRightIsTrue:Bool){
+        
+        // swiped right //
+        if(swipedLeftIsFalseSwipedRightIsTrue == true){
+            if(noResults == false){
+            
+                newSearch?.gettingNextRestaurant()
+                self.mainMapView.showsUserLocation = false
+                
+                if(nextAndPreviousButtonsOut == false){
+                    print("this is happening 1 ")
+                    nextAndPreviousButtons?.makeNextAndPreviousButtonsHalfWidth()
+                    nextAndPreviousButtonsOut = true
+                }
+                
+            }else{
+                let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
+                let okButton:UIAlertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+                alert.addAction(okButton)
+                self.present(alert, animated: true, completion: nil)
+            }
+        // swiped left //
         }else{
-            let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
-            let okButton:UIAlertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-            alert.addAction(okButton)
-            self.present(alert, animated: true, completion: nil)
+            if(noResults == false){
+                newSearch?.gettingPreviousRestaurant()
+                self.mainMapView.showsUserLocation = false
+            }
         }
     }
     
@@ -712,15 +721,20 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnRestauraun
     
 
     func reachedTheEndOfSet() {
-        newSearch!.newSearch(_location: _location!)
+        newSearch?.search(location: _location!)
         reachedEndOfSet = true
     }
     
     
+    func reachedBeginningOfSet() {
+        self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
+    }
     
     
-    
-    
+    func nextButtonAndPreviousButtonsAreOut(bothOut: Bool) {
+        print("called ->\(bothOut)")
+        nextAndPreviousButtonsOut = bothOut
+    }
     
     
     

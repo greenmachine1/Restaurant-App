@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,28 +22,17 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="tI5-6P-il5">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="loz-ui-4SS">
-                                <rect key="frame" x="299" y="78" width="60" height="60"/>
-                                <color key="backgroundColor" red="0.2392156869" green="0.67450982329999998" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="L2o-fE-2NQ"/>
-                                    <constraint firstAttribute="width" secondItem="loz-ui-4SS" secondAttribute="height" multiplier="1:1" id="Ns4-ig-0OC"/>
-                                </constraints>
-                                <state key="normal" title="Center">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="reCenterOnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Eef-k2-vc1"/>
-                                </connections>
-                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pIK-ha-2Ob">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tI5-6P-il5" secondAttribute="trailing" id="7Rj-rJ-bJt"/>
-                            <constraint firstItem="tI5-6P-il5" firstAttribute="top" secondItem="loz-ui-4SS" secondAttribute="bottom" constant="-74" id="9Fk-6U-Kr3"/>
                             <constraint firstItem="tI5-6P-il5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MD7-sr-r9S"/>
                             <constraint firstItem="tI5-6P-il5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="NLg-fz-IjJ"/>
-                            <constraint firstItem="loz-ui-4SS" firstAttribute="leading" secondItem="tI5-6P-il5" secondAttribute="trailing" constant="-76" id="ODK-H1-eK2"/>
+                            <constraint firstItem="pIK-ha-2Ob" firstAttribute="centerX" secondItem="tI5-6P-il5" secondAttribute="centerX" id="NTg-Fb-5dv"/>
+                            <constraint firstItem="pIK-ha-2Ob" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="UtZ-xg-Ifa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="tI5-6P-il5" secondAttribute="bottom" id="gtm-bs-jZE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -52,7 +40,7 @@
                     <navigationItem key="navigationItem" id="Kaf-y9-j9r"/>
                     <connections>
                         <outlet property="mainMapView" destination="tI5-6P-il5" id="fnA-NR-00g"/>
-                        <outlet property="reCenterButton" destination="loz-ui-4SS" id="RxY-On-XQc"/>
+                        <outlet property="workingIndicator" destination="pIK-ha-2Ob" id="wTc-HE-L8Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		321392781FFB313F00971720 /* GatheringPlacesNear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321392771FFB313F00971720 /* GatheringPlacesNear.swift */; };
 		321566661F964D8F00C6F3DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321566651F964D8F00C6F3DC /* AppDelegate.swift */; };
 		321566681F964D8F00C6F3DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321566671F964D8F00C6F3DC /* ViewController.swift */; };
 		3215666B1F964D8F00C6F3DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 321566691F964D8F00C6F3DC /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		321392771FFB313F00971720 /* GatheringPlacesNear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringPlacesNear.swift; sourceTree = "<group>"; };
 		321566621F964D8F00C6F3DC /* Restaurant App Redo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Restaurant App Redo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		321566651F964D8F00C6F3DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		321566671F964D8F00C6F3DC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			children = (
 				321566771F964EC600C6F3DC /* LocationServices.swift */,
 				32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */,
+				321392771FFB313F00971720 /* GatheringPlacesNear.swift */,
 				32D189F71F96911D0038BF5A /* RestaurantInfo.swift */,
 			);
 			path = LocationStuff;
@@ -299,6 +302,7 @@
 				322E6EA51FA2F6FE00634905 /* ListViewTableViewCell.swift in Sources */,
 				32EBAA931F9A435E00BC1E3B /* KeywordsTableViewCell.swift in Sources */,
 				323A303D1FAECBA50073B405 /* PreferredNoGoViewController.swift in Sources */,
+				321392781FFB313F00971720 /* GatheringPlacesNear.swift in Sources */,
 				324602051FAF9249001BA247 /* SavePlacesObject.swift in Sources */,
 				32DCB7B11FB4F20F0049117B /* NoGoViewController.swift in Sources */,
 				32AF0C281FCBD3A700096C07 /* CustomAnnotation.swift in Sources */,

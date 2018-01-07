@@ -10,6 +10,7 @@ import UIKit
 
 @objc protocol ReturnButtonPressedDelegate{
     func returnButtonPressed(trueForNextFalseForPrevious:Bool)
+    func nextButtonAndPreviousButtonsAreOut(bothOut:Bool)
 }
 
 class NextAndPreviousButtonView: UIView {
@@ -44,6 +45,22 @@ class NextAndPreviousButtonView: UIView {
         previousButton?.setTitleColor(UIColor.black, for: UIControlState.highlighted)
         previousButton?.addTarget(self, action: #selector(self.previousButtonOnClick), for: UIControlEvents.touchUpInside)
         self.addSubview(previousButton!)
+        
+        self.previousButtonIsOut = false
+        self.delegate?.nextButtonAndPreviousButtonsAreOut(bothOut: false)
+    }
+    
+    func slideNextButtonBackToFullLength(){
+        if(nextButton != nil && previousButton != nil){
+            if(self.previousButtonIsOut == true){
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.nextButton?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
+                    self.previousButton?.frame = CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height)
+                    self.previousButtonIsOut = false
+                    self.delegate?.nextButtonAndPreviousButtonsAreOut(bothOut: false)
+                })
+            }
+        }
     }
     
     
@@ -55,6 +72,7 @@ class NextAndPreviousButtonView: UIView {
                     self.nextButton?.frame = CGRect(x: self.frame.size.width / 2, y: 0, width: self.frame.size.width / 2, height: 70)
                     self.previousButton?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width / 2, height: 70)
                     self.previousButtonIsOut = true
+                    self.delegate?.nextButtonAndPreviousButtonsAreOut(bothOut: true)
                 })
             }
         }
@@ -62,7 +80,6 @@ class NextAndPreviousButtonView: UIView {
     
     @objc func nextButtonOnClick(){
         self.delegate?.returnButtonPressed(trueForNextFalseForPrevious: true)
-        //self.makeNextAndPreviousButtonsHalfWidth()
     }
     
     @objc func previousButtonOnClick(){

@@ -242,16 +242,13 @@ class OptionsSingleton: NSObject {
         var index = 0
         
         for (_index, _item) in sharedArrayOfPlaces.enumerated(){
-            print("here...1")
             if(_item.name == itemToRemove.name && _item.isSaved == true){
-                print("here...2")
                 exists = true
                 index = _index
             }
         }
         
         if(exists == true){
-            print("removed.... here")
             self.sharedArrayOfPlaces.remove(at: index)
         }
         
