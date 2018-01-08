@@ -382,7 +382,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                 self.mainMapView.isUserInteractionEnabled = false
                 
                 self.listOfPlaces?.isEnabled = false
-                
+                self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
             }
         }else{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -432,11 +432,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                 if(newSearch!.numberOn != nil){
                     print(newSearch!.numberOn!)
                     if(newSearch!.numberOn! != 1){
-                        print("in here 1")
                         newSearch?.gettingPreviousRestaurant()
                         self.mainMapView.showsUserLocation = false
                     }else{
-                        print("in here 2")
                         newSearch?.gettingPreviousRestaurant()
                         nextAndPreviousButtons?.slideNextButtonBackToFullLength()
                         nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
@@ -753,7 +751,6 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     
     func nextButtonAndPreviousButtonsAreOut(bothOut: Bool) {
-        print("called ->\(bothOut)")
         nextAndPreviousButtonsOut = bothOut
     }
     
