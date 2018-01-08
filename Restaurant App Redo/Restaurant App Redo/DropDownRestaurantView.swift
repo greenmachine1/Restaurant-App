@@ -46,11 +46,7 @@ class DropDownRestaurantView: UIView {
     }
     
     func drawView(){
-        
-        self.layer.cornerRadius = 5.0
-        self.clipsToBounds = true
-        
-        
+
         mainLabel = UILabel(frame: CGRect(x: 10, y: 0, width: self.frame.size.width - 20, height: 30))
         mainLabel?.backgroundColor = UIColor.clear
         mainLabel?.layer.cornerRadius = 5.0

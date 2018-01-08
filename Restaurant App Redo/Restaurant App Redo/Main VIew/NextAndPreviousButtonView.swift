@@ -33,7 +33,7 @@ class NextAndPreviousButtonView: UIView {
     func createNextButtonWithPreviousButtonHidden(){
         nextButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height))
         nextButton?.backgroundColor = Colors.sharedInstance.lightGreen
-        nextButton?.setTitle("Next", for: UIControlState.normal)
+        nextButton?.setTitle("Go!", for: UIControlState.normal)
         nextButton?.setTitleColor(UIColor.black, for: UIControlState.highlighted)
         nextButton?.addTarget(self, action: #selector(self.nextButtonOnClick), for: UIControlEvents.touchUpInside)
         self.addSubview(nextButton!)
@@ -76,6 +76,10 @@ class NextAndPreviousButtonView: UIView {
                 })
             }
         }
+    }
+    
+    func updateNextButtonTitle(title:String){
+        self.nextButton?.setTitle(title, for: UIControlState.normal)
     }
     
     @objc func nextButtonOnClick(){

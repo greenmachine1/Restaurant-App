@@ -48,6 +48,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         // ---- initial setup stuff ---- //
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateDropDownMenuUponReload), name: .UIApplicationDidBecomeActive, object: nil)
@@ -129,7 +130,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     func recenterButtonClicked() {
         self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
+        self.nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
         self.mainMapView.showsUserLocation = true
+        self.raiseDropDownView()
         mainMapView.removeAnnotations(mainMapView.annotations)
         getLocation!.startLocationServices()
     }
@@ -142,6 +145,27 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     }
     
     
+    func lowerDropDownView(){
+        UIView.animate(withDuration: 0.5, animations: {
+            self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+            self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + 20, width: 50, height: 100)
+            self.dropDownInView = true
+        }) { (complete) in
+            self.dropDownInView = true
+        }
+    }
+    
+    // pulling back the drop down view //
+    func raiseDropDownView(){
+        UIView.animate(withDuration: 0.5, animations: {
+            self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
+            
+            // bringing the recenter button cluster back up to the top of the screen //
+            self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + self.self.yLocationOfDropDown! + 20, width: 50, height: 100)
+        }) { (completed) in
+            self.dropDownInView = false
+        }
+    }
     
     
     
@@ -210,20 +234,15 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         if(optionsUpdatedBool == true){
             getLocation?.startLocationServices()
             optionsUpdatedBool = false
+            
+            self.raiseDropDownView()
+            self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
+            self.nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
+            
             if(dropDownInView == true){
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.dropDownView?.frame = CGRect(x: 0, y: -self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
-                    // bringing the recenter button cluster back up to the top of the screen //
-                    self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + self.self.yLocationOfDropDown! + 20, width: 50, height: 100)
-                    
-                }, completion: { (complete) in
-                    self.dropDownInView = false
-                    self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
-                })
+                self.raiseDropDownView()
             }
         }
-        
-        
         for annotation in self.mainMapView.annotations{
             if(annotation.isKind(of: CustomAnnotation.self)){
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Reload"), object: nil, userInfo: ["CurrentPlace":self.currentRestaurant!])
@@ -288,19 +307,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     // returning the place info //
     func returnRestaurantInfo(info: SavePlacesObject) {
-        
         currentRestaurant = info
-
         dropDownView?.newUpdateLabels(main: info.name!, rating: info.rating!, price: info.price!, distance: info.distanceFromUser!, open: info.open!)
         
         if(dropDownInView == false){
-            UIView.animate(withDuration: 0.5, animations: {
-                self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
-                self.dropDownInView = true
-                
-                self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! /*+ self.yLocationOfDropDown!*/ + 20, width: 50, height: 100)
-                
-            })
+            self.lowerDropDownView()
         }
         
         // updating the popUpView //
@@ -353,18 +364,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         
         mainMapView.addAnnotation(annotation!)
     }
-    
 
-    
-    @IBAction func reCenterOnClick(_ sender: UIButton) {
-        //newSearch?.eraseAllInfo()
-        self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
-        self.mainMapView.showsUserLocation = true
-        mainMapView.removeAnnotations(mainMapView.annotations)
-        getLocation!.startLocationServices()
-    }
-    
-    
     
     
     
@@ -378,12 +378,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     func working(yesNo: Bool) {
         if(yesNo == true){
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                
-                
                 self.workingIndicator.startAnimating()
-                //self.goButton.isUserInteractionEnabled = false
-                //self.goButton.setTitle("Loading...", for: UIControlState.normal)
-                //self.reCenterButton.isUserInteractionEnabled = false
                 self.mainMapView.isUserInteractionEnabled = false
                 
                 self.listOfPlaces?.isEnabled = false
@@ -391,11 +386,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             }
         }else{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                
                 self.workingIndicator.stopAnimating()
-                //self.goButton.isUserInteractionEnabled = true
-                //self.goButton.setTitle("Go", for: UIControlState.normal)
-                //self.reCenterButton.isUserInteractionEnabled = true
                 self.mainMapView.isUserInteractionEnabled = true
                 
                 self.listOfPlaces?.isEnabled = true
@@ -419,13 +410,16 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             
                 newSearch?.gettingNextRestaurant()
                 self.mainMapView.showsUserLocation = false
-                
-                if(nextAndPreviousButtonsOut == false){
-                    print("this is happening 1 ")
-                    nextAndPreviousButtons?.makeNextAndPreviousButtonsHalfWidth()
-                    nextAndPreviousButtonsOut = true
+
+                nextAndPreviousButtons?.updateNextButtonTitle(title: "Next")
+                nextAndPreviousButtonsOut = true
+                if(newSearch!.numberOn != nil){
+                    if(newSearch!.numberOn! >= 1){
+                        nextAndPreviousButtons?.makeNextAndPreviousButtonsHalfWidth()
+                        nextAndPreviousButtons?.updateNextButtonTitle(title: "Next")
+                        nextAndPreviousButtonsOut = true
+                    }
                 }
-                
             }else{
                 let alert:UIAlertController = UIAlertController(title: "No results Found", message: "Try adjusting your options for better results", preferredStyle: UIAlertControllerStyle.alert)
                 let okButton:UIAlertAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
@@ -435,8 +429,20 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         // swiped left //
         }else{
             if(noResults == false){
-                newSearch?.gettingPreviousRestaurant()
-                self.mainMapView.showsUserLocation = false
+                if(newSearch!.numberOn != nil){
+                    print(newSearch!.numberOn!)
+                    if(newSearch!.numberOn! != 1){
+                        print("in here 1")
+                        newSearch?.gettingPreviousRestaurant()
+                        self.mainMapView.showsUserLocation = false
+                    }else{
+                        print("in here 2")
+                        newSearch?.gettingPreviousRestaurant()
+                        nextAndPreviousButtons?.slideNextButtonBackToFullLength()
+                        nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
+                        nextAndPreviousButtonsOut = false
+                    }
+                }
             }
         }
     }
@@ -558,7 +564,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     
     func saveInfoCalled(){
-        let alert = UIAlertController(title: "Do you wish to Save this to your 'Saved Places' List?", message: "Doing so will Save the restaurant to your 'Saved Places' list found in Options.  Turning this on in Options will override your search results and will only pull from this list.", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Do you wish to Save this to your 'Saved Places' List?", message: "Doing so will Save the restaurant to your 'Saved Places' list found in Options.", preferredStyle: UIAlertControllerStyle.alert)
         let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { (action) in
             if(self.currentRestaurant != nil){
                 let newSave:PreferredNoGoSaving = PreferredNoGoSaving(info: self.currentRestaurant!)
@@ -607,7 +613,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
 
     
     func noGoCalled(){
-        let alert = UIAlertController(title: "Do you wish to save this to your 'Blocked Places' List?", message: "Doing so will Save the restaurant to your 'Blocked Places' list found in Options.  Turning this on in Options will make it so the Restaurant will not appear in your search results.", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Do you wish to save this to your 'Blocked Places' List?", message: "Doing so will Save the restaurant to your 'Blocked Places' list found in Options.", preferredStyle: UIAlertControllerStyle.alert)
         let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { (action) in
             let noGoSave:NoGoSaving = NoGoSaving(info: self.currentRestaurant!)
             noGoSave.delegate = self
@@ -807,14 +813,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                 dropDownView?.newUpdateLabels(main: selectedItem.name!, rating: selectedItem.rating!, price: selectedItem.price!, distance: selectedItem.distanceFromUser!, open: selectedItem.open!)
             }
         }else{
-            
-            UIView.animate(withDuration: 0.50, animations: {
-                self.dropDownView?.frame = CGRect(x: 0, y: self.yLocationOfDropDown!, width: self.view.frame.width, height: 100)
-                self.recenterButtonCluster?.frame = CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! /*+ self.yLocationOfDropDown!*/ + 20, width: 50, height: 100)
-                self.dropDownInView = true
-                self.dropDownView?.newUpdateLabels(main: selectedItem.name!, rating: selectedItem.rating!, price: selectedItem.price!, distance: selectedItem.distanceFromUser!, open: selectedItem.open!)
-            
-            })
+            self.lowerDropDownView()
+            self.dropDownView?.newUpdateLabels(main: selectedItem.name!, rating: selectedItem.rating!, price: selectedItem.price!, distance: selectedItem.distanceFromUser!, open: selectedItem.open!)
         }
     }
     
