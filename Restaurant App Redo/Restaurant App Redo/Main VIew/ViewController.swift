@@ -77,7 +77,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         
         // Setting the height from the top of the navbar to the beginning of the usable //
         // screen area //
-        yLocationOfDropDown = self.view.frame.origin.y +     (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
+        yLocationOfDropDown = self.view.frame.origin.y + (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
         
         //self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
         //self.reCenterButton.clipsToBounds = true
@@ -135,6 +135,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         self.raiseDropDownView()
         mainMapView.removeAnnotations(mainMapView.annotations)
         getLocation!.startLocationServices()
+    }
+    
+    
+    func newCenterButtonClicked() {
+        
     }
     
     
