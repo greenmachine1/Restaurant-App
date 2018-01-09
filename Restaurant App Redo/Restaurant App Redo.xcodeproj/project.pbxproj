@@ -16,6 +16,7 @@
 		321566701F964D8F00C6F3DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3215666E1F964D8F00C6F3DC /* LaunchScreen.storyboard */; };
 		321566781F964EC600C6F3DC /* LocationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321566771F964EC600C6F3DC /* LocationServices.swift */; };
 		3215667B1F96501F00C6F3DC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3215667A1F96501F00C6F3DC /* MapKit.framework */; };
+		3219A0C9200482A10088C56C /* PopUpSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3219A0C8200482A10088C56C /* PopUpSearchView.swift */; };
 		322E6EA11FA2DE7100634905 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E6EA01FA2DE7100634905 /* ListView.swift */; };
 		322E6EA51FA2F6FE00634905 /* ListViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E6EA41FA2F6FE00634905 /* ListViewTableViewCell.swift */; };
 		323A303D1FAECBA50073B405 /* PreferredNoGoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323A303C1FAECBA50073B405 /* PreferredNoGoViewController.swift */; };
@@ -52,6 +53,7 @@
 		321566711F964D8F00C6F3DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		321566771F964EC600C6F3DC /* LocationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServices.swift; sourceTree = "<group>"; };
 		3215667A1F96501F00C6F3DC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		3219A0C8200482A10088C56C /* PopUpSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpSearchView.swift; sourceTree = "<group>"; };
 		322E6EA01FA2DE7100634905 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		322E6EA41FA2F6FE00634905 /* ListViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewTableViewCell.swift; sourceTree = "<group>"; };
 		323A303C1FAECBA50073B405 /* PreferredNoGoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredNoGoViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				321566671F964D8F00C6F3DC /* ViewController.swift */,
 				329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */,
 				3213778B2001EFAF00C7E4A7 /* RecenterButtonsView.swift */,
+				3219A0C8200482A10088C56C /* PopUpSearchView.swift */,
 			);
 			path = "Main VIew";
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				32EBAA8F1F9A408800BC1E3B /* OptionsViewController.swift in Sources */,
 				3213778C2001EFAF00C7E4A7 /* RecenterButtonsView.swift in Sources */,
 				32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */,
+				3219A0C9200482A10088C56C /* PopUpSearchView.swift in Sources */,
 				322E6EA11FA2DE7100634905 /* ListView.swift in Sources */,
 				32F3C1FA1FAE4E41005A378B /* CustomCalloutView.swift in Sources */,
 				321566661F964D8F00C6F3DC /* AppDelegate.swift in Sources */,

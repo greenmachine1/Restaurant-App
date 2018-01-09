@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaurauntInfoAndLocationDelegate,*/ ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation, ReturnRecenterButtonsDelegate{
+class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaurauntInfoAndLocationDelegate,*/ ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation, ReturnRecenterButtonsDelegate, ReturnSearchPopUpViewDelegate{
 
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
@@ -42,6 +42,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     var recenterButtonCluster:RecenterButtonsView?
     
+    var searchPopUpView:PopUpSearchView?
+    var searchViewIsPresent:Bool = false
+    
     
     // getting the nav bar height //
     var yLocationOfDropDown:CGFloat?
@@ -52,6 +55,13 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         
         // ---- initial setup stuff ---- //
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateDropDownMenuUponReload), name: .UIApplicationDidBecomeActive, object: nil)
+        
+        // ---- being notified when the keyboard is out when searching ---- //
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardIsOut), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        
+        // ---- being notified when the keyboard has gone back in when searching ---- //
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardIsIn), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        
         
         // setting the reached end of set to false //
         reachedEndOfSet = false
@@ -125,8 +135,17 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         
         self.view.addSubview(recenterButtonCluster!)
         
+        // instantiating the search pop up view //
+        searchPopUpView = PopUpSearchView(frame: CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
+        searchPopUpView?.delegate = self
+        searchPopUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        searchPopUpView!.isOpaque = false
+        
+        self.view.addSubview(searchPopUpView!)
         
     }
+    
+    
     
     func recenterButtonClicked() {
         self.nextAndPreviousButtons?.slideNextButtonBackToFullLength()
@@ -138,8 +157,46 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     }
     
     
+    // need to nudge the view up while the keyboard is out //
+    @objc func keyboardIsOut(notification:Notification){
+        if(searchViewIsPresent == true){
+            if let sizeOfKeyboard = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue{
+                let keyboardHeight = sizeOfKeyboard.height
+                print(keyboardHeight)
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.searchPopUpView?.frame = CGRect(x: 0, y:keyboardHeight , width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+                })
+            }
+        }
+    }
+    
+    // resetting the view //
+    @objc func keyboardIsIn(notification:Notification){
+        if(searchViewIsPresent == true){
+            self.newCenterButtonClicked()
+        }
+    }
+    
+    
+    // this is from the define a new location to search from button click //
     func newCenterButtonClicked() {
-        
+        // bringing the view into place //
+        UIView.animate(withDuration: 0.3, animations: {
+            self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + (self.view.frame.size.height / 2), width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+        }) { (complete) in
+            // do something once complete //
+            self.searchViewIsPresent = true
+        }
+    }
+    
+    // return button from the pop up search view used to dismiss that view //
+    func doneButtonClicked() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+        }) { (complete) in
+            // do something once complete //
+            self.searchViewIsPresent = false
+        }
     }
     
     

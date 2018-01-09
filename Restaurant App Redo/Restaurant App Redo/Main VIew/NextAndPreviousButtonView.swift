@@ -35,6 +35,7 @@ class NextAndPreviousButtonView: UIView {
         nextButton?.backgroundColor = Colors.sharedInstance.lightGreen
         nextButton?.setTitle("Go!", for: UIControlState.normal)
         nextButton?.setTitleColor(UIColor.black, for: UIControlState.highlighted)
+        nextButton?.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 25.0)
         nextButton?.addTarget(self, action: #selector(self.nextButtonOnClick), for: UIControlEvents.touchUpInside)
         self.addSubview(nextButton!)
         
@@ -43,6 +44,7 @@ class NextAndPreviousButtonView: UIView {
         previousButton?.backgroundColor = Colors.sharedInstance.lightBlue
         previousButton?.setTitle("Previous", for: UIControlState.normal)
         previousButton?.setTitleColor(UIColor.black, for: UIControlState.highlighted)
+        previousButton?.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 25.0)
         previousButton?.addTarget(self, action: #selector(self.previousButtonOnClick), for: UIControlEvents.touchUpInside)
         self.addSubview(previousButton!)
         

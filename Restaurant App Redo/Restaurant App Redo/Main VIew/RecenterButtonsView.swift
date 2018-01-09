@@ -45,6 +45,12 @@ class RecenterButtonsView: UIView {
         self.addSubview(newDefaultLocationButton!)
     }
     
+    // remotely disabling the buttons when a view is overlapping //
+    func enableDisableButtons(enableForTrueDisableForFalse:Bool){
+        recenterButton?.isEnabled = enableForTrueDisableForFalse
+        newDefaultLocationButton?.isEnabled = enableForTrueDisableForFalse
+    }
+    
     @objc func recenterButtonOnClick(){
         self.delegate?.recenterButtonClicked()
     }
