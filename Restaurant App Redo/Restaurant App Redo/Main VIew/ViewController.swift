@@ -122,8 +122,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
 
         self.view.addSubview(dropDownView!)
         
-        // creating the recenter button cluster which holds the recenter button and adding a new default location //
-        // buttons //
+        // ---- creating the recenter button cluster which holds the recenter button and adding a new default location ---- //
+        // ---- buttons ---- //
         recenterButtonCluster = RecenterButtonsView(frame: CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + yLocationOfDropDown! + 20, width: 50, height: 100))
         recenterButtonCluster?.delegate = self
         recenterButtonCluster?.backgroundColor = Colors.sharedInstance.lightBlue
@@ -135,8 +135,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         
         self.view.addSubview(recenterButtonCluster!)
         
-        // instantiating the search pop up view //
-        searchPopUpView = PopUpSearchView(frame: CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
+        // ---- instantiating the search pop up view ---- //
+        searchPopUpView = PopUpSearchView(frame: CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20))
         searchPopUpView?.delegate = self
         searchPopUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         searchPopUpView!.isOpaque = false
@@ -164,7 +164,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                 let keyboardHeight = sizeOfKeyboard.height
                 print(keyboardHeight)
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.searchPopUpView?.frame = CGRect(x: 0, y:keyboardHeight , width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+                    self.searchPopUpView?.frame = CGRect(x: 0, y:self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
                 })
             }
         }
@@ -182,7 +182,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     func newCenterButtonClicked() {
         // bringing the view into place //
         UIView.animate(withDuration: 0.3, animations: {
-            self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + (self.view.frame.size.height / 2), width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+            self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20)
         }) { (complete) in
             // do something once complete //
             self.searchViewIsPresent = true
