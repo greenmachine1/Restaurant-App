@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import MapKit
 
 @objc protocol ReturnSearchPopUpViewDelegate{
     func doneButtonClicked()
+    func sendBackAlert(title:String, alertString:String)
+    func sendBackInfo(title:String, location:CLLocation)
 }
 
 class PopUpSearchView: UIView, UITextFieldDelegate {
@@ -26,9 +29,6 @@ class PopUpSearchView: UIView, UITextFieldDelegate {
     func drawPopUpView(){
         self.layer.cornerRadius = 5.0
         self.clipsToBounds = true
-        
-        
-        
         
         doneButton = UIButton(frame: CGRect(x: self.frame.size.width - 110, y: 10, width: 100, height: 30))
         doneButton!.setTitle("Done", for: UIControlState.normal)
@@ -55,8 +55,27 @@ class PopUpSearchView: UIView, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if(!(textField.text == "")){
+            self.searchForLocationByTextEntry(text: textField.text!)
+        }
         textField.resignFirstResponder()
         return true
+    }
+    
+    
+    func searchForLocationByTextEntry(text:String){
+        let search = MKLocalSearchRequest()
+        search.naturalLanguageQuery = text
+        let localSearch = MKLocalSearch(request: search)
+        localSearch.start { (searchResponse, error) in
+            if(searchResponse == nil){
+                // send out a notification that the place was not found //
+                self.delegate?.sendBackAlert(title: "No Result Found.", alertString: "Please Try Again.")
+            }else{
+                let location = CLLocation(latitude: (searchResponse?.boundingRegion.center.latitude)!, longitude: (searchResponse?.boundingRegion.center.longitude)!)
+                self.delegate?.sendBackInfo(title: text, location: location)
+            }
+        }
     }
     
     @objc func doneButtonOnClick(){

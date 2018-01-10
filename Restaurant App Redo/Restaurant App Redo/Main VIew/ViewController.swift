@@ -199,6 +199,39 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         }
     }
     
+    // alert to tell the user that the search results brought back nothing //
+    func sendBackAlert(title: String, alertString: String) {
+        let alert = UIAlertController(title: title, message: alertString, preferredStyle: UIAlertControllerStyle.alert)
+        let okButton = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(okButton)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // this presents the user with the option to save the place as the new default //
+    func sendBackInfo(title: String, location: CLLocation) {
+        let alert = UIAlertController(title: "Location Found!", message: "Do you want to use \(title) as your new location?", preferredStyle: UIAlertControllerStyle.alert)
+        let okButton = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) { (action) in
+            
+            
+            // need to set the new default position //
+            self._location = location
+            self.returnLocation(location: self._location!)
+            
+        }
+        let noButton = UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(okButton)
+        alert.addAction(noButton)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     // buttons return pressed function //
