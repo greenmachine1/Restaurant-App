@@ -216,6 +216,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             // need to set the new default position //
             self._location = location
             self.returnLocation(location: self._location!, cameFromNewDefaultLocation:true, title:title)
+            self.doneButtonClicked()
             
         }
         let noButton = UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil)
