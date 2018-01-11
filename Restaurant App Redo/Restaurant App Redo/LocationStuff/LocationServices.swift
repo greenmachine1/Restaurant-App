@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 @objc protocol ReturnLocationDelegate{
-    func returnLocation(location:CLLocation)
+    func returnLocation(location:CLLocation, cameFromNewDefaultLocation:Bool, title:String)
 }
 
 class LocationServices: NSObject, CLLocationManagerDelegate {
@@ -52,7 +52,7 @@ class LocationServices: NSObject, CLLocationManagerDelegate {
                 }else{
                     hasTriggered = true
                     
-                    self.delegate?.returnLocation(location: lastLocation!)
+                    self.delegate?.returnLocation(location: lastLocation!,cameFromNewDefaultLocation: false, title:"")
                     self.stopLocationServices()
                 }
             }

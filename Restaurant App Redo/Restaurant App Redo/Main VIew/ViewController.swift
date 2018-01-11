@@ -215,7 +215,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             
             // need to set the new default position //
             self._location = location
-            self.returnLocation(location: self._location!)
+            self.returnLocation(location: self._location!, cameFromNewDefaultLocation:true, title:title)
             
         }
         let noButton = UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil)
@@ -371,12 +371,23 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     
     // returning the location //
-    func returnLocation(location: CLLocation) {
+    func returnLocation(location: CLLocation, cameFromNewDefaultLocation:Bool, title:String) {
         let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         _location = location
         _region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
-        self.mainMapView.showsUserLocation = true
+        if(cameFromNewDefaultLocation == true){
+            
+            let newDefaultLocationAnnotation = MKPointAnnotation()
+            newDefaultLocationAnnotation.title = title
+            newDefaultLocationAnnotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            
+            self.mainMapView.addAnnotation(newDefaultLocationAnnotation)
+            
+            self.mainMapView.showsUserLocation = false
+        }else{
+            self.mainMapView.showsUserLocation = true
+        }
 
         newSearch = GatheringPlacesNear()
         newSearch?.delegate = self
