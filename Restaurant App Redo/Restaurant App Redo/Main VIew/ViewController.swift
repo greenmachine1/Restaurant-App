@@ -45,6 +45,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     var searchPopUpView:PopUpSearchView?
     var searchViewIsPresent:Bool = false
     
+    var newDefaultLocationSelected:Bool = false
+    
     
     // getting the nav bar height //
     var yLocationOfDropDown:CGFloat?
@@ -152,6 +154,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         self.nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
         self.mainMapView.showsUserLocation = true
         self.raiseDropDownView()
+        newDefaultLocationSelected = false
         mainMapView.removeAnnotations(mainMapView.annotations)
         getLocation!.startLocationServices()
     }
@@ -215,6 +218,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             
             // need to set the new default position //
             self._location = location
+            self.newDefaultLocationSelected = true
             self.returnLocation(location: self._location!, cameFromNewDefaultLocation:true, title:title)
             self.doneButtonClicked()
             
@@ -328,7 +332,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     override func viewWillAppear(_ animated: Bool) {
         
         if(optionsUpdatedBool == true){
-            getLocation?.startLocationServices()
+            if(newDefaultLocationSelected == false){
+                getLocation?.startLocationServices()
+            }else{
+                newSearch?.search(location: _location!)
+            }
             optionsUpdatedBool = false
             
             self.raiseDropDownView()
