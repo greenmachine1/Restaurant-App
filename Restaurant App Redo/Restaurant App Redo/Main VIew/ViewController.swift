@@ -587,7 +587,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
 
     // need to decide on what to do when the user selects the annotation //
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if(view.annotation is MKUserLocation){
+        if(view.annotation is MKUserLocation || view.annotation is MKPointAnnotation){
             return
         }
 
