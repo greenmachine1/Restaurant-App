@@ -65,7 +65,6 @@ class CustomCalloutView: UIView{
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.unBlockCalled), name: NSNotification.Name(rawValue: "UnBlock"), object: nil)
         
-        
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadLabels), name: NSNotification.Name(rawValue: "Reload"), object: nil)
         
     }

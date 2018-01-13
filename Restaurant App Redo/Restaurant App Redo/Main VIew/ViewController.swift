@@ -75,6 +75,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         mainMapView.showsUserLocation = true
         mainMapView.delegate = self
         
+        
         OptionsSingleton.sharedInstance.delegate = self
         
         
@@ -220,6 +221,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             self._location = location
             self.newDefaultLocationSelected = true
             self.returnLocation(location: self._location!, cameFromNewDefaultLocation:true, title:title)
+            self.raiseDropDownView()
+            self.nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
             self.doneButtonClicked()
             
         }
@@ -335,6 +338,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             if(newDefaultLocationSelected == false){
                 getLocation?.startLocationServices()
             }else{
+                self.raiseDropDownView()
                 newSearch?.search(location: _location!)
             }
             optionsUpdatedBool = false
@@ -435,6 +439,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         }
         
         self.creatingAnnotationWithInfo(info: info)
+        
     }
     
     
@@ -470,14 +475,21 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     func creatingAnnotationWithInfo(info:SavePlacesObject){
         mainMapView.removeAnnotations(mainMapView.annotations)
         
-        let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
+        var _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
         _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
         
         // making a callout view for the annotation //
         annotation = CustomAnnotation(_title: info.name!, _coordinate: _coordinate)
         
+        
+        var centerCoordinate = _coordinate
+        centerCoordinate.latitude -= self.mainMapView.region.span.latitudeDelta * -0.20
+        self.mainMapView.setCenter(centerCoordinate, animated: true)
+        
+        
         mainMapView.addAnnotation(annotation!)
+    
     }
 
     
@@ -577,8 +589,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         if annotationView == nil{
             annotationView = CustomAnnotationCalloutView(annotation: annotation, reuseIdentifier: "Pin")
             annotationView?.canShowCallout = false
+            
         }else{
             annotationView?.annotation = annotation
+            
         }
         return annotationView
     
@@ -592,6 +606,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         }
 
         let customAnnotation = view.annotation as! CustomAnnotation
+        
         let views = Bundle.main.loadNibNamed("CustomAnnotationView", owner: nil, options: nil)
         let calloutView = views?[0] as! CustomCalloutView
         
@@ -612,12 +627,14 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         calloutView.delegate = self
         calloutView.mainLabel.text = customAnnotation.title!
 
+        var centerCoordinate = customAnnotation.coordinate
+        centerCoordinate.latitude -= self.mainMapView.region.span.latitudeDelta * -0.20
+        self.mainMapView.setCenter(centerCoordinate, animated: true)
         
 
-        calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height * 0.5)
+        calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height * 0.50)
         view.addSubview(calloutView)
-        mainMapView.setCenter((view.annotation?.coordinate)!, animated: true)
-        
+        mainMapView.setCenter(centerCoordinate, animated: true)
     }
     
     
