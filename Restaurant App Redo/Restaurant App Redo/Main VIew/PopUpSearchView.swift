@@ -15,12 +15,14 @@ import MapKit
     func sendBackInfo(title:String, location:CLLocation)
 }
 
-class PopUpSearchView: UIView, UITextFieldDelegate {
+class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var delegate:ReturnSearchPopUpViewDelegate?
     var doneButton:UIButton?
     var mainTextField:UITextField?
-
+    var mainListView:UITableView?
+    var arrayOfPreviouslyLookedUpLocations:[searchLocation] = []
+    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         self.drawPopUpView()
@@ -52,7 +54,61 @@ class PopUpSearchView: UIView, UITextFieldDelegate {
         
         self.addSubview(mainTextField!)
         
+        
+        let historyLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: (self.mainTextField?.frame.size.width)!, height: 30))
+        historyLabel.center = CGPoint(x: (self.mainTextField?.center.x)!, y: (self.mainTextField?.center.y)! + 30)
+        historyLabel.text = "Location History"
+        historyLabel.textAlignment = .center
+        historyLabel.textColor = Colors.sharedInstance.lightBlue
+        
+        self.addSubview(historyLabel)
+        
+        mainListView = UITableView(frame: CGRect(x: 10, y: (historyLabel.frame.origin.y) + (historyLabel.frame.size.height) + 10, width: self.frame.size.width - 20, height: 200), style: UITableViewStyle.plain)
+        mainListView?.register(ListViewTableViewCell.self, forCellReuseIdentifier: "searchCell")
+        self.mainListView?.delegate = self
+        self.mainListView?.dataSource = self
+        self.mainListView?.backgroundColor = UIColor.clear
+        self.mainListView?.layer.cornerRadius = 5.0
+        self.mainListView?.clipsToBounds = true
+        
+        self.addSubview(mainListView!)
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.loadArrayOfPlacesFromHistory().count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! ListViewTableViewCell
+        cell.mainLabel?.text = self.arrayOfPreviouslyLookedUpLocations[indexPath.row]._name!
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let newLocationInfo = arrayOfPreviouslyLookedUpLocations[indexPath.row]
+
+        self.delegate?.sendBackInfo(title: newLocationInfo._name!, location: newLocationInfo._location!)
+    }
+    
+    
+    func placeSelectedAndShouldBeAddedToHistory(name:String, location:CLLocation){
+        
+        let newLocationToBeAdded:searchLocation = searchLocation(name: name, location: location)
+        if(self.checkToSeeIfItemExistsInHistory(itemToCheck: newLocationToBeAdded) == false){
+            //self.arrayOfPreviouslyLookedUpLocations.append(newLocationToBeAdded)
+            self.arrayOfPreviouslyLookedUpLocations.insert(newLocationToBeAdded, at: 0)
+            if(self.arrayOfPreviouslyLookedUpLocations.count > 4){
+                self.arrayOfPreviouslyLookedUpLocations.removeLast()
+            }
+            
+            // need to save the array to user defaults //
+            self.saveArrayOfPlacesToHistory()
+        
+            self.mainListView?.reloadData()
+        }
+    }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(!(textField.text == "")){
@@ -85,7 +141,58 @@ class PopUpSearchView: UIView, UITextFieldDelegate {
     }
     
     
+    // saving and retreiving history data //
+    func saveArrayOfPlacesToHistory(){
+        // saving the array to the archive //
+        let placeSave = NSKeyedArchiver.archivedData(withRootObject: arrayOfPreviouslyLookedUpLocations)
+        UserDefaults.standard.set(placeSave, forKey: "searchArray")
+    }
     
+    func checkToSeeIfItemExistsInHistory(itemToCheck:searchLocation) ->Bool{
+        var tempBoolStatement = false
+        if let existingData = UserDefaults.standard.object(forKey: "searchArray") as? NSData{
+            if let placesArray = NSKeyedUnarchiver.unarchiveObject(with: existingData as Data) as? [searchLocation]{
+                for items in placesArray{
+                    if(itemToCheck._name == items._name){
+                        tempBoolStatement = true
+                    }
+                }
+            }
+        }
+        return tempBoolStatement
+    }
+    
+    
+    func loadArrayOfPlacesFromHistory()->[searchLocation]{
+        if let existingData = UserDefaults.standard.object(forKey: "searchArray") as? NSData{
+            if let placesArray = NSKeyedUnarchiver.unarchiveObject(with: existingData as Data) as? [searchLocation]{
+                arrayOfPreviouslyLookedUpLocations = placesArray
+            }
+        }
+        return arrayOfPreviouslyLookedUpLocations
+    }
+}
 
+
+// small object used to store location name and location //
+class searchLocation:NSObject, NSCoding{
+    
+    var _name:String?
+    var _location:CLLocation?
+
+    init(name:String, location:CLLocation) {
+        _name = name
+        _location = location
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(_location, forKey: "Location")
+        aCoder.encode(_name, forKey: "Name")
+    }
+    required init?(coder aDecoder: NSCoder) {
+        self._name = (aDecoder.decodeObject(forKey: "Name") as! String)
+        self._location = (aDecoder.decodeObject(forKey: "Location") as! CLLocation)
+    }
+    
 
 }

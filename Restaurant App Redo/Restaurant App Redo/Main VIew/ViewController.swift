@@ -221,6 +221,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             self._location = location
             self.newDefaultLocationSelected = true
             self.returnLocation(location: self._location!, cameFromNewDefaultLocation:true, title:title)
+            
+            // sending info back to the pop up view for history info //
+            self.searchPopUpView?.placeSelectedAndShouldBeAddedToHistory(name: title, location: location)
             self.raiseDropDownView()
             self.nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
             self.doneButtonClicked()
