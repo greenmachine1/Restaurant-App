@@ -71,6 +71,7 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         self.mainListView?.layer.cornerRadius = 5.0
         self.mainListView?.clipsToBounds = true
         
+        
         self.addSubview(mainListView!)
     }
     
@@ -81,7 +82,7 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! ListViewTableViewCell
         cell.mainLabel?.text = self.arrayOfPreviouslyLookedUpLocations[indexPath.row]._name!
-        
+        cell.starImage?.image = UIImage(named: "NewCenterIcon")
         return cell
     }
     

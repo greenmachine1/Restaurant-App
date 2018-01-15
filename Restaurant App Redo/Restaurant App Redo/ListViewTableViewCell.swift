@@ -26,7 +26,7 @@ class ListViewTableViewCell: UITableViewCell {
         self.backgroundColor = UIColor.clear
         
         starImage = UIImageView(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
-        starImage?.tintColor = Colors.sharedInstance.lightGreen
+        //starImage?.tintColor = Colors.sharedInstance.lightGreen
     
         self.addSubview(starImage!)
         
