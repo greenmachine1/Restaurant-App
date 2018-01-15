@@ -225,14 +225,15 @@ class GatheringRestaurantsNearBy: NSObject{
                         }
                     }
                     if(contains == false){
-                        if(_locationOfUser != nil){
-                                
-                            let distanceFromUser = newRestaurantInfo.location?.distance(from: _locationOfUser!)
-                            let distanceFromUserInMiles = Int(distanceFromUser! / 1609)
-                            newRestaurantInfo.distanceFromUser = distanceFromUserInMiles
-                            newRestaurantInfo.annotationColor = true
-                            arrayOfRestaurants.append(newRestaurantInfo)
-                        }
+                        
+                        let userLocation = OptionsSingleton.sharedInstance.getDefaultLocation()
+                        
+                        let distanceFromUser = newRestaurantInfo.location?.distance(from: userLocation)
+                        let distanceFromUserInMiles = Int(distanceFromUser! / 1609)
+                        newRestaurantInfo.distanceFromUser = distanceFromUserInMiles
+                        newRestaurantInfo.annotationColor = true
+                        arrayOfRestaurants.append(newRestaurantInfo)
+                        
                     }
                 }
             }

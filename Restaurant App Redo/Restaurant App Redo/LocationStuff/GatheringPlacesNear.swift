@@ -200,6 +200,19 @@ class GatheringPlacesNear: NSObject {
                 
                     // setting the distance from the user //
                     if(contains == false){
+                        
+                        let userLocation = OptionsSingleton.sharedInstance.getDefaultLocation()
+                        
+                        let distanceFromUser = newRestaurantInfo.location?.distance(from: userLocation)
+                        let distanceFromUserInMiles = Int(distanceFromUser! / 1609)
+                        newRestaurantInfo.distanceFromUser = distanceFromUserInMiles
+                        newRestaurantInfo.annotationColor = true
+                        arrayOfRestaurants.append(newRestaurantInfo)
+                        
+                        
+                        
+                        
+                        /*
                         if(_locationOfUser != nil){
                         
                             let distanceFromUser = newRestaurantInfo.location?.distance(from: _locationOfUser!)
@@ -208,6 +221,7 @@ class GatheringPlacesNear: NSObject {
                             newRestaurantInfo.annotationColor = true
                             arrayOfRestaurants.append(newRestaurantInfo)
                         }
+                        */
                     }
                 }
             }

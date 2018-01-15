@@ -387,6 +387,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     func returnLocation(location: CLLocation, cameFromNewDefaultLocation:Bool, title:String) {
         let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         _location = location
+        
+        // saving the new location to the users defaults to be used elsewhere //
+        OptionsSingleton.sharedInstance.saveDefaultLocation(location: _location!)
+        
         _region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
         if(cameFromNewDefaultLocation == true){

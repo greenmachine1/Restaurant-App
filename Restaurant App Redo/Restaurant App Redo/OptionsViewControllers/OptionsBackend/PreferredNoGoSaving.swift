@@ -149,9 +149,7 @@ class PreferredNoGoSaving: NSObject{
                 arrayOfNoGoPlaces = placesArrayNoGo
             }
         }
-        
-        //itemToMoveToNoGo.isSaved = false
-        //itemToMoveToNoGo.isBlocked = true
+
         itemToMoveToNoGo.setIsSaved(save: false)
         itemToMoveToNoGo.setIsBlocked(blocked: true)
         
@@ -181,7 +179,7 @@ class PreferredNoGoSaving: NSObject{
             if let placesArray = NSKeyedUnarchiver.unarchiveObject(with: existingData as Data) as? [SavePlacesObject]{
                 
                 // loading the places array into the options singleton for //
-                // use over there
+                // use over there //
                 tempArrayOfRestaurants = placesArray
                 OptionsSingleton.sharedInstance.listOfPrefferedPlacesAddToOptionsView(list: tempArrayOfRestaurants)
                 
@@ -201,8 +199,14 @@ class PreferredNoGoSaving: NSObject{
                 
                 tempArrayOfRestaurants = placesArray
                 
-                //OptionsSingleton.sharedInstance.updateDidChangeOptions()
+                let userLocation = OptionsSingleton.sharedInstance.getDefaultLocation()
                 
+                // adjusting the distance in miles //
+                for items in tempArrayOfRestaurants{
+                    let distanceFromUser = items.location?.distance(from: userLocation)
+                    let distanceInMiles = Int(distanceFromUser! / 1609)
+                    items.distanceFromUser = distanceInMiles
+                }
                 return tempArrayOfRestaurants
             }
         }

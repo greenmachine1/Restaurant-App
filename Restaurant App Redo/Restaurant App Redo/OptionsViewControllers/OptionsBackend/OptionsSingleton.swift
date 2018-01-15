@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 @objc protocol ReturnOptionsUpdatedDelegate{
     func returnOptionsDidChange()
@@ -180,9 +181,7 @@ class OptionsSingleton: NSObject {
         return tempExists
     }
     
-    
-    
-    // ---- need to come back to this guy ---- //
+    // ---- returning that the options changed ---- //
     func updateDidChangeOptions(){
         self.delegate?.returnOptionsDidChange()
     }
@@ -260,6 +259,24 @@ class OptionsSingleton: NSObject {
         return sharedArrayOfPlaces
     }
     
+    
+    // ---- used for setting and uploading the users current location ---- //
+    func saveDefaultLocation(location:CLLocation){
+        let long = location.coordinate.longitude
+        let lat = location.coordinate.latitude
+        
+        UserDefaults.standard.set(long, forKey: "Long")
+        UserDefaults.standard.set(lat, forKey: "Lat")
+    }
+    
+    func getDefaultLocation() -> CLLocation{
+        
+        let long:Double = UserDefaults.standard.value(forKey: "Long") as! Double
+        let lat:Double = UserDefaults.standard.value(forKey: "Lat") as! Double
+        let location = CLLocation(latitude: lat, longitude: long)
+        
+        return location
+    }
     
     
     
