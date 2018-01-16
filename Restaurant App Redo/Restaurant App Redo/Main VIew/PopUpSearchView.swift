@@ -26,6 +26,7 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         self.drawPopUpView()
+        
     }
     
     func drawPopUpView(){
@@ -70,9 +71,16 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         self.mainListView?.backgroundColor = UIColor.clear
         self.mainListView?.layer.cornerRadius = 5.0
         self.mainListView?.clipsToBounds = true
+        self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+        self.mainListView?.isOpaque = false
         
         
         self.addSubview(mainListView!)
+    }
+    
+    func scrollToTopOfList(){
+        self.mainListView?.reloadData()
+        self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -80,10 +88,19 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! ListViewTableViewCell
-        cell.mainLabel?.text = self.arrayOfPreviouslyLookedUpLocations[indexPath.row]._name!
-        cell.starImage?.image = UIImage(named: "NewCenterIcon")
+        for views in cell.contentView.subviews{
+            views.removeFromSuperview()
+        }
+            cell.mainLabel?.text = self.arrayOfPreviouslyLookedUpLocations[indexPath.row]._name!
+            cell.starImage?.image = UIImage(named: "NewCenterIcon")
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -97,7 +114,6 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         
         let newLocationToBeAdded:searchLocation = searchLocation(name: name, location: location)
         if(self.checkToSeeIfItemExistsInHistory(itemToCheck: newLocationToBeAdded) == false){
-            //self.arrayOfPreviouslyLookedUpLocations.append(newLocationToBeAdded)
             self.arrayOfPreviouslyLookedUpLocations.insert(newLocationToBeAdded, at: 0)
             if(self.arrayOfPreviouslyLookedUpLocations.count > 4){
                 self.arrayOfPreviouslyLookedUpLocations.removeLast()
@@ -147,6 +163,11 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         // saving the array to the archive //
         let placeSave = NSKeyedArchiver.archivedData(withRootObject: arrayOfPreviouslyLookedUpLocations)
         UserDefaults.standard.set(placeSave, forKey: "searchArray")
+    }
+    
+    
+    func deleteHistory(){
+        UserDefaults.standard.removeObject(forKey: "searchArray")
     }
     
     func checkToSeeIfItemExistsInHistory(itemToCheck:searchLocation) ->Bool{

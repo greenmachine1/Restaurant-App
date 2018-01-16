@@ -187,6 +187,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         // bringing the view into place //
         UIView.animate(withDuration: 0.3, animations: {
             self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20)
+            self.searchPopUpView?.scrollToTopOfList()
         }) { (complete) in
             // do something once complete //
             self.searchViewIsPresent = true
@@ -482,7 +483,7 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     func creatingAnnotationWithInfo(info:SavePlacesObject){
         mainMapView.removeAnnotations(mainMapView.annotations)
         
-        var _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
+        let _coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: (info.location?.coordinate.latitude)!, longitude: (info.location?.coordinate.longitude)!)
         _region = MKCoordinateRegionMakeWithDistance(_coordinate, 1000, 1000)
         mainMapView.setRegion(_region!, animated: true)
         
