@@ -214,6 +214,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                 self.popUpListViewOpen = false
                 self.newCenterButtonClicked()
             }
+        }else{
+            self.doneButtonClicked()
         }
     }
     
