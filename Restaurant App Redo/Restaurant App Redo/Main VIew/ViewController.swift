@@ -119,32 +119,31 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
 
         // ---- adding in a drop down nav bar box ---- //
         dropDownView = DropDownRestaurantView(frame: CGRect(x: 0, y: -yLocationOfDropDown!, width: self.view.frame.width, height: 100))
-        dropDownView?.delegate = self
+        dropDownView!.delegate = self
         dropDownView!.backgroundColor = UIColor.black
         dropDownView!.isOpaque = true
+        dropDownView!.drawView()
 
         self.view.addSubview(dropDownView!)
         
         // ---- creating the recenter button cluster which holds the recenter button and adding a new default location ---- //
         // ---- buttons ---- //
         recenterButtonCluster = RecenterButtonsView(frame: CGRect(x: (self.dropDownView?.frame.origin.x)! + ((self.dropDownView?.frame.size.width)! - 60), y: (self.dropDownView?.frame.origin.y)! + (self.dropDownView?.frame.size.height)! + yLocationOfDropDown! + 20, width: 50, height: 100))
-        recenterButtonCluster?.delegate = self
-        recenterButtonCluster?.backgroundColor = Colors.sharedInstance.lightBlue
-        recenterButtonCluster?.layer.cornerRadius = (self.recenterButtonCluster?.frame.size.width)! / 2
-        recenterButtonCluster?.clipsToBounds = true
-        recenterButtonCluster?.layer.borderColor = UIColor.white.cgColor
-        recenterButtonCluster?.layer.borderWidth = 1.0
+        recenterButtonCluster!.delegate = self
+        recenterButtonCluster!.backgroundColor = Colors.sharedInstance.lightBlue
+        recenterButtonCluster!.layer.cornerRadius = (self.recenterButtonCluster?.frame.size.width)! / 2
+        recenterButtonCluster!.clipsToBounds = true
+        recenterButtonCluster!.layer.borderColor = UIColor.white.cgColor
+        recenterButtonCluster!.layer.borderWidth = 1.0
         
         
         self.view.addSubview(recenterButtonCluster!)
         
         // ---- instantiating the search pop up view ---- //
         searchPopUpView = PopUpSearchView(frame: CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20))
-        searchPopUpView?.delegate = self
+        searchPopUpView!.delegate = self
         searchPopUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-        searchPopUpView!.isOpaque = false
-        
-        self.view.addSubview(searchPopUpView!)
+        self.searchPopUpView?.drawPopUpView()
         
     }
     
@@ -185,22 +184,33 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     // this is from the define a new location to search from button click //
     func newCenterButtonClicked() {
         // bringing the view into place //
-        UIView.animate(withDuration: 0.3, animations: {
-            self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20)
-            self.searchPopUpView?.scrollToTopOfList()
-        }) { (complete) in
-            // do something once complete //
-            self.searchViewIsPresent = true
+        if(searchViewIsPresent == false){
+            if(popUpListViewOpen == false){
+                self.view.addSubview(searchPopUpView!)
+            
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20)
+                    self.searchPopUpView?.scrollToTopOfList()
+                }) { (complete) in
+                    // do something once complete //
+                    self.searchViewIsPresent = true
+                }
+            }else{
+                
+            }
         }
     }
     
     // return button from the pop up search view used to dismiss that view //
     func doneButtonClicked() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
-        }) { (complete) in
-            // do something once complete //
-            self.searchViewIsPresent = false
+        if(searchViewIsPresent == true){
+            UIView.animate(withDuration: 0.3, animations: {
+                self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+            }) { (complete) in
+                // do something once complete //
+                self.searchViewIsPresent = false
+                self.searchPopUpView?.removeFromSuperview()
+            }
         }
     }
     
@@ -906,23 +916,25 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     // ---- List view stuff ---- //
     func createListViewPopUp(){
         if(popUpListViewOpen == false){
-            popUpListViewOpen = true
-            popUpView = ListView(frame: CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
-            popUpView!.delegate = self
-            popUpView!.getListOfPlaces(list: allRestaurantInfo)
-            if(self.currentRestaurant != nil){
-                self.popUpView?.makeItemAppearSelected(item: self.currentRestaurant!)
-            }
+            if(searchViewIsPresent == false){
+                popUpListViewOpen = true
+                popUpView = ListView(frame: CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2))
+                popUpView!.delegate = self
+                popUpView!.getListOfPlaces(list: allRestaurantInfo)
+                if(self.currentRestaurant != nil){
+                    self.popUpView?.makeItemAppearSelected(item: self.currentRestaurant!)
+                }
             
-            popUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-            popUpView!.isOpaque = false
+                popUpView!.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+                popUpView!.isOpaque = false
+                popUpView?.createCustomView()
             
-            self.view.addSubview(popUpView!)
+                self.view.addSubview(popUpView!)
             
-        
-            UIView.animate(withDuration: 0.3) {
-                self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height / 2, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+                UIView.animate(withDuration: 0.3) {
+                    self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height / 2, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
                 
+                }
             }
         }else{
             returnDoneButtonCalled()

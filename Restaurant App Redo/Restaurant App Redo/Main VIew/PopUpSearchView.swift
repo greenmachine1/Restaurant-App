@@ -25,7 +25,6 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.drawPopUpView()
         
     }
     
@@ -72,14 +71,13 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         self.mainListView?.layer.cornerRadius = 5.0
         self.mainListView?.clipsToBounds = true
         self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
-        self.mainListView?.isOpaque = false
+        self.mainListView?.isOpaque = true
         
         
         self.addSubview(mainListView!)
     }
     
     func scrollToTopOfList(){
-        self.mainListView?.reloadData()
         self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
     }
     
@@ -98,6 +96,8 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         
         return cell
     }
+    
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60

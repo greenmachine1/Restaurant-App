@@ -26,7 +26,7 @@ class DropDownRestaurantView: UIView {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.drawView()
+        //self.drawView()
         
         let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeRightGestureRecog))
         swipeRightGesture.direction = .right

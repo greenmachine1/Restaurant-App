@@ -26,7 +26,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.createCustomView()
+        //self.createCustomView()
     }
     
     
@@ -88,6 +88,7 @@ class ListView: UIView, UITableViewDelegate, UITableViewDataSource {
         mainTableView?.backgroundColor = UIColor.clear
         mainTableView?.layer.cornerRadius = 5.0
         mainTableView?.clipsToBounds = true
+        
         mainTableView?.register(ListViewTableViewCell.self, forCellReuseIdentifier: "cell")
     
         self.addSubview(mainTableView!)
