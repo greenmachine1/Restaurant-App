@@ -154,10 +154,18 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         self.nextAndPreviousButtons?.updateNextButtonTitle(title: "Go!")
         self.mainMapView.showsUserLocation = true
         self.raiseDropDownView()
+        if(self.popUpListViewOpen == true){
+            self.popUpListViewOpen = false
+            self.dismissPopUpView()
+        }
+        if(self.searchViewIsPresent == true){
+            self.doneButtonClicked()
+        }
         newDefaultLocationSelected = false
         mainMapView.removeAnnotations(mainMapView.annotations)
         getLocation!.startLocationServices()
     }
+    
     
     
     // need to nudge the view up while the keyboard is out //
@@ -167,15 +175,19 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                 let keyboardHeight = sizeOfKeyboard.height
                 print(keyboardHeight)
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.searchPopUpView?.frame = CGRect(x: 0, y:self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
+                    self.searchPopUpView?.frame = CGRect(x: 0, y:self.view.frame.origin.y + self.yLocationOfDropDown!/*+ -self.view.frame.size.height */, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
                 })
             }
         }
     }
+ 
     
     // resetting the view //
     @objc func keyboardIsIn(notification:Notification){
         if(searchViewIsPresent == true){
+            UIView.animate(withDuration: 0.3, animations: {
+                self.searchPopUpView?.frame = CGRect(x: 0, y:self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20)
+            })
             self.newCenterButtonClicked()
         }
     }
@@ -196,7 +208,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                     self.searchViewIsPresent = true
                 }
             }else{
-                
+                // if the pop up list view is open... gotta close it first //
+                // then present this view //
+                self.dismissPopUpView()
+                self.popUpListViewOpen = false
+                self.newCenterButtonClicked()
             }
         }
     }
@@ -935,6 +951,11 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
                     self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height / 2, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
                 
                 }
+            }else{
+
+                self.doneButtonClicked()
+                self.searchViewIsPresent = false
+                self.createListViewPopUp()
             }
         }else{
             returnDoneButtonCalled()
@@ -943,6 +964,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     
     
     func returnDoneButtonCalled() {
+        self.dismissPopUpView()
+    }
+    
+    func dismissPopUpView(){
         UIView.animate(withDuration: 0.3, animations: {
             self.popUpView?.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: self.view.frame.size.height / 2)
         }) { (complete) in
@@ -950,6 +975,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             self.popUpListViewOpen = false
         }
     }
+    
+    
+    
+    
     
     // returns the item selected from the list view //
     func returnSelectedItem(selectedItem: SavePlacesObject) {
