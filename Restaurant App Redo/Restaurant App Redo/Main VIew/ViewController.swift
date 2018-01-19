@@ -12,7 +12,6 @@ import MapKit
 class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaurauntInfoAndLocationDelegate,*/ ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation, ReturnRecenterButtonsDelegate, ReturnSearchPopUpViewDelegate{
 
     @IBOutlet weak var mainMapView: MKMapView!
-    @IBOutlet weak var workingIndicator: UIActivityIndicatorView!
     
     var getLocation:LocationServices?
     var _location:CLLocation?
@@ -46,6 +45,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     var searchViewIsPresent:Bool = false
     
     var newDefaultLocationSelected:Bool = false
+    
+    var workingView:WorkingView?
     
     
     // getting the nav bar height //
@@ -92,11 +93,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         // screen area //
         yLocationOfDropDown = self.view.frame.origin.y + (self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height
         
-        //self.reCenterButton.layer.cornerRadius = self.reCenterButton.frame.size.height / 2
-        //self.reCenterButton.clipsToBounds = true
         
-        self.workingIndicator.stopAnimating()
-        self.workingIndicator.hidesWhenStopped = true
+        
+        
+        
         
         
        
@@ -541,7 +541,12 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
     func working(yesNo: Bool) {
         if(yesNo == true){
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                self.workingIndicator.startAnimating()
+                
+                self.workingView = WorkingView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height))
+                self.workingView?.backgroundColor = UIColor.black.withAlphaComponent(0.50)
+                self.workingView?.drawWorkingView()
+                
+                self.view.addSubview(self.workingView!)
                 self.mainMapView.isUserInteractionEnabled = false
                 
                 self.listOfPlaces?.isEnabled = false
@@ -549,7 +554,8 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             }
         }else{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                self.workingIndicator.stopAnimating()
+                self.workingView?.stopActivitySpinner()
+                self.workingView?.removeFromSuperview()
                 self.mainMapView.isUserInteractionEnabled = true
                 
                 self.listOfPlaces?.isEnabled = true

@@ -22,17 +22,12 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="tI5-6P-il5">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pIK-ha-2Ob">
-                                <rect key="frame" x="177" y="323" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tI5-6P-il5" secondAttribute="trailing" id="7Rj-rJ-bJt"/>
                             <constraint firstItem="tI5-6P-il5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MD7-sr-r9S"/>
                             <constraint firstItem="tI5-6P-il5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="NLg-fz-IjJ"/>
-                            <constraint firstItem="pIK-ha-2Ob" firstAttribute="centerX" secondItem="tI5-6P-il5" secondAttribute="centerX" id="NTg-Fb-5dv"/>
-                            <constraint firstItem="pIK-ha-2Ob" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="UtZ-xg-Ifa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="tI5-6P-il5" secondAttribute="bottom" id="gtm-bs-jZE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -40,7 +35,6 @@
                     <navigationItem key="navigationItem" id="Kaf-y9-j9r"/>
                     <connections>
                         <outlet property="mainMapView" destination="tI5-6P-il5" id="fnA-NR-00g"/>
-                        <outlet property="workingIndicator" destination="pIK-ha-2Ob" id="wTc-HE-L8Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
