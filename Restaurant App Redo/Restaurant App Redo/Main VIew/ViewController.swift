@@ -396,8 +396,18 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
         
         // options touched //
         if(sender.tag == 0){
+            /*
             let optionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "Options") as? OptionsViewController
             self.navigationController?.pushViewController(optionsViewController!, animated: true)
+            */
+            
+            
+            if(_location != nil){
+                let newOptionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewOptionsScreen") as? NewOptionsViewController
+                newOptionsViewController?.passInLocation(location: _location!)
+                self.navigationController?.pushViewController(newOptionsViewController!, animated: true)
+            }
+            
         // list view touched //
         }else if(sender.tag == 1){
             self.createListViewPopUp()

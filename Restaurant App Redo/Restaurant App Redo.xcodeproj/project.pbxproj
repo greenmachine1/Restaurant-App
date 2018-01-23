@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3212DB9A2016A4C900ECAC8D /* OptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3212DB992016A4C900ECAC8D /* OptionsTableViewCell.swift */; };
 		3213778C2001EFAF00C7E4A7 /* RecenterButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3213778B2001EFAF00C7E4A7 /* RecenterButtonsView.swift */; };
 		321392781FFB313F00971720 /* GatheringPlacesNear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321392771FFB313F00971720 /* GatheringPlacesNear.swift */; };
 		321566661F964D8F00C6F3DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321566651F964D8F00C6F3DC /* AppDelegate.swift */; };
@@ -18,6 +19,7 @@
 		3215667B1F96501F00C6F3DC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3215667A1F96501F00C6F3DC /* MapKit.framework */; };
 		3219A0C9200482A10088C56C /* PopUpSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3219A0C8200482A10088C56C /* PopUpSearchView.swift */; };
 		321BF1442011A2F0009D5BB7 /* WorkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BF1432011A2F0009D5BB7 /* WorkingView.swift */; };
+		321E89A6201552710007D56A /* NewOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E89A5201552710007D56A /* NewOptionsViewController.swift */; };
 		322E6EA11FA2DE7100634905 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E6EA01FA2DE7100634905 /* ListView.swift */; };
 		322E6EA51FA2F6FE00634905 /* ListViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E6EA41FA2F6FE00634905 /* ListViewTableViewCell.swift */; };
 		323A303D1FAECBA50073B405 /* PreferredNoGoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323A303C1FAECBA50073B405 /* PreferredNoGoViewController.swift */; };
@@ -43,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3212DB992016A4C900ECAC8D /* OptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewCell.swift; sourceTree = "<group>"; };
 		3213778B2001EFAF00C7E4A7 /* RecenterButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecenterButtonsView.swift; sourceTree = "<group>"; };
 		321392771FFB313F00971720 /* GatheringPlacesNear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringPlacesNear.swift; sourceTree = "<group>"; };
 		321566621F964D8F00C6F3DC /* Restaurant App Redo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Restaurant App Redo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +59,7 @@
 		3215667A1F96501F00C6F3DC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3219A0C8200482A10088C56C /* PopUpSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpSearchView.swift; sourceTree = "<group>"; };
 		321BF1432011A2F0009D5BB7 /* WorkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingView.swift; sourceTree = "<group>"; };
+		321E89A5201552710007D56A /* NewOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOptionsViewController.swift; sourceTree = "<group>"; };
 		322E6EA01FA2DE7100634905 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		322E6EA41FA2F6FE00634905 /* ListViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewTableViewCell.swift; sourceTree = "<group>"; };
 		323A303C1FAECBA50073B405 /* PreferredNoGoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredNoGoViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +226,8 @@
 		32F283CA1F9BF4680024CB53 /* OptionsViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3212DB992016A4C900ECAC8D /* OptionsTableViewCell.swift */,
+				321E89A5201552710007D56A /* NewOptionsViewController.swift */,
 				32EBAA8E1F9A408800BC1E3B /* OptionsViewController.swift */,
 				325F73F41FAEB2EA002260F5 /* PreferredNoGoKeywords */,
 				320C70881FB2C26E00F94714 /* OptionsBackend */,
@@ -309,6 +315,7 @@
 			files = (
 				329C42C71FF1AC0200001AF2 /* NextAndPreviousButtonView.swift in Sources */,
 				32DCB7B31FB4F5630049117B /* NoGoSaving.swift in Sources */,
+				321E89A6201552710007D56A /* NewOptionsViewController.swift in Sources */,
 				32F283D01F9BF7640024CB53 /* OptionsSingleton.swift in Sources */,
 				32E7ED461FB4AE6A00ACC897 /* Colors.swift in Sources */,
 				32D189F81F96911D0038BF5A /* RestaurantInfo.swift in Sources */,
@@ -326,6 +333,7 @@
 				321BF1442011A2F0009D5BB7 /* WorkingView.swift in Sources */,
 				321566681F964D8F00C6F3DC /* ViewController.swift in Sources */,
 				321566781F964EC600C6F3DC /* LocationServices.swift in Sources */,
+				3212DB9A2016A4C900ECAC8D /* OptionsTableViewCell.swift in Sources */,
 				32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */,
 				32EBAA8F1F9A408800BC1E3B /* OptionsViewController.swift in Sources */,
 				3213778C2001EFAF00C7E4A7 /* RecenterButtonsView.swift in Sources */,
