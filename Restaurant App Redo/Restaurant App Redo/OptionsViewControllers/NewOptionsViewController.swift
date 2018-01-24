@@ -96,23 +96,7 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc func ratingButtonsOnClick(sender:UIButton){
-        
-        let backgroundView:UIView = UIView()
-        
-        for views in minRatingView.subviews{
-            if(views.tag == 10){
-                views.removeFromSuperview()
-            }
-        }
-        backgroundView.frame = CGRect(x: 0, y: 0, width: sender.tag * 60 + Int(sender.frame.size.width), height: 70)
-        
-        backgroundView.backgroundColor = Colors.sharedInstance.lightOrange
-        backgroundView.layer.cornerRadius = backgroundView.frame.size.height / 2
-        backgroundView.clipsToBounds = true
-        backgroundView.tag = 10
-        
-        self.minRatingView.addSubview(backgroundView)
-        self.minRatingView.sendSubview(toBack: backgroundView)
+        self.makeSelectedRoundedBox(_view: minRatingView, button: sender, position: sender.tag)
     }
     
     
@@ -131,16 +115,31 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc func priceButtonsOnClick(sender:UIButton){
-        for buttons in self.maxPriceView.subviews{
-            if(buttons is UIButton){
-                buttons.backgroundColor = Colors.sharedInstance.lightBlue
-            }
-        }
-        
-        sender.backgroundColor = Colors.sharedInstance.lightOrange
+        self.makeSelectedRoundedBox(_view: maxPriceView, button: sender, position: sender.tag)
     }
     
     
+    
+    func makeSelectedRoundedBox(_view:UIView, button:UIButton, position:Int){
+        
+        let backgroundView:UIView = UIView()
+        
+        for views in _view.subviews{
+            if(views.tag == 10){
+                views.removeFromSuperview()
+            }
+        }
+        backgroundView.frame = CGRect(x: 0, y: 0, width: position * 60 + Int(button.frame.size.width), height: 70)
+        
+        backgroundView.backgroundColor = Colors.sharedInstance.lightOrange
+        backgroundView.layer.cornerRadius = backgroundView.frame.size.height / 2
+        backgroundView.clipsToBounds = true
+        backgroundView.tag = 10
+        
+        _view.addSubview(backgroundView)
+        _view.sendSubview(toBack: backgroundView)
+        
+    }
     
     
     
