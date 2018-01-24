@@ -202,9 +202,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             
                 UIView.animate(withDuration: 0.3, animations: {
                     self.searchPopUpView?.frame = CGRect(x: 0, y: self.view.frame.origin.y + ((self.view.frame.size.height / 2) - 20), width: self.view.frame.size.width, height: (self.view.frame.size.height / 2) + 20)
-                    self.searchPopUpView?.scrollToTopOfList()
+                    
                 }) { (complete) in
                     // do something once complete //
+                    self.searchPopUpView?.scrollToTopOfList()
                     self.searchViewIsPresent = true
                 }
             }else{
@@ -402,12 +403,13 @@ class ViewController: UIViewController, ReturnLocationDelegate, /*ReturnRestaura
             */
             
             
+            
             if(_location != nil){
                 let newOptionsViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewOptionsScreen") as? NewOptionsViewController
                 newOptionsViewController?.passInLocation(location: _location!)
                 self.navigationController?.pushViewController(newOptionsViewController!, animated: true)
             }
-            
+ 
         // list view touched //
         }else if(sender.tag == 1){
             self.createListViewPopUp()

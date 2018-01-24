@@ -63,6 +63,7 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         
         self.addSubview(historyLabel)
         
+        
         mainListView = UITableView(frame: CGRect(x: 10, y: (historyLabel.frame.origin.y) + (historyLabel.frame.size.height) + 10, width: self.frame.size.width - 20, height: 200), style: UITableViewStyle.plain)
         mainListView?.register(ListViewTableViewCell.self, forCellReuseIdentifier: "searchCell")
         self.mainListView?.delegate = self
@@ -70,15 +71,18 @@ class PopUpSearchView: UIView, UITextFieldDelegate, UITableViewDelegate, UITable
         self.mainListView?.backgroundColor = UIColor.clear
         self.mainListView?.layer.cornerRadius = 5.0
         self.mainListView?.clipsToBounds = true
-        self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+        //self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
         self.mainListView?.isOpaque = true
         
         
         self.addSubview(mainListView!)
+ 
     }
     
     func scrollToTopOfList(){
-        self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+        if(self.mainListView != nil && self.loadArrayOfPlacesFromHistory().count != 0){
+            self.mainListView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
