@@ -58,11 +58,15 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
         self.mainTableView.dataSource = self
         
         
+        // upon loading, load the default set values //
+        self.makeSelectedRoundedBox(_view: self.minRatingView, position: OptionsSingleton.sharedInstance.getRating())
+        self.makeSelectedRoundedBox(_view: self.maxPriceView, position: OptionsSingleton.sharedInstance.getPrice())
+        self.distanceSlider.setValue(Float(OptionsSingleton.sharedInstance.getDistance()), animated: true)
+        self.updateMapView(distance: OptionsSingleton.sharedInstance.getDistance())
     }
     
     func passInLocation(location:CLLocation){
         currentLocation = location
-        
     }
     
     @IBAction func distanceSliderChangeValue(_ sender: UISlider) {
@@ -70,6 +74,10 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
         self.distanceLabel.text = "\(distanceValue) Miles"
         
         self.updateMapView(distance: distanceValue)
+        
+        OptionsSingleton.sharedInstance.setDistance(distance: distanceValue)
+        
+        
     }
     
     
@@ -96,7 +104,8 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc func ratingButtonsOnClick(sender:UIButton){
-        self.makeSelectedRoundedBox(_view: minRatingView, button: sender, position: sender.tag)
+        self.makeSelectedRoundedBox(_view: minRatingView, position: sender.tag)
+        OptionsSingleton.sharedInstance.setRating(rating: sender.tag)
     }
     
     
@@ -115,13 +124,13 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc func priceButtonsOnClick(sender:UIButton){
-        self.makeSelectedRoundedBox(_view: maxPriceView, button: sender, position: sender.tag)
+        self.makeSelectedRoundedBox(_view: maxPriceView, position: sender.tag)
+        OptionsSingleton.sharedInstance.setPrice(price: sender.tag)
     }
     
     
     
-    func makeSelectedRoundedBox(_view:UIView, button:UIButton, position:Int){
-        
+    func makeSelectedRoundedBox(_view:UIView, position:Int){
         let backgroundView:UIView = UIView()
         
         for views in _view.subviews{
@@ -129,8 +138,7 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
                 views.removeFromSuperview()
             }
         }
-        backgroundView.frame = CGRect(x: 0, y: 0, width: position * 60 + Int(button.frame.size.width), height: 70)
-        
+        backgroundView.frame = CGRect(x: 0, y: 0, width: position * 60 + 60, height: 70)
         backgroundView.backgroundColor = Colors.sharedInstance.lightOrange
         backgroundView.layer.cornerRadius = backgroundView.frame.size.height / 2
         backgroundView.clipsToBounds = true
