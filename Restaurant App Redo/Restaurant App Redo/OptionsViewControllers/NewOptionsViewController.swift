@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ReturnKeywordsDelegate {
 
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var distanceSlider: UISlider!
@@ -25,7 +25,7 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         
         // distance stuff //
-        self.mainMapView.layer.cornerRadius = 30
+        self.mainMapView.layer.cornerRadius = self.mainMapView.frame.size.width / 2
         self.mainMapView.layer.borderColor = Colors.sharedInstance.lightBlue.cgColor
         self.mainMapView.layer.borderWidth = 5.0
         
@@ -56,13 +56,26 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
         self.mainTableView.layer.borderWidth = 5.0
         self.mainTableView.delegate = self
         self.mainTableView.dataSource = self
+
+        self.loadUserDefaults()
         
+        let undoButton:UIBarButtonItem = UIBarButtonItem(title: "Undo", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.barButtonSelected))
         
+        self.navigationItem.rightBarButtonItem = undoButton
+    }
+    
+    @objc func barButtonSelected(){
+        OptionsSingleton.sharedInstance.deleteAllOptions()
+        loadUserDefaults()
+    }
+    
+    func loadUserDefaults(){
         // upon loading, load the default set values //
         self.makeSelectedRoundedBox(_view: self.minRatingView, position: OptionsSingleton.sharedInstance.getRating())
         self.makeSelectedRoundedBox(_view: self.maxPriceView, position: OptionsSingleton.sharedInstance.getPrice())
         self.distanceSlider.setValue(Float(OptionsSingleton.sharedInstance.getDistance()), animated: true)
         self.updateMapView(distance: OptionsSingleton.sharedInstance.getDistance())
+        self.distanceLabel.text = "\(OptionsSingleton.sharedInstance.getDistance()) Miles"
     }
     
     func passInLocation(location:CLLocation){
@@ -173,5 +186,35 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
         return cell
+    }
+    
+    
+    // will be injecting different sets of data into each of the same table views //
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(indexPath.row == 0){
+            // keywords //
+            let keywordsView = self.storyboard?.instantiateViewController(withIdentifier: "Keywords") as! KeywordsViewController
+            keywordsView.delegate = self
+            self.navigationController?.pushViewController(keywordsView, animated: true)
+            
+        }else if(indexPath.row == 1){
+            
+            // preferred //
+            let preferredView = self.storyboard?.instantiateViewController(withIdentifier: "PrefNoGoKey") as! PreferredNoGoViewController
+            
+            self.navigationController?.pushViewController(preferredView, animated: true)
+            
+        }else{
+            // no go //
+            let noGoView = self.storyboard?.instantiateViewController(withIdentifier: "NoGo") as! NoGoViewController
+            self.navigationController?.pushViewController(noGoView, animated: true)
+        }
+    }
+    
+    
+    
+    func returnKeywords(keywords: [String]) {
+        // saving the keywords //
+        OptionsSingleton.sharedInstance.setKeyWords(keywords: keywords)
     }
 }
