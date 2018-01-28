@@ -29,6 +29,10 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
         self.mainMapView.layer.borderColor = Colors.sharedInstance.lightBlue.cgColor
         self.mainMapView.layer.borderWidth = 5.0
         
+        print(mainMapView.frame)
+        
+        
+        
         self.distanceSlider.tintColor = Colors.sharedInstance.lightBlue
         
         self.distanceLabel.text = "5 Miles"

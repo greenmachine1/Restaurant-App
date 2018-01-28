@@ -198,6 +198,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="G5b-Az-Wc3"/>
                                                     <constraint firstAttribute="width" constant="200" id="IFK-GP-Ab9"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="bgY-VE-iV7"/>
                                                     <constraint firstAttribute="width" secondItem="GQc-oW-tmE" secondAttribute="height" multiplier="1:1" id="cd4-lG-ybm"/>
                                                 </constraints>
                                             </mapView>
@@ -309,7 +310,6 @@
                                             <constraint firstItem="GQc-oW-tmE" firstAttribute="centerX" secondItem="d5o-hQ-KOd" secondAttribute="centerX" id="oiN-DD-T9F"/>
                                             <constraint firstItem="pvK-nq-waf" firstAttribute="leading" secondItem="WIZ-uJ-opS" secondAttribute="leading" id="qoW-FK-TWT"/>
                                             <constraint firstItem="cyF-Xp-aPU" firstAttribute="leading" secondItem="pvK-nq-waf" secondAttribute="leading" id="sh5-IT-nUP"/>
-                                            <constraint firstItem="GQc-oW-tmE" firstAttribute="leading" secondItem="d5o-hQ-KOd" secondAttribute="leading" constant="87" id="tVx-l9-rGr"/>
                                             <constraint firstItem="cev-ik-dpG" firstAttribute="top" secondItem="jOs-1F-zj6" secondAttribute="bottom" constant="8" symbolic="YES" id="uA3-5v-oVT"/>
                                             <constraint firstAttribute="trailing" secondItem="WIZ-uJ-opS" secondAttribute="trailing" constant="38" id="ugg-cB-lAa"/>
                                         </constraints>
