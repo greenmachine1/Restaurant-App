@@ -21,11 +21,13 @@ class WorkingView: UIView {
     
     func drawWorkingView(){
         
-        let working:UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width / 2, height: self.frame.size.height / 5))
+        let working:UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width / 2, height: self.frame.size.width / 2/*self.frame.size.height / 5*/))
         working.center = self.center
-        working.layer.cornerRadius = 10.0
+        working.layer.cornerRadius = working.frame.size.width / 2
         working.clipsToBounds = true
         working.backgroundColor = UIColor.black
+        working.layer.borderColor = Colors.sharedInstance.lightBlue.cgColor
+        working.layer.borderWidth = 2.0
         
         self.addSubview(working)
         

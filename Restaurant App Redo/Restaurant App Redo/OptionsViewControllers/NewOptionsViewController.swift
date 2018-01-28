@@ -110,8 +110,9 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // creating star buttons for the rating view //
     func drawStarButtons(){
+        let starHeightAndLength = self.minRatingView.frame.size.width / 5
         for i in 0..<5{
-            let starButton:UIButton = UIButton(frame: CGRect(x: i * 60, y: 5, width: 60, height: 60))
+            let starButton:UIButton = UIButton(frame: CGRect(x: i * Int(starHeightAndLength), y: 5, width: Int(starHeightAndLength), height: Int(starHeightAndLength)))
             starButton.setImage(UIImage(named: "Star"), for: UIControlState.normal)
             starButton.tag = i
             starButton.addTarget(self, action: #selector(self.ratingButtonsOnClick), for: UIControlEvents.touchUpInside)
@@ -128,8 +129,9 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // creating price buttons for the max price view //
     func drawDollarButtons(){
+        let starHeightAndLength = self.maxPriceView.frame.size.width / 5
         for i in 0..<5{
-            let dollarButton:UIButton = UIButton(frame: CGRect(x: i * 60, y: 5, width: 60, height: 60))
+            let dollarButton:UIButton = UIButton(frame: CGRect(x: i * Int(starHeightAndLength), y: 5, width: Int(starHeightAndLength), height: Int(starHeightAndLength)))
             dollarButton.setTitle("\(i)", for: UIControlState.normal)
             dollarButton.setTitleColor(UIColor.white, for: UIControlState.normal)
             dollarButton.tag = i
@@ -149,13 +151,14 @@ class NewOptionsViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func makeSelectedRoundedBox(_view:UIView, position:Int){
         let backgroundView:UIView = UIView()
+        let starHeightAndLength = _view.frame.size.width / 5
         
         for views in _view.subviews{
             if(views.tag == 10){
                 views.removeFromSuperview()
             }
         }
-        backgroundView.frame = CGRect(x: 0, y: 0, width: position * 60 + 60, height: 70)
+        backgroundView.frame = CGRect(x: 0, y: 0, width: position * Int(starHeightAndLength) + Int(starHeightAndLength), height: Int(_view.frame.size.height))
         backgroundView.backgroundColor = Colors.sharedInstance.lightOrange
         backgroundView.layer.cornerRadius = backgroundView.frame.size.height / 2
         backgroundView.clipsToBounds = true

@@ -236,6 +236,7 @@
                                                 <rect key="frame" x="37" y="433" width="300" height="70"/>
                                                 <color key="backgroundColor" red="0.2392156869" green="0.67450982329999998" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="width" constant="300" id="ORz-Sq-QNV"/>
                                                     <constraint firstAttribute="height" constant="70" id="je9-1i-h5I"/>
                                                 </constraints>
                                             </view>
@@ -288,10 +289,10 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
+                                            <constraint firstItem="pvK-nq-waf" firstAttribute="height" secondItem="WIZ-uJ-opS" secondAttribute="height" id="0Rb-CY-cn3"/>
                                             <constraint firstItem="zOQ-ai-fYv" firstAttribute="centerX" secondItem="WIZ-uJ-opS" secondAttribute="centerX" id="42X-Xf-OgB"/>
                                             <constraint firstItem="3s5-6q-X5J" firstAttribute="top" secondItem="d5o-hQ-KOd" secondAttribute="top" constant="54" id="5HP-aV-F2G"/>
                                             <constraint firstAttribute="height" constant="1000" id="6ZP-dt-M1n"/>
-                                            <constraint firstItem="WIZ-uJ-opS" firstAttribute="leading" secondItem="d5o-hQ-KOd" secondAttribute="leading" constant="37" id="9mK-m1-apU"/>
                                             <constraint firstItem="pvK-nq-waf" firstAttribute="trailing" secondItem="WIZ-uJ-opS" secondAttribute="trailing" id="Bhp-j9-a28"/>
                                             <constraint firstItem="zOQ-ai-fYv" firstAttribute="top" secondItem="WIZ-uJ-opS" secondAttribute="bottom" constant="8" symbolic="YES" id="ECM-tl-l8I"/>
                                             <constraint firstItem="exS-yu-Pju" firstAttribute="top" secondItem="cev-ik-dpG" secondAttribute="bottom" constant="43" id="Gss-vV-JKK"/>
@@ -309,9 +310,9 @@
                                             <constraint firstItem="cyF-Xp-aPU" firstAttribute="trailing" secondItem="pvK-nq-waf" secondAttribute="trailing" id="oho-VZ-5CN"/>
                                             <constraint firstItem="GQc-oW-tmE" firstAttribute="centerX" secondItem="d5o-hQ-KOd" secondAttribute="centerX" id="oiN-DD-T9F"/>
                                             <constraint firstItem="pvK-nq-waf" firstAttribute="leading" secondItem="WIZ-uJ-opS" secondAttribute="leading" id="qoW-FK-TWT"/>
+                                            <constraint firstItem="WIZ-uJ-opS" firstAttribute="centerX" secondItem="exS-yu-Pju" secondAttribute="centerX" id="s1t-WK-3WX"/>
                                             <constraint firstItem="cyF-Xp-aPU" firstAttribute="leading" secondItem="pvK-nq-waf" secondAttribute="leading" id="sh5-IT-nUP"/>
                                             <constraint firstItem="cev-ik-dpG" firstAttribute="top" secondItem="jOs-1F-zj6" secondAttribute="bottom" constant="8" symbolic="YES" id="uA3-5v-oVT"/>
-                                            <constraint firstAttribute="trailing" secondItem="WIZ-uJ-opS" secondAttribute="trailing" constant="38" id="ugg-cB-lAa"/>
                                         </constraints>
                                     </view>
                                 </subviews>
