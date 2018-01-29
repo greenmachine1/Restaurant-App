@@ -30,14 +30,11 @@
 		329C42C71FF1AC0200001AF2 /* NextAndPreviousButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */; };
 		32AF0C281FCBD3A700096C07 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AF0C271FCBD3A700096C07 /* CustomAnnotation.swift */; };
 		32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */; };
-		32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */; };
-		32D189F81F96911D0038BF5A /* RestaurantInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D189F71F96911D0038BF5A /* RestaurantInfo.swift */; };
 		32D3C6041FAD7D1000107E60 /* CustomAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D3C6031FAD7D1000107E60 /* CustomAnnotationView.xib */; };
 		32D3C6071FAD8E2D00107E60 /* CustomAnnotationCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3C6061FAD8E2D00107E60 /* CustomAnnotationCalloutView.swift */; };
 		32DCB7B11FB4F20F0049117B /* NoGoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DCB7B01FB4F20F0049117B /* NoGoViewController.swift */; };
 		32DCB7B31FB4F5630049117B /* NoGoSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DCB7B21FB4F5630049117B /* NoGoSaving.swift */; };
 		32E7ED461FB4AE6A00ACC897 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E7ED451FB4AE6A00ACC897 /* Colors.swift */; };
-		32EBAA8F1F9A408800BC1E3B /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EBAA8E1F9A408800BC1E3B /* OptionsViewController.swift */; };
 		32EBAA911F9A42F300BC1E3B /* PreferredOrNotPreferredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EBAA901F9A42F300BC1E3B /* PreferredOrNotPreferredTableViewCell.swift */; };
 		32EBAA931F9A435E00BC1E3B /* KeywordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EBAA921F9A435E00BC1E3B /* KeywordsTableViewCell.swift */; };
 		32F283D01F9BF7640024CB53 /* OptionsSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F283CF1F9BF7640024CB53 /* OptionsSingleton.swift */; };
@@ -70,14 +67,11 @@
 		329C42C61FF1AC0200001AF2 /* NextAndPreviousButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextAndPreviousButtonView.swift; sourceTree = "<group>"; };
 		32AF0C271FCBD3A700096C07 /* CustomAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		32CCD7471FD25DBB00DE787E /* DropDownRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownRestaurantView.swift; sourceTree = "<group>"; };
-		32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatheringRestaurantsNearBy.swift; sourceTree = "<group>"; };
-		32D189F71F96911D0038BF5A /* RestaurantInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantInfo.swift; sourceTree = "<group>"; };
 		32D3C6031FAD7D1000107E60 /* CustomAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAnnotationView.xib; sourceTree = "<group>"; };
 		32D3C6061FAD8E2D00107E60 /* CustomAnnotationCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationCalloutView.swift; sourceTree = "<group>"; };
 		32DCB7B01FB4F20F0049117B /* NoGoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoGoViewController.swift; sourceTree = "<group>"; };
 		32DCB7B21FB4F5630049117B /* NoGoSaving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoGoSaving.swift; sourceTree = "<group>"; };
 		32E7ED451FB4AE6A00ACC897 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		32EBAA8E1F9A408800BC1E3B /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		32EBAA901F9A42F300BC1E3B /* PreferredOrNotPreferredTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredOrNotPreferredTableViewCell.swift; sourceTree = "<group>"; };
 		32EBAA921F9A435E00BC1E3B /* KeywordsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordsTableViewCell.swift; sourceTree = "<group>"; };
 		32F283CF1F9BF7640024CB53 /* OptionsSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsSingleton.swift; sourceTree = "<group>"; };
@@ -196,9 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				321566771F964EC600C6F3DC /* LocationServices.swift */,
-				32D189F41F9690550038BF5A /* GatheringRestaurantsNearBy.swift */,
 				321392771FFB313F00971720 /* GatheringPlacesNear.swift */,
-				32D189F71F96911D0038BF5A /* RestaurantInfo.swift */,
 			);
 			path = LocationStuff;
 			sourceTree = "<group>";
@@ -228,7 +220,6 @@
 			children = (
 				3212DB992016A4C900ECAC8D /* OptionsTableViewCell.swift */,
 				321E89A5201552710007D56A /* NewOptionsViewController.swift */,
-				32EBAA8E1F9A408800BC1E3B /* OptionsViewController.swift */,
 				325F73F41FAEB2EA002260F5 /* PreferredNoGoKeywords */,
 				320C70881FB2C26E00F94714 /* OptionsBackend */,
 			);
@@ -318,7 +309,6 @@
 				321E89A6201552710007D56A /* NewOptionsViewController.swift in Sources */,
 				32F283D01F9BF7640024CB53 /* OptionsSingleton.swift in Sources */,
 				32E7ED461FB4AE6A00ACC897 /* Colors.swift in Sources */,
-				32D189F81F96911D0038BF5A /* RestaurantInfo.swift in Sources */,
 				323A30431FAEDF880073B405 /* PreferredNoGoSaving.swift in Sources */,
 				325F73F61FAEB3C3002260F5 /* PreferredNoGoKeywordsTableViewCell.swift in Sources */,
 				323A303F1FAECBB10073B405 /* KeywordsViewController.swift in Sources */,
@@ -335,9 +325,7 @@
 				321566781F964EC600C6F3DC /* LocationServices.swift in Sources */,
 				3212DB9A2016A4C900ECAC8D /* OptionsTableViewCell.swift in Sources */,
 				32CCD7481FD25DBB00DE787E /* DropDownRestaurantView.swift in Sources */,
-				32EBAA8F1F9A408800BC1E3B /* OptionsViewController.swift in Sources */,
 				3213778C2001EFAF00C7E4A7 /* RecenterButtonsView.swift in Sources */,
-				32D189F51F9690550038BF5A /* GatheringRestaurantsNearBy.swift in Sources */,
 				3219A0C9200482A10088C56C /* PopUpSearchView.swift in Sources */,
 				322E6EA11FA2DE7100634905 /* ListView.swift in Sources */,
 				32F3C1FA1FAE4E41005A378B /* CustomCalloutView.swift in Sources */,

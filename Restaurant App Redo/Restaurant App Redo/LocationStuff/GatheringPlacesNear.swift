@@ -61,10 +61,10 @@ class GatheringPlacesNear: NSObject {
         
         if(nextPageToken == ""){
             
-            urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(location.coordinate.latitude),\(location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(_keywordString)&minprice=\(_pricing)&key=\(key)"
+            urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(location.coordinate.latitude),\(location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(_keywordString)&minprice=0&maxprice=\(_pricing)&key=\(key)"
             
         }else{
-            urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=\(nextPageToken)&location=\(location.coordinate.latitude),\(location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(_keywordString)&minprice=\(_pricing)&key=\(key)"
+            urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=\(nextPageToken)&location=\(location.coordinate.latitude),\(location.coordinate.longitude)&radius=\(_radius)&type=\(type)&keyword=\(_keywordString)&minprice=0&maxprice=\(_pricing)&key=\(key)"
         }
         
         if let tempUrl = urlString?.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed){
@@ -208,20 +208,6 @@ class GatheringPlacesNear: NSObject {
                         newRestaurantInfo.distanceFromUser = distanceFromUserInMiles
                         newRestaurantInfo.annotationColor = true
                         arrayOfRestaurants.append(newRestaurantInfo)
-                        
-                        
-                        
-                        
-                        /*
-                        if(_locationOfUser != nil){
-                        
-                            let distanceFromUser = newRestaurantInfo.location?.distance(from: _locationOfUser!)
-                            let distanceFromUserInMiles = Int(distanceFromUser! / 1609)
-                            newRestaurantInfo.distanceFromUser = distanceFromUserInMiles
-                            newRestaurantInfo.annotationColor = true
-                            arrayOfRestaurants.append(newRestaurantInfo)
-                        }
-                        */
                     }
                 }
             }
@@ -344,7 +330,4 @@ class GatheringPlacesNear: NSObject {
             return false
         }
     }
-
-    
-
 }
