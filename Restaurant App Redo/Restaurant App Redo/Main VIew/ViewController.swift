@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, ReturnLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation, ReturnRecenterButtonsDelegate, ReturnSearchPopUpViewDelegate{
+class ViewController: UIViewController, ReturnLocationDelegate, ReturnOptionsUpdatedDelegate, MKMapViewDelegate, ListViewDelegate, ReturnButtonInfoDelegate, ReturnSaveOfPreferredPlaces, ReturnSaveOfNoGoPlaces, ReturnSwipeGestureDelegate, ReturnButtonPressedDelegate, ReturnRestaurauntInfoAndLocation, ReturnRecenterButtonsDelegate, ReturnSearchPopUpViewDelegate, WorkingViewDelegate{
 
     @IBOutlet weak var mainMapView: MKMapView!
     
@@ -555,8 +555,12 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnOptionsUpd
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 
                 self.workingView = WorkingView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height))
+                self.workingView?.delegate = self
                 self.workingView?.backgroundColor = UIColor.black.withAlphaComponent(0.50)
+                
                 self.workingView?.drawWorkingView()
+                
+                
                 
                 self.view.addSubview(self.workingView!)
                 self.mainMapView.isUserInteractionEnabled = false
@@ -566,8 +570,9 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnOptionsUpd
             }
         }else{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+
+                // ---- //
                 self.workingView?.stopActivitySpinner()
-                self.workingView?.removeFromSuperview()
                 self.mainMapView.isUserInteractionEnabled = true
                 
                 self.listOfPlaces?.isEnabled = true
@@ -579,6 +584,10 @@ class ViewController: UIViewController, ReturnLocationDelegate, ReturnOptionsUpd
                 
             }
         }
+    }
+    
+    func isDoneSpinning() {
+        self.workingView?.removeFromSuperview()
     }
 
     

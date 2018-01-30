@@ -144,9 +144,7 @@ class DropDownRestaurantView: UIView {
             }else if(tempRating == 5){
                 self.ratingLabelText?.text = "*****"
             }
-            
-            
-            //self.ratingLabelText?.text = "\(rating)"
+
         }
         
         if(self.priceLabel != nil){
@@ -162,9 +160,7 @@ class DropDownRestaurantView: UIView {
             }else if(price == 4){
                 self.priceLabelText?.text = "$$$$$"
             }
-            
-            
-            //self.priceLabelText?.text = "\(price)"
+
         }
         
         if(self.distanceLabel != nil){
